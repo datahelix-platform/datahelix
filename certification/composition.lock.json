@@ -1,7 +1,8 @@
 {
   "_comment": [
     "The certified-frontier pins for THIS branch's line (platform ADR-0001).",
-    "The bump bot moves exactly one component's version+digest per PR; the",
+    "The bump workflow (.github/workflows/bump-lock.yml, fed by each component",
+    "release's dispatch) moves exactly one component's version+digest per PR; the",
     "certification workflow reads this file, boots that exact pair, and \u2014 on",
     "green merge \u2014 appends a ledger tag. A maintenance branch (release/lts-*)",
     "carries its own frozen copy of this file and its era-appropriate fixture.",

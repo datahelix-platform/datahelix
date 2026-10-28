@@ -1,0 +1,138 @@
+name: Bump lock
+
+# The certified-frontier bump bot (platform ADR-0001, implementation note of
+# 2026-10-27; issue #121). A component's release workflow dispatches its
+# published image-digest.json here as a `component-release` event; this
+# workflow moves exactly ONE pin in certification/composition.lock.json and
+# opens ONE pull request for it, so a red certification attributes to a single
+# version delta. Patch deltas auto-merge on green certification; minor/major
+# deltas wait for review. The same thing can be run by hand with
+# workflow_dispatch (a backfill, or a release that dispatched before this
+# workflow existed).
+#
+# Two things this workflow depends on that are not in code:
+#   - BUMP_BOT_TOKEN, a fine-grained PAT with Contents RW + Pull requests RW on
+#     this repository. The branch is pushed and the PR opened with it, NEVER
+#     with GITHUB_TOKEN: events caused by GITHUB_TOKEN do not trigger other
+#     workflows, so certify.yml would never run on the PR.
+#   - "Allow auto-merge" enabled in the repository settings (it is).
+#
+# The dispatch payload is data from whoever holds DATAHELIX_DISPATCH_TOKEN, so
+# certification/scripts/bump_lock.py validates every field and refuses an
+# unknown component, a malformed version or digest, an image outside
+# ghcr.io/datahelix-platform/, a downgrade, or a re-cut of a released number.
+
+on:
+  repository_dispatch:
+    types: [component-release]
+  workflow_dispatch:
+    inputs:
+      component:
+        description: "Component whose pin moves (a key under components in composition.lock.json)"
+        required: true
+      version:
+        description: "Released version, X.Y.Z (no v prefix)"
+        required: true
+      digest:
+        description: "Image digest, sha256:..."
+        required: true
+      image:
+        description: "Image path (ghcr.io/datahelix-platform/<component>); blank keeps the lock's"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bump-lock-${{ github.event.client_payload.component || inputs.component }}
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    env:
+      COMPONENT: ${{ github.event.client_payload.component || inputs.component }}
+      VERSION: ${{ github.event.client_payload.version || inputs.version }}
+      DIGEST: ${{ github.event.client_payload.digest || inputs.digest }}
+      IMAGE: ${{ github.event.client_payload.image || inputs.image }}
+      SOURCE_REPO: ${{ github.event.client_payload.repo || '' }}
+    steps:
+      - name: Require BUMP_BOT_TOKEN
+        env:
+          TOKEN: ${{ secrets.BUMP_BOT_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::error::BUMP_BOT_TOKEN is not set. The bump PR must be opened with a token other than GITHUB_TOKEN, or certify.yml never runs on it (ADR-0001 implementation note, 2026-10-27)."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BUMP_BOT_TOKEN }}
+
+      - name: Move the pin
+        id: pin
+        run: |
+          set -euo pipefail
+          if [ -n "$IMAGE" ]; then
+            python3 certification/scripts/bump_lock.py "$COMPONENT" "$VERSION" "$DIGEST" --image "$IMAGE"
+          else
+            python3 certification/scripts/bump_lock.py "$COMPONENT" "$VERSION" "$DIGEST"
+          fi
+          git --no-pager diff --stat
+
+      - name: Already at this release
+        if: steps.pin.outputs.changed != 'true'
+        run: echo "::notice::composition.lock.json already pins $COMPONENT $VERSION at $DIGEST; nothing to do."
+
+      - name: Open the bump PR
+        if: steps.pin.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.BUMP_BOT_TOKEN }}
+          DELTA: ${{ steps.pin.outputs.delta }}
+          PREVIOUS: ${{ steps.pin.outputs.previous }}
+          PINNED_IMAGE: ${{ steps.pin.outputs.image }}
+          BASE: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          branch="bump/${COMPONENT}-${VERSION}"
+          title="chore(certification): bump the ${COMPONENT} pin to v${VERSION}"
+          existing="$(gh pr list --head "$branch" --state open --json number --jq '.[].number')"
+          if [ -n "$existing" ]; then
+            echo "::notice::PR #$existing for $branch is already open; not opening another."
+            exit 0
+          fi
+          repo="${SOURCE_REPO:-datahelix-platform/${COMPONENT}}"
+
+          git config user.name "datahelix-bump"
+          git config user.email "datahelix-bump@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add certification/composition.lock.json
+          git commit -m "$title" \
+            -m "One release, one delta (platform ADR-0001): ${PREVIOUS} -> ${VERSION} (${DELTA}), digest ${DIGEST}."
+          git push -u origin "$branch"
+
+          cat > body.md <<EOF
+          Moves the **${COMPONENT}** pin ${PREVIOUS} → **${VERSION}** (${DELTA}).
+
+          | | |
+          |---|---|
+          | Release | https://github.com/${repo}/releases/tag/v${VERSION} |
+          | Image | ${PINNED_IMAGE} |
+          | Digest | ${DIGEST} |
+
+          One release = one delta (platform ADR-0001): a red certification on this PR names exactly this version change and is a cross-team pager, not backlog. Certification runs here because the PR was opened with the bump workflow's own token, not GITHUB_TOKEN. Patch deltas auto-merge on green; minor and major deltas wait for review.
+
+          Opened by the Bump lock workflow from a component-release dispatch (#121).
+          EOF
+          gh pr create --base "$BASE" --head "$branch" --title "$title" --body-file body.md
+
+          labels="certified-frontier"
+          if [ "$DELTA" = patch ]; then labels="$labels,auto-merge:patch"; else labels="$labels,needs-review"; fi
+          gh pr edit "$branch" --add-label "$labels" \
+            || echo "::warning::Could not apply labels ($labels). Create them, or add Issues: write to BUMP_BOT_TOKEN."
+          if [ "$DELTA" = patch ]; then
+            gh pr merge "$branch" --auto --squash \
+              || echo "::warning::Could not enable auto-merge; merge by hand once certification is green."
+          fi
