@@ -166,3 +166,32 @@ not wait on the contract file.
   Cappella, Bridge) starts publishing artifacts.
 </content>
 </invoke>
+
+## Implementation note (2026-10-27) — the bump bot is a release-driven dispatch, not Renovate
+
+Decided by labadorf. The Consequences above oblige DataHelix to run "a bump-bot config (one PR per
+release, patch auto-merge)". The config that shipped with this ADR (`renovate.json`, #33) was
+**never activated**: the Renovate app was not installed on the org, no Renovate PR or dashboard has
+ever existed, and every lock bump to date was a hand-written PR (#64, #65, #69, #70, #97, #101,
+#109, #111, mosaic#218). The one-delta-per-PR property this ADR depends on has therefore rested on
+discipline, not automation, for four months.
+
+**Decision.** The bot is implemented as a **`repository_dispatch` from each component's release
+workflow**, carrying the `image-digest.json` that workflow already publishes, into a DataHelix
+workflow that writes `composition.lock.json`, opens one PR per release in the existing title
+convention, and enables auto-merge for a patch delta. Certification runs on that PR as on any lock
+change. `renovate.json` is removed. Tracking: [#121](https://github.com/datahelix-platform/datahelix/issues/121)
+(DataHelix side); [mosaic#237](https://github.com/datahelix-platform/mosaic/issues/237),
+[aperture#90](https://github.com/datahelix-platform/aperture/issues/90),
+[reel#15](https://github.com/datahelix-platform/reel/issues/15) (the component-side step).
+
+**Why not Renovate.** It polls the registry rather than reading the release, so the image-path
+move (#117) would have hidden every new release from it; `config:recommended` would open PRs for
+every Python, npm and submodule dependency in this repo; and it is a third-party app with
+org-wide write access, for one file that moves about once a fortnight. **Why not stay manual.**
+The attribution guarantee in Consequences should not depend on two people remembering to move
+one pin at a time. **Dependabot** has no custom-file manager and cannot read the lock.
+
+**Two obligations this note adds.** The bump PR must be opened with a token other than
+`GITHUB_TOKEN`, or `certify.yml` never runs on it; and patch auto-merge needs *Allow auto-merge*
+enabled on the repository, which it is not today. Both are maintainer acts recorded in #121.
