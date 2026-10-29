@@ -24,7 +24,7 @@ lazy, targeted **backfill** (`workflow_dispatch`), never a standing matrix.
 
 | Path | What it is |
 |---|---|
-| `composition.lock.json` | The current pins for this branch's line (versions + digests + fixture). The bump bot moves one component per PR; certification reads this. |
+| `composition.lock.json` | The current pins for this branch's line (versions + digests + fixture). The bump workflow ([`../.github/workflows/bump-lock.yml`](../.github/workflows/bump-lock.yml)) moves one component per PR; certification reads this. |
 | `ledger/` | The ledger tooling (`datahelix-ledger`): `certify`, `assemble`, `query`, `gate`. Pure stdlib + git. |
 | `fixtures/bootstrap/` | Versioned seed schema + data + the Aperture control-plane recipe. One source, consumed by DataHelix CI **and** (later) mosaic CI for the aperture contract file. |
 | `compose/` | `docker-compose.certify.yml` + `mosaic.certify.yaml` — boots the pinned pair (mosaic serve --graphql over the fixture + the aperture SPA). |
@@ -71,8 +71,11 @@ another, or move to the non-blocking nightly tier.
 
 ## The frontier flow
 
-1. A component releases → the **bump bot** ([`../renovate.json`](../renovate.json))
-   opens one DataHelix PR moving that one pin. One release = one delta.
+1. A component releases → its release workflow dispatches the published
+   `image-digest.json` to DataHelix as a `component-release` event → the **bump workflow**
+   ([`../.github/workflows/bump-lock.yml`](../.github/workflows/bump-lock.yml)) opens one
+   DataHelix PR moving that one pin. One release = one delta. (ADR-0001 implementation note,
+   2026-10-27: the Renovate config that originally stood here was never activated.)
 2. The certification workflow ([`../.github/workflows/certify.yml`](../.github/workflows/certify.yml))
    reads the lock, pulls both artifacts by digest, boots the composition, runs
    the suite under budget.
