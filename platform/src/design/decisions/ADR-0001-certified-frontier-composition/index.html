@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -25,10 +25,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4160,6 +4160,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#implementation-note-2026-10-27-the-bump-bot-is-a-release-driven-dispatch-not-renovate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation note (2026-10-27) — the bump bot is a release-driven dispatch, not Renovate
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4368,6 +4379,30 @@ not wait on the contract file.</p>
 </content>
 </invoke></li>
 </ul>
+<h2 id="implementation-note-2026-10-27-the-bump-bot-is-a-release-driven-dispatch-not-renovate">Implementation note (2026-10-27) — the bump bot is a release-driven dispatch, not Renovate<a class="headerlink" href="#implementation-note-2026-10-27-the-bump-bot-is-a-release-driven-dispatch-not-renovate" title="Permanent link">&para;</a></h2>
+<p>Decided by labadorf. The Consequences above oblige DataHelix to run "a bump-bot config (one PR per
+release, patch auto-merge)". The config that shipped with this ADR (<code>renovate.json</code>, #33) was
+<strong>never activated</strong>: the Renovate app was not installed on the org, no Renovate PR or dashboard has
+ever existed, and every lock bump to date was a hand-written PR (#64, #65, #69, #70, #97, #101,</p>
+<h1 id="109-111-mosaic218-the-one-delta-per-pr-property-this-adr-depends-on-has-therefore-rested-on">109, #111, mosaic#218). The one-delta-per-PR property this ADR depends on has therefore rested on<a class="headerlink" href="#109-111-mosaic218-the-one-delta-per-pr-property-this-adr-depends-on-has-therefore-rested-on" title="Permanent link">&para;</a></h1>
+<p>discipline, not automation, for four months.</p>
+<p><strong>Decision.</strong> The bot is implemented as a <strong><code>repository_dispatch</code> from each component's release
+workflow</strong>, carrying the <code>image-digest.json</code> that workflow already publishes, into a DataHelix
+workflow that writes <code>composition.lock.json</code>, opens one PR per release in the existing title
+convention, and enables auto-merge for a patch delta. Certification runs on that PR as on any lock
+change. <code>renovate.json</code> is removed. Tracking: <a href="https://github.com/datahelix-platform/datahelix/issues/121">#121</a>
+(DataHelix side); <a href="https://github.com/datahelix-platform/mosaic/issues/237">mosaic#237</a>,
+<a href="https://github.com/datahelix-platform/aperture/issues/90">aperture#90</a>,
+<a href="https://github.com/datahelix-platform/reel/issues/15">reel#15</a> (the component-side step).</p>
+<p><strong>Why not Renovate.</strong> It polls the registry rather than reading the release, so the image-path
+move (#117) would have hidden every new release from it; <code>config:recommended</code> would open PRs for
+every Python, npm and submodule dependency in this repo; and it is a third-party app with
+org-wide write access, for one file that moves about once a fortnight. <strong>Why not stay manual.</strong>
+The attribution guarantee in Consequences should not depend on two people remembering to move
+one pin at a time. <strong>Dependabot</strong> has no custom-file manager and cannot read the lock.</p>
+<p><strong>Two obligations this note adds.</strong> The bump PR must be opened with a token other than
+<code>GITHUB_TOKEN</code>, or <code>certify.yml</code> never runs on it; and patch auto-merge needs <em>Allow auto-merge</em>
+enabled on the repository, which it is not today. Both are maintainer acts recorded in #121.</p>
 
 
 
@@ -4423,10 +4458,10 @@ not wait on the contract file.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>
