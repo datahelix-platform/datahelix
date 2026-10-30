@@ -16,9 +16,9 @@
   "fixture_version": "1.2.0",
   "components": {
     "mosaic": {
-      "version": "0.14.0",
-      "digest": "sha256:48c2d120ebfdf633b4f5206e1fc58ed7dfc9972b4122d5cc64a1208d062de9a9",
-      "image": "ghcr.io/bu-neuromics/mosaic",
+      "version": "0.15.0",
+      "digest": "sha256:27ea806f7cb61bd0217b8b247996196cfb4b6241aa9a06800779484c776d87ed",
+      "image": "ghcr.io/datahelix-platform/mosaic",
       "repo": "datahelix-platform/mosaic",
       "status": "published"
     },
