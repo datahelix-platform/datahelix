@@ -13,7 +13,7 @@ DOCKER_GID := $(shell id -g)
 ENV = DEMO_DATASET=$(DEMO_DATASET) DEMO_PORT=$(DEMO_PORT) AWS_DIR=$(AWS_DIR) \
       DOCKER_UID=$(DOCKER_UID) DOCKER_GID=$(DOCKER_GID)
 
-.PHONY: check-pins gate up down logs logs-planner restart-planner smoke eval
+.PHONY: check-pins gate up down logs logs-planner restart-planner smoke eval check-reverses
 
 ## Static pin check: certified pair == lock; planner digest-pinned (uncertified).
 check-pins:
@@ -84,3 +84,9 @@ _credentials:
 		echo "  Other providers: REEL_MODEL plus ANTHROPIC_API_KEY or OPENAI_API_KEY" >&2; \
 		exit 1; \
 	fi
+
+## Reverse-edge parity on the running dataset: every inverse-declared reverse
+## must match its forward slot (hydrated list, count, `some`). Edges come from
+## the schema, so newly declared reverses are checked automatically.
+check-reverses:
+	docker compose exec -T demo python - /project < ../demo/check_reverse_edges.py
