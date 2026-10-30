@@ -2,7 +2,7 @@
 
 REPO_ROOT := ../../..
 
-.PHONY: check-pins gate up down logs
+.PHONY: check-pins gate up down logs check-reverses
 
 ## Static pin check: Dockerfile digests == certified composition lock.
 check-pins:
@@ -21,3 +21,9 @@ down:
 
 logs:
 	docker compose logs -f demo
+
+## Reverse-edge parity on the running dataset: every inverse-declared reverse
+## must match its forward slot (hydrated list, count, `some`). Edges come from
+## the schema, so newly declared reverses are checked automatically.
+check-reverses:
+	docker compose exec -T demo python - /project < check_reverse_edges.py

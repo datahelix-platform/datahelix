@@ -124,6 +124,7 @@ normally mode 600 and uid 10001 could not read it through the bind mount.
 |---|---|
 | `make up` / `down` | Build + start / stop both services |
 | `make smoke` | One turn through `/graphql`. Passes on `proposal` or `clarification`; `SMOKE_UTTERANCE=...` to change it |
+| `make check-reverses` | Every inverse-declared reverse edge in the baked dataset matches its forward slot (hydrated list, count, `some`); no model calls. Edges come from the schema, so new ones are checked automatically |
 | `make eval` | Reel's discovery harness on the baked dataset's cases (`SAMPLES=3`, `EVAL_ARGS="--model ..."`); every case spends model calls |
 | `make logs` / `logs-planner` | Follow everything / just the planner |
 | `make restart-planner` | Restart Reel; it fetches its grounding once, at startup |
