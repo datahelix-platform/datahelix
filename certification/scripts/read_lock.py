@@ -17,7 +17,13 @@ lock file's own bump bot switches spellings.
 Usage:
     read_lock.py path/to/composition.lock.json
     read_lock.py --mosaic-version X --mosaic-digest D \
-                 --aperture-version Y --aperture-digest D2 [--line frontier]
+                 --aperture-version Y --aperture-digest D2 [--line frontier] \
+                 [--mosaic-image IMG] [--aperture-image IMG] [--lock-file PATH]
+
+In the manual-dispatch form the image paths default to the ``image`` recorded in
+the lock file (``--lock-file``, default ``certification/composition.lock.json``
+beside this script), so a re-certification boots the image the lock names rather
+than a hard-coded path. Pass ``--mosaic-image`` / ``--aperture-image`` to override.
 """
 
 from __future__ import annotations
@@ -27,6 +33,20 @@ import json
 import os
 import sys
 from pathlib import Path
+
+
+DEFAULT_LOCK = Path(__file__).resolve().parents[1] / "composition.lock.json"
+
+
+def _lock_image(lock_path: str, component: str) -> str:
+    """The `image` the lock records for a component ("" if unreadable/absent)."""
+    try:
+        comps = json.loads(Path(lock_path).read_text())["components"]
+    except (OSError, ValueError, KeyError):
+        return ""
+    if component == "mosaic":
+        component = "mosaic" if "mosaic" in comps else "hippo"
+    return comps.get(component, {}).get("image", "")
 
 
 def _emit(pairs: dict[str, str]) -> None:
@@ -50,6 +70,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--mosaic-digest")
     ap.add_argument("--aperture-version")
     ap.add_argument("--aperture-digest")
+    ap.add_argument("--mosaic-image", help="image path (default: the lock file's mosaic image)")
+    ap.add_argument("--aperture-image", help="image path (default: the lock file's aperture image)")
+    ap.add_argument("--lock-file", default=str(DEFAULT_LOCK), help="lock to take default images from")
     ap.add_argument("--line")
     ap.add_argument("--fixture-version", default="1.0.0")
     args = ap.parse_args(argv)
@@ -78,12 +101,12 @@ def main(argv: list[str] | None = None) -> int:
             "fixture_version": args.fixture_version,
             "mosaic_version": args.mosaic_version or "",
             "mosaic_digest": args.mosaic_digest or "",
-            # The mosaic release pipeline publishes here (ADR-0004 Phase R
-            # complete). Lock-file path reads `image` from the lock directly.
-            "mosaic_image": "ghcr.io/bu-neuromics/mosaic",
+            # No hard-coded registry path: take the image from the argument,
+            # else from the lock (so a manual run boots what the lock names).
+            "mosaic_image": args.mosaic_image or _lock_image(args.lock_file, "mosaic"),
             "aperture_version": args.aperture_version or "",
             "aperture_digest": args.aperture_digest or "",
-            "aperture_image": "ghcr.io/bu-neuromics/aperture",
+            "aperture_image": args.aperture_image or _lock_image(args.lock_file, "aperture"),
         }
 
     published = _is_real_digest(pins["mosaic_digest"]) and _is_real_digest(pins["aperture_digest"])
