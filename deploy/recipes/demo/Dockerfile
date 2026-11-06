@@ -20,7 +20,7 @@ ARG DATAGEN_REPO=https://github.com/datahelix-platform/linkml-data-gen.git
 # Pinned to the squashed global-id-uniqueness commit (linkml-data-gen#3).
 ARG DATAGEN_REF=6d1386f75e400f5e659ff5d7c810adb1914b7131
 ARG SCHEMA_REPO=https://github.com/VA-NCPTSDBB-Bioinformatics/brainbank-hippo-schema.git
-ARG SCHEMA_REF=43a93d663796f480a576a27f1c91db71b9f91dd9
+ARG SCHEMA_REF=05c58aa78939a5b9bbcb4d0a3d901a3eab3ca67f
 
 FROM ${APERTURE_IMAGE} AS aperture
 
