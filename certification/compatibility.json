@@ -18,17 +18,18 @@
       "0.12.0",
       "0.12.1",
       "0.13.0",
-      "0.14.0"
+      "0.14.0",
+      "0.15.0"
     ]
   },
   "counts": {
     "failing": 0,
-    "passing": 12,
-    "total": 12
+    "passing": 13,
+    "total": 13
   },
   "entries": [
     {
-      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/28916195099",
+      "ci_run": "https://github.com/BU-Neuromics/datahelix/actions/runs/28916195099",
       "components": [
         {
           "digest": "sha256:f41b0883d951b9abce9f024689ed3e5f7289cd592258edb1a4c14c1c66e290da",
@@ -50,7 +51,7 @@
       "timestamp": "2026-07-08T03:53:55Z"
     },
     {
-      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/29595734557",
+      "ci_run": "https://github.com/BU-Neuromics/datahelix/actions/runs/29595734557",
       "components": [
         {
           "digest": "sha256:f41b0883d951b9abce9f024689ed3e5f7289cd592258edb1a4c14c1c66e290da",
@@ -72,7 +73,7 @@
       "timestamp": "2026-07-17T16:20:56Z"
     },
     {
-      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/29644822937",
+      "ci_run": "https://github.com/BU-Neuromics/datahelix/actions/runs/29644822937",
       "components": [
         {
           "digest": "sha256:5c2dea43a17f8f0a2cf51345e59b59a3e3eddaec2c588e09f3c3bb393b2a9f2d",
@@ -94,7 +95,7 @@
       "timestamp": "2026-07-18T12:44:05Z"
     },
     {
-      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/29880746643",
+      "ci_run": "https://github.com/BU-Neuromics/datahelix/actions/runs/29880746643",
       "components": [
         {
           "digest": "sha256:5c2dea43a17f8f0a2cf51345e59b59a3e3eddaec2c588e09f3c3bb393b2a9f2d",
@@ -116,7 +117,7 @@
       "timestamp": "2026-07-22T00:38:09Z"
     },
     {
-      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/29880895629",
+      "ci_run": "https://github.com/BU-Neuromics/datahelix/actions/runs/29880895629",
       "components": [
         {
           "digest": "sha256:e240dc8a63c7f85fb5af3bddae4377a9d4aee282160a701c7d1a9611bda39af0",
@@ -138,7 +139,7 @@
       "timestamp": "2026-07-22T00:41:18Z"
     },
     {
-      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/32371881585",
+      "ci_run": "https://github.com/BU-Neuromics/datahelix/actions/runs/32371881585",
       "components": [
         {
           "digest": "sha256:0f710fa7b886089eb932e3b6c82ed62e87efb06d3252ff1fa2d48e1ad29ca083",
@@ -160,7 +161,7 @@
       "timestamp": "2026-08-20T13:02:15Z"
     },
     {
-      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/32373034097",
+      "ci_run": "https://github.com/BU-Neuromics/datahelix/actions/runs/32373034097",
       "components": [
         {
           "digest": "sha256:0f710fa7b886089eb932e3b6c82ed62e87efb06d3252ff1fa2d48e1ad29ca083",
@@ -182,7 +183,7 @@
       "timestamp": "2026-08-20T13:14:25Z"
     },
     {
-      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/35817633033",
+      "ci_run": "https://github.com/BU-Neuromics/datahelix/actions/runs/35817633033",
       "components": [
         {
           "digest": "sha256:0f710fa7b886089eb932e3b6c82ed62e87efb06d3252ff1fa2d48e1ad29ca083",
@@ -204,7 +205,7 @@
       "timestamp": "2026-09-23T04:17:26Z"
     },
     {
-      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/36144002967",
+      "ci_run": "https://github.com/BU-Neuromics/datahelix/actions/runs/36144002967",
       "components": [
         {
           "digest": "sha256:d05f34998d8cbe9dbbda663cfc4e0dcce78b5fe51e92bd452f6de9007c92c577",
@@ -226,7 +227,7 @@
       "timestamp": "2026-09-25T13:55:59Z"
     },
     {
-      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/36567991176",
+      "ci_run": "https://github.com/BU-Neuromics/datahelix/actions/runs/36567991176",
       "components": [
         {
           "digest": "sha256:70ed3dfbd25716c1fb33d0d4737bc15d7bc42e38bf7191c31f4be37856f46c4f",
@@ -248,7 +249,7 @@
       "timestamp": "2026-09-29T12:26:37Z"
     },
     {
-      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/38861069744",
+      "ci_run": "https://github.com/BU-Neuromics/datahelix/actions/runs/38861069744",
       "components": [
         {
           "digest": "sha256:0f5f0c0b32214c58ff5542897aaefcfef12050fb5f7d48e2c3467d94984fdee0",
@@ -270,7 +271,7 @@
       "timestamp": "2026-10-16T06:26:24Z"
     },
     {
-      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/38913137132",
+      "ci_run": "https://github.com/BU-Neuromics/datahelix/actions/runs/38913137132",
       "components": [
         {
           "digest": "sha256:dbe6d7b8b8657e27f79f04e9a7b987df7b32813a3bb5f43b21dcbd11a8c805f6",
@@ -290,6 +291,28 @@
       "result": "pass",
       "suite_sha": "988f0f8e8077d14a27aaad31a01b909231521258",
       "timestamp": "2026-10-16T14:08:16Z"
+    },
+    {
+      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/42856335304",
+      "components": [
+        {
+          "digest": "sha256:dbe6d7b8b8657e27f79f04e9a7b987df7b32813a3bb5f43b21dcbd11a8c805f6",
+          "name": "aperture",
+          "version": "0.7.1"
+        },
+        {
+          "digest": "sha256:27ea806f7cb61bd0217b8b247996196cfb4b6241aa9a06800779484c776d87ed",
+          "name": "mosaic",
+          "version": "0.15.0"
+        }
+      ],
+      "failing_check": null,
+      "fixture_version": "1.2.0",
+      "label": "aperture-0.7.1+mosaic-0.15.0",
+      "line": "frontier",
+      "result": "pass",
+      "suite_sha": "02ed4ccdb29e242d01803945d39b4cbd9424ff33",
+      "timestamp": "2026-11-10T16:39:38Z"
     }
   ],
   "generated_from": "certified/* git tags (source of truth)",
