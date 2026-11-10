@@ -47,7 +47,7 @@ services:
   # ── Mosaic: pinned image (default baseline) ────────────────────────────────
   mosaic:
     profiles: [mosaic-image]
-    image: ghcr.io/bu-neuromics/mosaic:${MOSAIC_VERSION:-0.14.0}
+    image: ghcr.io/datahelix-platform/mosaic:${MOSAIC_VERSION:-0.15.0}
     # The image's `mosaic` user is uid 999 with HOME=/project, but /project is a
     # bind mount owned by the host user — so it cannot write the SQLite file,
     # and PyStow (a transitive dep) fails at import trying to create its home.
@@ -107,7 +107,7 @@ services:
   # submodule rather than the image.
   mosaic-dev:
     profiles: [mosaic-source]
-    image: ghcr.io/bu-neuromics/mosaic:${MOSAIC_VERSION:-0.14.0}
+    image: ghcr.io/datahelix-platform/mosaic:${MOSAIC_VERSION:-0.15.0}
     user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
     command:
       ["serve", "--graphql", "--mcp", "--host", "0.0.0.0", "--port", "8001",
