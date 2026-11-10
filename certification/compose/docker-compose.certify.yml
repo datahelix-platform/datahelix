@@ -5,8 +5,8 @@
 # SPA pointed at it. Images are PULLED BY DIGEST — never built from source in
 # DataHelix. The certification workflow resolves ${MOSAIC_IMAGE} /
 # ${APERTURE_IMAGE} to <image>@<digest> from composition.lock.json (or
-# workflow_dispatch inputs) before `up`. NOTE: the image path is now
-# ghcr.io/bu-neuromics/mosaic (ADR-0004 Phase R complete).
+# workflow_dispatch inputs) before `up`. The image paths themselves come from
+# each component's `image` in composition.lock.json — none is hard-coded here.
 #
 # Seeding is a separate step (see scripts/run_composition.sh): after mosaic is
 # healthy, the fixture bundle is ingested; then aperture is brought up. Kept out
