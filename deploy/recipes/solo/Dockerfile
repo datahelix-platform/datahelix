@@ -24,7 +24,7 @@
 # 0.12.1) without anything noticing. The CLI inside the image is `mosaic`
 # (ADR-0004 rename shipped).
 
-ARG MOSAIC_IMAGE=ghcr.io/bu-neuromics/mosaic@sha256:48c2d120ebfdf633b4f5206e1fc58ed7dfc9972b4122d5cc64a1208d062de9a9
+ARG MOSAIC_IMAGE=ghcr.io/datahelix-platform/mosaic@sha256:27ea806f7cb61bd0217b8b247996196cfb4b6241aa9a06800779484c776d87ed
 ARG APERTURE_IMAGE=ghcr.io/bu-neuromics/aperture@sha256:dbe6d7b8b8657e27f79f04e9a7b987df7b32813a3bb5f43b21dcbd11a8c805f6
 
 # The authenticating proxy (platform ADR-0006). Digest-pinned like the pair
