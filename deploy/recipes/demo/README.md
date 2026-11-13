@@ -8,6 +8,7 @@ the tyres on the platform.
 ```bash
 cd deploy/recipes/demo
 make up            # builds (generates + bakes the dataset) and starts
+make check-reverses  # every reverse edge matches its forward slot on the baked data
 open http://localhost:8080
 ```
 
