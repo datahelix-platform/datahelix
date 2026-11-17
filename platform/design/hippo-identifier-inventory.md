@@ -62,7 +62,9 @@ Columns are files per repo. **C** = contract, **P** = prose/internal.
 - **datahelix**: `tests/conftest.py:138` builds an overlay with `"hippo": "https://w3id.org/hippo/"`.
 - **brainbank-hippo-schema** uses its own prefix (`https://w3id.org/VA-NCPTSDBB/brainbank/`) and
   **does not use the hippo namespace**.
-- `https://w3id.org/hippo/` is **not registered** with w3id (404). It never resolved.
+- `https://w3id.org/hippo/` is **not registered** with w3id (404). It never resolved. ADR-0007 moves Mosaic's
+  terms to `https://w3id.org/datahelix/mosaic/` (prefix `mosaic:`); that is also unregistered,
+  because registration is deferred.
 
 ### Schema module names (`hippo_core` / `hippo_ext`)
 
@@ -156,7 +158,8 @@ Where the keys are used: Mosaic tests and docs (96 files); datahelix certificati
   `tests/test_config.py`), `HIPPO_API_TOKEN` in docs, `HIPPO_IMAGE` in a comment noting its
   rename (`certification/scripts/run_composition.sh`).
 - **Recipe manifest**: `hippo_version` key in Mosaic's `recipe_manifest.yaml` and
-  `core/recipe/dataclasses.py`. **Certification**: `schema_min_hippo_core` in
+  `core/recipe/dataclasses.py`; set in Aperture's `recipes/aperture-control-plane/recipe.yaml`
+  (`hippo_version: ">=0.11.0"`). Ownership is ADR-0007 Q9. **Certification**: `schema_min_hippo_core` in
   `certification/fixtures/bootstrap/manifest.yaml`. `certification/compatibility.json` carries
   `"hippo"` as a historical component-line name (ledger history, leave as is).
 
