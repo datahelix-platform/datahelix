@@ -159,7 +159,7 @@ Where the keys are used: Mosaic tests and docs (96 files); datahelix certificati
   rename (`certification/scripts/run_composition.sh`).
 - **Recipe manifest**: `hippo_version` key in Mosaic's `recipe_manifest.yaml` and
   `core/recipe/dataclasses.py`; set in Aperture's `recipes/aperture-control-plane/recipe.yaml`
-  (`hippo_version: ">=0.11.0"`). Ownership is ADR-0007 Q9. **Certification**: `schema_min_hippo_core` in
+  (`hippo_version: ">=0.11.0"`). ADR-0007 Q9: Mosaic owns it; the key becomes `mosaic_version`. **Certification**: `schema_min_hippo_core` in
   `certification/fixtures/bootstrap/manifest.yaml`. `certification/compatibility.json` carries
   `"hippo"` as a historical component-line name (ledger history, leave as is).
 
@@ -170,7 +170,7 @@ All five are in Mosaic: `linkml_bridge.py:341,481,513`, `core/loaders/discovery.
 
 ### HTTP header
 
-`X-Hippo-Actor`: Mosaic `core/middleware.py:13` (`ACTOR_HEADER = "x-hippo-actor"`, while the
+`X-Hippo-Actor` (→ `X-DataHelix-Actor`, ADR-0007 Q2, matching Bridge's `X-DataHelix-*` headers): Mosaic `core/middleware.py:13` (`ACTOR_HEADER = "x-hippo-actor"`, while the
 docstring already says `X-Mosaic-Actor`) and the CORS allow-list in `api/factory.py`. datahelix
 `deploy/recipes/solo/nginx-auth.conf` (4 `proxy_set_header`), its README, platform `INDEX.md`
 and ADR-0006. Mosaic design sec3/4/8 and appendix B; Reel `CLAUDE.md` and
