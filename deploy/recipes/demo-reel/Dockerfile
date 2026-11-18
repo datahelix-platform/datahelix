@@ -35,7 +35,7 @@ ARG DATAGEN_REF=6d1386f75e400f5e659ff5d7c810adb1914b7131
 ARG SMALL_DATAGEN_REF=e0454b2e7e892947b5b3766f2fce440091b406f6
 # brainbank: same schema pin as `demo`.
 ARG SCHEMA_REPO=https://github.com/VA-NCPTSDBB-Bioinformatics/brainbank-hippo-schema.git
-ARG SCHEMA_REF=43a93d663796f480a576a27f1c91db71b9f91dd9
+ARG SCHEMA_REF=05c58aa78939a5b9bbcb4d0a3d901a3eab3ca67f
 # small: mosaic-demo-small at the commit carrying the fifteen-class schema.
 ARG SMALL_REPO=https://github.com/BU-Neuromics/mosaic-demo-small.git
 ARG SMALL_REF=739969459b0e1ce3013441eeb9ec7d7dd4ba5e96
