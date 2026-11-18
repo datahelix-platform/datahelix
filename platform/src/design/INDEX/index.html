@@ -4543,6 +4543,11 @@ decisions live in each component's own <code>design/decisions/</code>.</p>
 <td><strong>Recipes authenticate at an OIDC reverse proxy</strong>, not in a component — <code>AUTH_MODE=none\|htpasswd\|oidc</code> on one digest-pinned <code>oauth2-proxy</code> in the recipe's nginx position; nginx <code>auth_request</code> gates every route, no token reaches the browser. Implements <code>sec6</code> §6.3 steps (1)+(4) only — the PDP stays Bridge's. Injects <code>X-Hippo-Actor</code> so provenance names the real user. <code>htpasswd</code> and <code>oidc</code> differ only in credential source, so PIV/CAC is a flag change and everything else is exercised before VA IAM answers.</td>
 <td>✅ Accepted</td>
 </tr>
+<tr>
+<td><a href="../decisions/ADR-0007-retire-hippo-data-contract-identifiers/">0007</a></td>
+<td><strong>Retire the <code>hippo</code> data-contract identifiers before 1.0</strong>, with no compatibility window (dev deployments rebuild from demo data). Namespace root <code>https://w3id.org/datahelix/</code> with <strong>per-component paths</strong>: Mosaic's terms go to <code>datahelix/mosaic/</code> with prefix <code>mosaic:</code>, in <code>mosaic_core</code>/<code>mosaic_ext</code>. The root stays empty (no <code>dhlx:</code> prefix); a term is promoted to it only by its own ADR. <code>dhlx</code> appears only in the entity-URI scheme (<code>hippo://</code> → <code>dhlx://</code>). The actor header is platform-owned and named <strong><code>X-DataHelix-Actor</code></strong>, matching Bridge's <code>X-DataHelix-*</code> family. Mosaic-runtime names become <code>mosaic_*</code>: annotation keys (including <code>hippo_anchor</code>/<code>hippo_manifest</code>), <code>mosaic_meta</code>/<code>mosaic_xref_index</code>, <code>mosaicSchema</code>/<code>mosaicEntityType</code>, unprefixed error codes; the recipe-manifest schema is Mosaic's. ADR-0004 aliases are removed in the same release. Lands in Mosaic v0.16.0. w3id registration is deferred. Inventory: <a href="../hippo-identifier-inventory/"><code>hippo-identifier-inventory.md</code></a>.</td>
+<td>✅ Accepted (2026-11-17)</td>
+</tr>
 </tbody>
 </table>
 <hr />

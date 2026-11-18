@@ -1,0 +1,4882 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="DataHelix — platform documentation">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>ADR-0007: Retire the hippo data-contract identifiers: per-component namespaces under w3id.org/datahelix/, dhlx:// entity URIs, mosaic_* runtime identifiers - DataHelix Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../stylesheets/custom.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#adr-0007-retire-the-hippo-data-contract-identifiers-per-component-namespaces-under-w3idorgdatahelix-dhlx-entity-uris-mosaic_-runtime-identifiers" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="DataHelix Documentation" class="md-header__button md-logo" aria-label="DataHelix Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DataHelix Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ADR-0007: Retire the hippo data-contract identifiers: per-component namespaces under w3id.org/datahelix/, dhlx:// entity URIs, mosaic_* runtime identifiers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="cyan"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../" class="md-tabs__link">
+          
+  
+  
+  Platform
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../mosaic/" class="md-tabs__link">
+          
+  
+  
+  Mosaic
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../cappella/" class="md-tabs__link">
+          
+  
+  
+  Cappella
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../aperture/" class="md-tabs__link">
+          
+  
+  
+  Aperture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../reel/" class="md-tabs__link">
+          
+  
+  
+  Reel
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../bridge/" class="md-tabs__link">
+          
+  
+  
+  Bridge
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../../canon/" class="md-tabs__link">
+          
+  
+  
+  Canon
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="DataHelix Documentation" class="md-nav__button md-logo" aria-label="DataHelix Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DataHelix Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Platform
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DataHelix Platform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Spec
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design Spec
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sec1_overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sec2_components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Component Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sec3_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integration Patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sec4_unified_ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unified Ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sec5_integration_test_strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integration Test Strategy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mosaic
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mosaic
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hippo — LinkML Runtime (the structured domain graph)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/why-mosaic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Why Mosaic?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/schema-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/data-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/cli-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/reference-loaders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Loaders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/writing-a-reference-loader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing a Reference Loader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/writing-a-recipe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writing a Recipe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/installing-recipes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installing Recipes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/docs/recipe-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recipe Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Spec
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design Spec
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/sec1_overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview & Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/sec2_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/sec3_data_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/sec3b_relational_storage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Relational Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/sec4_api_layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/sec5_ingestion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ingestion & Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/sec6_provenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Provenance & Audit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/sec7_nfr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Non-Functional Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/sec8_auth_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/appendix_a_example_schema_omics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix A: Example Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/appendix_b_implementation_guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix B: Implementation Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference: hippo.yaml
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/reference_validators_yaml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference: validators.yaml
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../mosaic/design/reference_cel_context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference: CEL Context
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cappella
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cappella
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cappella — Integration &amp; Harmonization Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/docs/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/docs/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/docs/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/docs/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/docs/user_guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/docs/workflows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workflows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Spec
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design Spec
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/design/sec1_overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview & Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/design/sec2_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/design/sec3_adapters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adapter System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/design/sec4_audit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audit & Observability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/design/sec5_workflows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collection Resolution
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/design/sec6_nfr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Non-Functional Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../cappella/design/sec7_testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trigger Engine Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Aperture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../aperture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aperture — AI-Native Data &amp; Workflow Explorer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../aperture/design/INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../aperture/design/portal-vision-handoff/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portal Vision (Handoff)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../aperture/design/portal-open-questions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open Questions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reel
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reel
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../reel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reel — AI-Native Data-Story Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../reel/design/INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../reel/design/vision/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vision
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../reel/design/instruction-path-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction-Path Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../reel/design/platform-alignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Alignment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bridge
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bridge
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../bridge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bridge — Integration Middleware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../bridge/docs/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../bridge/docs/auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../bridge/docs/security-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../bridge/docs/admin-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Admin Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Spec
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design Spec
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../bridge/design/sec1_overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview & Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../bridge/design/sec2_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../bridge/design/sec3_api_unification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unified API Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../bridge/design/sec4_auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication & Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../bridge/design/sec5_sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-Component Sync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../bridge/design/sec6_nfr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Non-Functional Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Canon
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Canon
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Canon — Semantic Artifact Resolver
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/docs/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/docs/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/docs/user-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_3" id="__nav_8_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Spec
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design Spec
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/design/sec1_overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview & Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/design/sec2_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/design/sec3_rules_dsl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rules DSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/design/sec3b_cwl_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CWL Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/design/sec4_resolution_algorithm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resolution Algorithm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/design/sec5_executor_adapters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Executor Adapters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/design/sec5b_storage_adapters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage Adapters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/design/sec6_mosaic_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mosaic Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/design/sec7_nfr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Non-Functional Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/design/sec8_dynamic_rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dynamic Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/design/reference_canon_yaml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference: canon.yaml
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/design/reference_canon_rules_yaml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference: canon_rules.yaml
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../canon/design/appendix_a_rnaseq_example/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix A: RNA-seq Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#namespace-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Namespace convention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-dhlx-still-appears" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where dhlx still appears
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mosaic-runtime-identifiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mosaic runtime identifiers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#naming-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Naming table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-a-separate-contract-name-and-why-not-hippo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why a separate contract name, and why not "hippo"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consequences
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#per-repo-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-repo work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequencing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequencing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alternatives considered
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions-ruled-2026-11-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open questions (ruled 2026-11-17)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="adr-0007-retire-the-hippo-data-contract-identifiers-per-component-namespaces-under-w3idorgdatahelix-dhlx-entity-uris-mosaic_-runtime-identifiers">ADR-0007: Retire the <code>hippo</code> data-contract identifiers: per-component namespaces under <code>w3id.org/datahelix/</code>, <code>dhlx://</code> entity URIs, <code>mosaic_*</code> runtime identifiers<a class="headerlink" href="#adr-0007-retire-the-hippo-data-contract-identifiers-per-component-namespaces-under-w3idorgdatahelix-dhlx-entity-uris-mosaic_-runtime-identifiers" title="Permanent link">&para;</a></h1>
+<ul>
+<li><strong>Status:</strong> Accepted</li>
+<li><strong>Date:</strong> 2026-11-17 (proposed and ratified)</li>
+<li><strong>Deciders:</strong> labadorf (ratified 2026-11-17, including rulings on Q1–Q9)</li>
+<li><strong>Related:</strong> Mosaic <a href="https://github.com/datahelix-platform/mosaic/blob/main/design/decisions/ADR-0004-rename-hippo-to-mosaic.md">ADR-0004</a> (Hippo → Mosaic rename and its deprecation window); Mosaic <a href="https://github.com/datahelix-platform/mosaic/blob/main/design/decisions/ADR-0014-polymorphic-graphql-types-for-abstract-ranges.md">ADR-0014</a> Decision 5 (<code>hippo_anchor</code> / <code>hippo_manifest</code>); Mosaic <code>design/sec10_recipes.md</code> (the recipe manifest, Q9); <a href="../ADR-0001-certified-frontier-composition/">ADR-0001</a> (certified frontier); <a href="../ADR-0006-authenticating-proxy-in-recipes/">ADR-0006</a> (the <code>X-Hippo-Actor</code> header); Bridge <a href="../../../bridge/design/sec3_api_unification.md"><code>sec3_api_unification.md</code></a> §3.3.2 and <a href="../../../bridge/design/sec4_auth.md"><code>sec4_auth.md</code></a> §4.5 (the <code>X-DataHelix-*</code> headers, Q2); datahelix#57 (umbrella), datahelix#49 (where these were deferred), datahelix#2 (linkml-store); mosaic#124 and aperture#35 (companions), aperture#32; the inventory in <a href="../../hippo-identifier-inventory/"><code>../hippo-identifier-inventory.md</code></a></li>
+</ul>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
+<p>Mosaic was called Hippo until Mosaic ADR-0004. The rename moved the package, CLI, entry-point
+groups, env vars and config file to <code>mosaic</code>, and kept <code>hippo</code> as deprecated aliases. Then
+datahelix#49 adopted Mosaic naming across docs, CI, config and the submodule path, but
+deliberately left the <strong>data-contract identifiers</strong> on <code>hippo</code>:</p>
+<blockquote>
+<p>Data-contract identifiers keep the <code>hippo</code> spelling: <code>hippo_core</code> / <code>hippo_ext</code> schemas,
+<code>hippo_*</code> annotation keys, the <code>hippo_meta</code> table, and legacy <code>hippo.*</code> entry-point groups.</p>
+</blockquote>
+<p>The reasons were sound at the time. These identifiers are baked into LinkML schemas, the wire
+format and persisted data, and they span several repos. Renaming them is a breaking change, and
+it seemed to need a migration path and a compatibility window. datahelix#57 was opened to do it
+later, with dual-read aliases and a forward migration of stored data.</p>
+<p>Those reasons no longer hold:</p>
+<ol>
+<li><strong>There are no users to migrate.</strong> Every deployment is a dev deployment built from demo
+   synthetic data (<code>deploy/recipes/demo</code>, <code>demo-reel</code>, <code>solo</code>, <code>ide</code>, and the certification
+   fixtures). Each one is already rebuilt from source data when it changes; the demo images bake
+   the SQLite database at build time. Nothing holds a <code>hippo_meta</code> table or a stored <code>hippo://</code>
+   URI that can't be regenerated.</li>
+<li><strong>Waiting makes it more expensive.</strong> New <code>hippo_*</code> names keep arriving. Mosaic#228 / #278
+   (ADR-0014 Decisions 2–6, merged 2026-11-17 as <code>f7a741b</code>) added two class annotations,
+   <code>hippo_anchor</code> and <code>hippo_manifest</code>. Its ADR already says they "become <code>mosaic_*</code> under
+   datahelix#57". Every feature that adds a key also adds a future rename.</li>
+<li><strong>The next Mosaic release is breaking anyway.</strong> Mosaic's <code>[Unreleased]</code> section (v0.16.0)
+   already contains a breaking change: the raw <code>*_id(s)</code> fallback fields are removed for
+   references into a family. Landing the rename in the same release means consumers take one
+   breaking upgrade instead of two.</li>
+<li><strong>1.0 should not ship with a retired product name in its contract.</strong> After 1.0, the same
+   rename would need the full deprecation machinery that #57 originally planned.</li>
+</ol>
+<p>The inventory turned up two more facts:</p>
+<ul>
+<li><strong>No production code emits <code>hippo://</code>.</strong> The entity-URI scheme exists only in the contract
+  docs (<code>TESTING.md</code>, <code>platform/design/sec5_integration_test_strategy.md</code>), the Canon/Cappella
+  contract tests, and a synthetic URI that the platform test shim builds
+  (<code>tests/platform/conftest.py</code>). Mosaic never produces it, and Aperture neither parses nor
+  renders it. Renaming it changes docs and tests only.</li>
+<li><strong><code>brainbank-hippo-schema</code> does not use the contract.</strong> Its schema imports no <code>hippo_core</code>,
+  uses no <code>hippo_*</code> annotation, and declares its own prefix
+  (<code>https://w3id.org/VA-NCPTSDBB/brainbank/</code>). <code>hippo</code> appears only in the repo name and in
+  prose.</li>
+</ul>
+<p>The question: <strong>what should each <code>hippo</code> identifier become, who owns it, and when do we switch?</strong></p>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">&para;</a></h2>
+<p><strong>Finish the rename now, before 1.0, in one coordinated breaking change, with no compatibility
+window.</strong> Each identifier takes the name of its owner.</p>
+<h3 id="namespace-convention">Namespace convention<a class="headerlink" href="#namespace-convention" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Platform namespace root:</strong> <code>https://w3id.org/datahelix/</code>.</li>
+<li><strong>Each component that defines a vocabulary gets its own path under the root, with its own
+  CURIE prefix.</strong> Mosaic's terms go to <code>https://w3id.org/datahelix/mosaic/</code> with the prefix
+  <code>mosaic:</code>. That covers everything now in <code>hippo_core</code> and <code>hippo_ext</code>: <code>Entity</code>,
+  <code>ProvenanceRecord</code>, the annotation definitions, and so on. Mosaic's schema ids become
+  <code>https://w3id.org/datahelix/mosaic/&lt;schema name&gt;</code>.</li>
+<li><strong>Other components follow the same pattern when they first define a schema:</strong>
+  <code>https://w3id.org/datahelix/reel/</code> with <code>reel:</code>, <code>https://w3id.org/datahelix/cappella/</code> with
+  <code>cappella:</code>, and so on. No component defines terms under another component's path.</li>
+<li><strong>The root stays empty for now. No <code>dhlx:</code> CURIE prefix is defined.</strong> Today, every vocabulary
+  term has exactly one defining component.</li>
+<li><strong>Promotion rule:</strong> a term moves into the root only when a second component needs to define
+  or use it on equal terms. "Using" here means more than consuming the owner's output. Each move
+  gets its own ADR, which defines the root prefix the first time one is needed. Candidates that
+  might one day qualify:</li>
+<li><strong>Shared provenance terms.</strong> Mosaic's <code>ProvenanceRecord</code> and its activity/agent links, if
+    Canon or Cappella start writing provenance as peers rather than through Mosaic. Mosaic
+    already maps <code>Entity</code> to <code>prov:Entity</code> and the activity links to <code>prov:</code> slots. Promotion
+    would most likely add a thin platform profile over PROV rather than move Mosaic's terms.</li>
+<li><strong>Workflow-run ↔ entity links</strong> between Cappella (runs) and Mosaic (entities). This
+    qualifies if both sides need to assert the relationship rather than only Mosaic storing it.</li>
+<li><strong>The deployment-recipe manifest</strong>, if a manifest that composes several components (for
+    example the <code>deploy/recipes/*</code> stacks, which have no schema today) gets a schema. This is
+    separate from Mosaic's schema-recipe manifest; see Q9.</li>
+</ul>
+<h3 id="where-dhlx-still-appears">Where <code>dhlx</code> still appears<a class="headerlink" href="#where-dhlx-still-appears" title="Permanent link">&para;</a></h3>
+<p><code>dhlx</code> (from DataHelix) appears <strong>only in the entity-URI scheme</strong>:
+<code>hippo://&lt;EntityType&gt;/&lt;uuid&gt;</code> → <code>dhlx://&lt;EntityType&gt;/&lt;uuid&gt;</code>.</p>
+<p>The other cross-component wire contract, the actor header, is platform-owned but takes Bridge's
+existing header family instead of <code>dhlx</code>: <code>X-Hippo-Actor</code> → <strong><code>X-DataHelix-Actor</code></strong> (Q2, ruled
+2026-11-17).</p>
+<h3 id="mosaic-runtime-identifiers">Mosaic runtime identifiers<a class="headerlink" href="#mosaic-runtime-identifiers" title="Permanent link">&para;</a></h3>
+<p>Identifiers that only the Mosaic runtime reads or writes become <code>mosaic_*</code> / <code>mosaic.*</code>:</p>
+<ul>
+<li>the <code>hippo_*</code> schema annotation keys the runtime reads (<code>hippo_index</code> → <code>mosaic_index</code>, …,
+  including the new <code>hippo_anchor</code> / <code>hippo_manifest</code>);</li>
+<li>the internal tables <code>hippo_meta</code> and <code>hippo_xref_index</code>;</li>
+<li>the legacy <code>hippo.*</code> entry-point groups, which are removed because <code>mosaic.*</code> already exists;</li>
+<li>the GraphQL <code>hippoSchema</code> / <code>hippoEntityType</code> queries → <code>mosaicSchema</code> /
+  <code>mosaicEntityType</code> (Q3, ruled 2026-11-17; listed as "probably" before ratification).</li>
+</ul>
+<p><strong>Identifiers whose split was unclear were raised as open questions Q1–Q9.</strong> All nine were
+ruled on 2026-11-17; the rulings are recorded under each question below and reflected in the
+naming table.</p>
+<p><strong>Migration is "rebuild from the demo data."</strong> There is no dual-read, no read-time alias, no
+<code>hippo_meta</code> → <code>mosaic_meta</code> migration step, and no deprecation window. After the change,
+Mosaic reads only the new names. A schema that still uses a <code>hippo_*</code> annotation key fails
+validation with an error that names the replacement key, so a stale schema fails loudly instead
+of being silently ignored.</p>
+<h3 id="naming-table">Naming table<a class="headerlink" href="#naming-table" title="Permanent link">&para;</a></h3>
+<p>"Owner" is the component that defines the name. Consumers update when the owner releases.</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>Old</th>
+<th>New</th>
+<th>Owner</th>
+<th>Consumers / where it appears</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entity-URI scheme</td>
+<td><code>hippo://&lt;EntityType&gt;/&lt;uuid&gt;</code></td>
+<td><code>dhlx://&lt;EntityType&gt;/&lt;uuid&gt;</code></td>
+<td><strong>Platform</strong></td>
+<td>Canon (the producer per the contract), Cappella (parser), contract tests, <code>TESTING.md</code>, <code>sec5</code></td>
+</tr>
+<tr>
+<td>Actor header</td>
+<td><code>X-Hippo-Actor</code></td>
+<td><code>X-DataHelix-Actor</code> (Q2, Bridge's existing name)</td>
+<td><strong>Platform</strong> (Bridge's <code>X-DataHelix-*</code> family)</td>
+<td>written by recipe nginx / Bridge; read by Mosaic middleware</td>
+</tr>
+<tr>
+<td>Platform namespace root</td>
+<td>—</td>
+<td><code>https://w3id.org/datahelix/</code> (<strong>empty; no <code>dhlx:</code> prefix</strong>)</td>
+<td><strong>Platform</strong></td>
+<td>none yet; see the promotion rule</td>
+</tr>
+<tr>
+<td>LinkML CURIE prefix</td>
+<td><code>hippo:</code> → <code>https://w3id.org/hippo/</code></td>
+<td><code>mosaic:</code> → <code>https://w3id.org/datahelix/mosaic/</code></td>
+<td>Mosaic</td>
+<td><code>hippo_core.yaml</code>, <code>hippo_ext.yaml</code>, <code>recipe_manifest.yaml</code> (<code>default_prefix</code>); <code>tests/conftest.py</code></td>
+</tr>
+<tr>
+<td>Schema ids</td>
+<td><code>https://w3id.org/hippo/hippo_core</code>, <code>…/hippo_ext</code>, <code>…/recipe_manifest</code></td>
+<td><code>https://w3id.org/datahelix/mosaic/&lt;schema name&gt;</code></td>
+<td>Mosaic</td>
+<td>the <code>recipe_manifest</code> id follows Q9</td>
+</tr>
+<tr>
+<td>Core schema module</td>
+<td><code>hippo_core</code> (the <code>imports:</code> name)</td>
+<td><code>mosaic_core</code> (Q1)</td>
+<td>Mosaic</td>
+<td>every user schema's <code>imports:</code>; certification fixtures; <code>tests/conftest.py</code>; demo-small schema</td>
+</tr>
+<tr>
+<td>Annotation-vocabulary module</td>
+<td><code>hippo_ext</code></td>
+<td><code>mosaic_ext</code> (Q1)</td>
+<td>Mosaic</td>
+<td>Mosaic only</td>
+</tr>
+<tr>
+<td>Schema annotation keys</td>
+<td><code>hippo_unique</code>, <code>hippo_index</code>, <code>hippo_index_partial</code>, <code>hippo_search</code>, <code>hippo_external_xref</code>, <code>hippo_append_only</code>, <code>hippo_accessor</code>, <code>hippo_anchor</code>, <code>hippo_manifest</code>, <code>hippo_namespace</code></td>
+<td><code>mosaic_unique</code>, <code>mosaic_index</code>, … <code>mosaic_namespace</code> (same suffixes)</td>
+<td>Mosaic</td>
+<td>user schemas (certification fixtures, demo-small, recipe overlays), docs</td>
+</tr>
+<tr>
+<td>Annotation prefix constant</td>
+<td><code>HIPPO_ANNOTATION_PREFIX = "hippo_"</code> (and the <code>HIPPO_*</code> key constants)</td>
+<td><code>MOSAIC_ANNOTATION_PREFIX = "mosaic_"</code></td>
+<td>Mosaic</td>
+<td>Mosaic only</td>
+</tr>
+<tr>
+<td>Metadata table</td>
+<td><code>hippo_meta</code></td>
+<td><code>mosaic_meta</code></td>
+<td>Mosaic</td>
+<td>Mosaic only (SQLite and Postgres DDL)</td>
+</tr>
+<tr>
+<td>Xref side table</td>
+<td><code>hippo_xref_index</code></td>
+<td><code>mosaic_xref_index</code></td>
+<td>Mosaic</td>
+<td>Mosaic only</td>
+</tr>
+<tr>
+<td>Entry-point groups</td>
+<td><code>hippo.storage_adapters</code>, <code>hippo.write_validators</code>, <code>hippo.schema_packages</code>, <code>hippo.reference_loaders</code>, <code>hippo.reference_loader_cli</code></td>
+<td>removed (<code>mosaic.*</code> is already canonical)</td>
+<td>Mosaic</td>
+<td>Q4</td>
+</tr>
+<tr>
+<td>GraphQL root fields</td>
+<td><code>hippoSchema</code>, <code>hippoEntityType</code></td>
+<td><code>mosaicSchema</code>, <code>mosaicEntityType</code> (Q3)</td>
+<td>Mosaic</td>
+<td>Aperture (<code>HIPPO_SCHEMA_QUERY</code>), Reel (<code>planner/capabilities.py</code>), demo-small evals, certification introspection fixtures</td>
+</tr>
+<tr>
+<td>Error codes</td>
+<td><code>HIPPO_EXT_VALIDATION</code>, <code>HIPPO_TREE_ROOT_COLLISION</code>, <code>HIPPO_TREE_ROOT_SLOT_COLLISION</code>, <code>HIPPO_REQUIRES_UNSATISFIED</code>, <code>HIPPO_EXTERNAL_XREF_RANGE</code></td>
+<td>drop the prefix (<code>EXT_VALIDATION</code>, …) (Q6)</td>
+<td>Mosaic</td>
+<td>error payloads</td>
+</tr>
+<tr>
+<td>Recipe-manifest key</td>
+<td><code>hippo_version</code> (in <code>recipe.yaml</code>)</td>
+<td><code>mosaic_version</code></td>
+<td>Mosaic (Q9)</td>
+<td>recipe authors, e.g. Aperture's <code>recipes/aperture-control-plane/recipe.yaml</code></td>
+</tr>
+<tr>
+<td>Tree-root class</td>
+<td><code>_HippoInstanceBundle</code></td>
+<td><code>_MosaicInstanceBundle</code></td>
+<td>Mosaic</td>
+<td>Mosaic only (synthetic)</td>
+</tr>
+<tr>
+<td>Aperture config vars</td>
+<td><code>VITE_HIPPO_GRAPHQL_URL</code>, <code>VITE_HIPPO_CONTROL_PLANE_URL</code></td>
+<td><code>VITE_GRAPHQL_URL</code>, <code>VITE_CONTROL_PLANE_URL</code> (Q5)</td>
+<td>Aperture</td>
+<td>datahelix recipes (<code>entrypoint.sh</code>, compose files)</td>
+</tr>
+<tr>
+<td>Canon / Cappella config vocabulary</td>
+<td><code>hippo_fields</code> (sidecar rule key), <code>hippo_poll</code> (trigger type), Cappella's <code>hippo:</code> config section and <code>hippo:&lt;type&gt;</code> event source</td>
+<td><code>mosaic_fields</code>, <code>mosaic_poll</code>, <code>mosaic:</code> (Q7)</td>
+<td>Canon / Cappella (in-tree)</td>
+<td>rule and workflow YAML, docs</td>
+</tr>
+<tr>
+<td>Certification fixture key</td>
+<td><code>schema_min_hippo_core</code></td>
+<td><code>schema_min_mosaic_core</code></td>
+<td>datahelix</td>
+<td><code>certification/fixtures/bootstrap/manifest.yaml</code></td>
+</tr>
+<tr>
+<td>ADR-0004 aliases</td>
+<td><code>import hippo</code>, the <code>hippo</code> console script, the <code>HIPPO_*</code> env fallback, the <code>hippo.yaml</code> config fallback</td>
+<td>removed, in the same release (Q4)</td>
+<td>Mosaic</td>
+<td>recorded in a short Mosaic ADR</td>
+</tr>
+<tr>
+<td>Repo name</td>
+<td><code>VA-NCPTSDBB-Bioinformatics/brainbank-hippo-schema</code></td>
+<td><code>brainbank-schema</code>, later, as a separate owner-approved step (Q8)</td>
+<td>VA-NCPTSDBB</td>
+<td>datahelix recipe Dockerfiles, evals, linkml-data-gen</td>
+</tr>
+</tbody>
+</table>
+<p>Not in scope: Python identifiers that are not part of a contract (<code>hippo_client</code> parameters,
+<code>HippoPollHandler</code>, <code>HippoSource</code>, test fixtures). Rename them when the code around them changes;
+the inventory lists them. One exception: <code>mosaic.api.factory.create_app(hippo_client=…)</code> and
+<code>create_mcp_app(hippo_client=…)</code> are public SDK parameters, so they are renamed in the same
+Mosaic release. <strong><code>hippocampus</code> is a brain region, not an identifier.</strong> Exclude it from every
+sweep.</p>
+<h2 id="why-a-separate-contract-name-and-why-not-hippo">Why a separate contract name, and why not "hippo"<a class="headerlink" href="#why-a-separate-contract-name-and-why-not-hippo" title="Permanent link">&para;</a></h2>
+<p>A name separate from any one component is warranted only for <strong>contracts that several
+components speak as peers</strong>:</p>
+<ul>
+<li><strong>The entity-URI scheme.</strong> Canon produces entity URIs, Cappella parses them, and Aperture is
+  meant to render them. None of these is Mosaic. If another runtime ever implements the
+  contract, the URI must not carry the first implementation's name.</li>
+<li><strong>The actor header</strong> (Q2). The recipe proxy or Bridge sets it; Bridge is the platform's sole
+  PEP (<code>sec6</code>). Whichever component sits behind them reads it.</li>
+</ul>
+<p>The URI scheme takes <code>dhlx</code>. The actor header takes the name Bridge's design already gives it,
+<code>X-DataHelix-Actor</code>, in the <code>X-DataHelix-*</code> family that Bridge injects (<code>-Actor</code>, <code>-Roles</code>,
+<code>-Request-Id</code>) and strips from inbound requests. So <code>dhlx</code> appears only in <code>dhlx://</code>. <strong>Vocabulary
+terms take neither</strong>, because today each term has exactly one
+defining component:</p>
+<ul>
+<li>Mosaic is the only component that defines the core and annotation vocabulary. datahelix#2
+  puts <code>linkml-store</code> <em>under</em> Mosaic as a storage backend, so Mosaic stays the only runtime that
+  reads the annotations. Other components consume Mosaic's terms; they don't define them.</li>
+<li>A namespace path per component (<code>datahelix/mosaic/</code>, later <code>datahelix/reel/</code>, …) states who
+  owns each term. Each term can still be promoted to the root, under its own ADR, if a second
+  component ever needs it on equal terms. Defining <code>dhlx:</code> now would claim a shared vocabulary
+  that doesn't exist.</li>
+<li>All the paths sit under one root, so the platform can later register a single w3id directory
+  that covers every component.</li>
+</ul>
+<p>A separate contract name is <strong>not</strong> warranted for "hippo" specifically:</p>
+<ul>
+<li>"Hippo" is the retired name of one component, not the platform. Keeping it on the contract
+  implies that Mosaic owns the contract, and it confuses every reader who meets a "hippo" that
+  no longer exists anywhere else.</li>
+<li><code>hippo</code> collides with domain vocabulary in the platform's first deployment, a brain bank
+  (<code>hippocampus</code>). Every sweep needs a manual exclusion.</li>
+<li><code>w3id.org/hippo/</code> was never registered. It returns 404 today, so the existing namespace never
+  resolved, and there is no persistent identifier to preserve.</li>
+</ul>
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">&para;</a></h2>
+<ul>
+<li>One coordinated breaking release per component, then a certified-frontier entry for the new
+  pair (ADR-0001). Every dev deployment is rebuilt from demo data, and the new code never opens
+  an old database.</li>
+<li>After the change, Mosaic reads only <code>mosaic_*</code> keys and <code>mosaic_meta</code>. A <code>hippo_*</code> key in a
+  schema is a validation error that names the replacement, so stale schemas fail loudly.</li>
+<li>Mosaic's terms expand under <code>https://w3id.org/datahelix/mosaic/</code>. The root has no terms and no
+  prefix until a promotion ADR adds one.</li>
+<li>When Reel, Cappella or another component first defines a schema, it takes
+  <code>https://w3id.org/datahelix/&lt;component&gt;/</code> and its own prefix. No new ADR is needed for that.</li>
+<li>ADR-0004's deprecation window ends (Q4). The <code>hippo</code> CLI, <code>import hippo</code> and
+  the <code>HIPPO_*</code> / <code>hippo.yaml</code> fallbacks go away, which removes a class of "which spelling won?"
+  bugs.</li>
+<li>Future features name new annotations <code>mosaic_*</code> from the start.</li>
+<li><strong>w3id registration is deferred.</strong> At the user's direction, <code>https://w3id.org/datahelix/</code> is
+  registered only after a real deployment has been running for a while. Until then, the
+  namespace URIs are used unregistered and do not resolve, as <code>w3id.org/hippo/</code> never did. This
+  is acceptable because LinkML and the runtime treat them as identifiers and never dereference
+  them. Registration is an external step for the user, not part of any PR (see Notes).</li>
+<li>datahelix#57's original plan (dual-read aliases, a <code>hippo_meta</code> forward migration, a
+  deprecation window) is dropped. If any of it is needed after 1.0, it would be a new ADR.</li>
+</ul>
+<h3 id="per-repo-work">Per-repo work<a class="headerlink" href="#per-repo-work" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Repo</th>
+<th>Work</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>mosaic</strong> (mosaic#124)</td>
+<td>Rename <code>hippo_core.yaml</code> / <code>hippo_ext.yaml</code> (Q1). Set their ids to <code>https://w3id.org/datahelix/mosaic/&lt;name&gt;</code> and the prefix to <code>mosaic:</code>, and do the same for <code>recipe_manifest.yaml</code> (Q9). Rename the annotation keys and the <code>HIPPO_*</code> constants. Rename <code>hippo_meta</code> / <code>hippo_xref_index</code> in both adapters' DDL. Rename <code>hippoSchema</code> / <code>hippoEntityType</code> (Q3), the error codes (Q6), <code>recipe.yaml</code>'s <code>hippo_version</code>, <code>_HippoInstanceBundle</code>, and the <code>create_app</code> / <code>create_mcp_app</code> <code>hippo_client</code> parameter. Switch the actor header to <code>X-DataHelix-Actor</code> (Q2). Remove the ADR-0004 aliases (Q4). Reject <code>hippo_*</code> keys with a hint. Update <code>design/</code>, <code>docs/</code>, examples and tests. Record a Mosaic ADR that ends ADR-0004's window (Q4), and note on ADR-0014 that Decision 5's keys are now <code>mosaic_anchor</code> / <code>mosaic_manifest</code>. Add a CHANGELOG <code>### Upgrading</code> entry: "rebuild from source data".</td>
+</tr>
+<tr>
+<td><strong>aperture</strong> (aperture#35)</td>
+<td>Point <code>HIPPO_SCHEMA_QUERY</code> and the <code>hasHippoSchema</code> capability check at the new GraphQL fields (Q3). Rename the <code>VITE_HIPPO_*</code> config vars (Q5). Change the default config path <code>./hippo.yaml</code> → <code>./mosaic.yaml</code>. Rename <code>hippo_version</code> in <code>recipes/aperture-control-plane/recipe.yaml</code> (Q9). Regenerate the <code>web/src/data/testing/*Introspection.json</code> fixtures. <code>HippoSource</code>, <code>createHippoStore</code> and <code>backend: 'hippo'</code> are internal names, so rename them opportunistically; if <code>backend: 'hippo'</code> is persisted in control-plane documents, rename it in the same change.</td>
+</tr>
+<tr>
+<td><strong>reel</strong></td>
+<td>Point the <code>hippoSchema</code> query in <code>planner/capabilities.py</code> at Q3's new name; update docs.</td>
+</tr>
+<tr>
+<td><strong>datahelix</strong> (#57)</td>
+<td>Move the <code>TESTING.md</code> URI contract and <code>CANON_URI_RE</code>, <code>sec5</code>, <code>tests/contracts/test_cappella_expects_canon.py</code> and <code>tests/platform/*</code> (synthetic URIs) to <code>dhlx://</code>. Update the <code>tests/conftest.py</code> prefix (<code>mosaic:</code> → <code>https://w3id.org/datahelix/mosaic/</code>) and its core import. Update the certification fixtures: <code>aperture_control_plane.yaml</code> and <code>portal_schema.yaml</code> (annotations and imports), and <code>manifest.yaml</code>'s <code>schema_min_hippo_core</code>. Change the recipe <code>nginx-auth.conf</code> header to <code>X-DataHelix-Actor</code> (Q2) and the recipe and compose <code>VITE_HIPPO_*</code> vars (Q5). Rename Canon's <code>hippo_fields</code> and Cappella's <code>hippo_poll</code> / <code>hippo:</code> (Q7), and drop Canon's <code>hippo.reference_loaders</code> entry-point block (Q4). Rename the compose Postgres user/db <code>hippo</code> (cosmetic). Bump the Mosaic and Aperture pins and record the new certified pair. ADR-0006 mentions <code>X-Hippo-Actor</code>; add a dated note there pointing here rather than editing the decision.</td>
+</tr>
+<tr>
+<td><strong>mosaic-demo-small</strong> (BU-Neuromics)</td>
+<td>Update the annotations and core import in <code>schemas/demo.yaml</code>, and the GraphQL queries in the evals and <code>exon/</code> (Q3). Prose in <code>openspec/</code> can stay.</td>
+</tr>
+<tr>
+<td><strong>brainbank-hippo-schema</strong></td>
+<td>No contract change, since it uses none. The repo rename is Q8. Prose ("when we adopt hippo") can be updated at any time.</td>
+</tr>
+<tr>
+<td><strong>linkml-data-gen</strong>, <strong>linkml-modeler-app</strong></td>
+<td>Nothing beyond Q8 (data-gen's test path points at <code>brainbank-hippo-schema</code>). The modeler's <code>hippo.yaml</code> is only a test filename.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sequencing">Sequencing<a class="headerlink" href="#sequencing" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Ratified 2026-11-17</strong>, with Q1–Q9 ruled.</li>
+<li><strong>Mosaic#228 is done.</strong> It merged as #278 (<code>f7a741b</code>, 2026-11-17) and introduced
+   <code>hippo_anchor</code> / <code>hippo_manifest</code>. Those two keys are in the inventory and the naming table
+   like any other annotation. From ratification on, new keys are named <code>mosaic_*</code>.</li>
+<li><strong>Land the Mosaic rename in v0.16.0, or in a release immediately before it.</strong> v0.16.0 is
+   already breaking (it removes the raw <code>*_id(s)</code> fallback), so consumers take one breaking
+   upgrade instead of two. Recommendation: <strong>in v0.16.0</strong>, as the last PR before the release
+   is cut. Mosaic ADR-0008 (Postgres per-class tables) is scheduled right after v0.16.0;
+   renaming <code>hippo_meta</code> first means the new <code>mosaic migrate</code> code isn't written against a table
+   that is about to be renamed.</li>
+<li><strong>Aperture and Reel</strong> follow in their next release, against Mosaic v0.16.0.</li>
+<li><strong>datahelix:</strong> one PR that bumps the pins, updates fixtures, tests, recipes and contract docs,
+   and records the certified pair. Rebuild every dev deployment.</li>
+<li><strong>Later, outside this change:</strong> register the w3id path once a real deployment has been
+   running for a while (deferred); rename <code>brainbank-hippo-schema</code> → <code>brainbank-schema</code> once its
+   owners approve (Q8).</li>
+</ol>
+<h2 id="alternatives-considered">Alternatives considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Keep <code>hippo</code> for the contract forever</strong> (the #49 status quo). Rejected for the reasons in
+  "why not hippo" above: it names a retired component, it collides with domain vocabulary, and
+  its namespace never resolved.</li>
+<li><strong>Rename with a compatibility window</strong> (the original #57 plan: dual-read aliases, a
+  <code>hippo_meta</code> forward migration, accepting both spellings). Rejected: there is no data to keep
+  and no users to protect. The window would add code that only ever runs against fixtures, and
+  that code would have to be removed again later.</li>
+<li><strong>A flat platform vocabulary: <code>dhlx:</code> → <code>https://w3id.org/datahelix/</code>, with Mosaic minting
+  <code>dhlx:Entity</code>.</strong> This was the first draft of this ADR. Rejected: nothing is shared today, so a
+  flat <code>dhlx:</code> prefix would put one component's terms in the platform's name. Every later
+  component would also mint into the same flat space with no record of who owns what.
+  Per-component paths under one root keep ownership explicit, and the promotion rule keeps the
+  root for terms that really are shared.</li>
+<li><strong>Rename everything to <code>mosaic</code></strong>, including the URI scheme. Rejected: it repeats the mistake
+  that made this rename necessary, by naming a shared contract after one component. Canon
+  produces the URI and Cappella parses it, and neither is Mosaic.</li>
+<li><strong>Rename everything to <code>dhlx</code></strong>, including the runtime-only annotation keys and tables.
+  Rejected: <code>mosaic_meta</code> and <code>mosaic_index</code> are read only by Mosaic. Putting them under the
+  platform name would claim a platform contract that doesn't exist, and would make an annotation
+  key look portable to other runtimes when it isn't.</li>
+<li><strong><code>X-Dhlx-Actor</code> for the actor header</strong> (this ADR's own Q2 recommendation before ratification).
+  Rejected 2026-11-17: Bridge's design already names the header <code>X-DataHelix-Actor</code>, as part of
+  the <code>X-DataHelix-*</code> family it injects and strips. A second spelling of the same platform name
+  would split that family.</li>
+<li><strong>Per-component actor headers</strong> (<code>X-Mosaic-Actor</code>, <code>X-Cappella-Actor</code>, …). Rejected
+  2026-11-17: components tell callers apart by the actor <em>value</em> (Bridge's <code>service:</code> prefix
+  convention, e.g. <code>service:cappella-runner</code>, sec4 §4.5.2), not by which header carries it. One
+  platform header, written only by the PEP, is what lets every component trust it. Per-component
+  headers would multiply the names Bridge must strip without carrying any extra information.</li>
+<li><strong>A namespace outside w3id</strong> (for example a GitHub Pages URL). Rejected: it ties identifiers to
+  hosting. The w3id root can be registered later with no identifier changes.</li>
+<li><strong>Wait until after mosaic#228.</strong> That has now happened. It added two more keys, which is the
+  cost this ADR is meant to stop.</li>
+</ul>
+<h2 id="open-questions-ruled-2026-11-17">Open questions (ruled 2026-11-17)<a class="headerlink" href="#open-questions-ruled-2026-11-17" title="Permanent link">&para;</a></h2>
+<p>Each question is kept as it was asked, with the recommendation made before ratification. The
+ruling (labadorf, 2026-11-17) follows each one and is binding.</p>
+<ul>
+<li><strong>Q1. Module names for Mosaic's schemas.</strong> The namespace is settled above: Mosaic's terms live
+  under <code>datahelix/mosaic/</code> with <code>mosaic:</code>. What remains open is the <code>imports:</code> name of the two
+  modules, and with it their ids. The candidates are <code>mosaic_core</code> / <code>mosaic_ext</code> (ids
+  <code>…/mosaic/mosaic_core</code>, which repeat "mosaic") or <code>core</code> / <code>ext</code> (ids <code>…/mosaic/core</code>).
+  <strong>Recommendation:</strong> <code>mosaic_core</code> / <code>mosaic_ext</code>. The <code>imports:</code> name is resolved in the user's
+  schema directory, and a bare <code>core</code> collides with user files; brainbank-hippo-schema already
+  has its own <code>schema/core.yaml</code>. The repeated "mosaic" in the id is cosmetic.
+  <strong>Ruling (2026-11-17):</strong> <code>mosaic_core</code> / <code>mosaic_ext</code>, as recommended.</li>
+<li><strong>Q2. Who owns the actor header?</strong> Today it is <code>X-Hippo-Actor</code>, read by Mosaic's middleware
+  (whose docstring already says <code>X-Mosaic-Actor</code>) and written by the recipe nginx per ADR-0006.
+  Under <code>sec6</code>, Bridge is the sole PEP, and every component behind it trusts the identity it
+  injects. <strong>Recommendation:</strong> the platform owns it, as <code>X-Dhlx-Actor</code>. Mosaic reads it; Bridge
+  and the recipe proxy write it; Canon and Cappella read it when they gain auth.
+  <strong>Ruling (2026-11-17):</strong> <strong>changed.</strong> The header is platform-owned, as recommended, but named
+  <strong><code>X-DataHelix-Actor</code></strong>, not <code>X-Dhlx-Actor</code>, to match Bridge's existing design
+  (<code>bridge/design/sec3_api_unification.md</code> §3.3.2, <code>sec4_auth.md</code> §4.5). Bridge injects
+  <code>X-DataHelix-Actor</code>, <code>X-DataHelix-Roles</code> and <code>X-DataHelix-Request-Id</code>, and strips every inbound
+  <code>X-DataHelix-*</code> header from external clients. Components distinguish callers by the actor
+  value (for example a <code>service:</code> actor such as <code>service:cappella-runner</code>), not by
+  per-component headers; per-component headers were considered and rejected for that reason
+  (see Alternatives). Mosaic's middleware switches from <code>x-hippo-actor</code> to
+  <code>x-datahelix-actor</code>; adopting <code>-Roles</code> and <code>-Request-Id</code> is Bridge-integration work outside this
+  ADR. <strong>Future work, not addressed here:</strong> the on-behalf-of case, where a service (Aperture's
+  backend-for-frontend, a Cappella run) acts for a human user. One actor value can name only one
+  of them; how both are carried into provenance needs its own decision.</li>
+<li><strong>Q3. GraphQL <code>hippoSchema</code> / <code>hippoEntityType</code>.</strong> These expose Mosaic's own LinkML type model
+  (Mosaic ADR-0009). Aperture already treats them as an optional, Mosaic-specific enrichment on
+  top of any conformant endpoint (Aperture ADR-0017), and Reel reads them for grounding.
+  <strong>Recommendation:</strong> <code>mosaicSchema</code> / <code>mosaicEntityType</code>. A neutral name like <code>schema</code> reads
+  badly next to GraphQL's own <code>__schema</code>, and a <code>dhlx</code> name would claim a platform contract that
+  Aperture deliberately doesn't depend on.
+  <strong>Ruling (2026-11-17):</strong> <code>mosaicSchema</code> / <code>mosaicEntityType</code>, as recommended.</li>
+<li><strong>Q4. End ADR-0004's deprecation window now?</strong> ADR-0004 kept <code>import hippo</code>, the <code>hippo</code> CLI,
+  the <code>hippo.*</code> entry-point groups, the <code>HIPPO_*</code> env fallback and the <code>hippo.yaml</code> fallback, and
+  left their removal to "a future ADR". <strong>Recommendation:</strong> remove all of them in the same Mosaic
+  release, for the same no-users reason. Record the removal as a short Mosaic ADR that cites
+  this one, because the window is Mosaic's decision. Outside Mosaic's own <code>pyproject.toml</code>, only
+  one registration uses the legacy groups: Canon's <code>pyproject.toml</code> registers under both
+  <code>hippo.reference_loaders</code> and <code>mosaic.reference_loaders</code>. Drop its <code>hippo.*</code> block in the
+  datahelix PR. Cappella registers none.
+  <strong>Ruling (2026-11-17):</strong> remove the ADR-0004 aliases in the same release, recorded in a short Mosaic ADR,
+  as recommended.</li>
+<li><strong>Q5. Aperture's <code>VITE_HIPPO_*</code> config vars.</strong> Aperture is backend-agnostic (it works with any
+  conformant GraphQL endpoint), so <code>VITE_MOSAIC_*</code> would be wrong too. <strong>Recommendation:</strong>
+  <code>VITE_GRAPHQL_URL</code> / <code>VITE_CONTROL_PLANE_URL</code>, matching Aperture's other unprefixed vars
+  (<code>VITE_WORKFLOWS</code>, <code>VITE_NAV</code>).
+  <strong>Ruling (2026-11-17):</strong> <code>VITE_GRAPHQL_URL</code> / <code>VITE_CONTROL_PLANE_URL</code>, as recommended.</li>
+<li><strong>Q6. Mosaic error codes.</strong> Five codes carry <code>HIPPO_</code>; Mosaic's other codes are unprefixed
+  (<code>INVERSE_SLOT</code>, <code>NOT_PREDICATE_FILTERABLE</code>). <strong>Recommendation:</strong> drop the prefix rather than
+  renaming it to <code>MOSAIC_</code>.
+  <strong>Ruling (2026-11-17):</strong> drop the <code>HIPPO_</code> prefix, as recommended.</li>
+<li><strong>Q7. Canon <code>hippo_fields</code>, and Cappella <code>hippo_poll</code> and its <code>hippo:</code> config section.</strong> Each
+  is that component's own config vocabulary, naming the system it writes to or polls.
+  <strong>Recommendation:</strong> <code>mosaic_fields</code> / <code>mosaic_poll</code>, and <code>mosaic:</code> for Cappella's config
+  section (whose type is already <code>MosaicConfig</code>), since they target Mosaic specifically. Both
+  components are in-tree and undeployed, so the cost is the same either way.
+  <strong>Ruling (2026-11-17):</strong> <code>mosaic_fields</code> / <code>mosaic_poll</code> / <code>mosaic:</code>, as recommended.</li>
+<li><strong>Q8. Rename <code>brainbank-hippo-schema</code>?</strong> Its schema doesn't use the contract, so this is
+  cosmetic, and the repo belongs to VA-NCPTSDBB-Bioinformatics. GitHub redirects renamed repos,
+  but the recipe Dockerfiles, the evals and the published docs-site URL would change.
+  <strong>Recommendation:</strong> rename it to <code>brainbank-schema</code> as a separate step that the owner
+  approves; it doesn't block this ADR. Update the datahelix recipe <code>SCHEMA_REPO</code> args in the same
+  datahelix PR or the next one.
+  <strong>Ruling (2026-11-17):</strong> rename <code>brainbank-hippo-schema</code> → <code>brainbank-schema</code> later, as a separate step
+  approved by the repo's owners. It doesn't block this ADR.</li>
+<li><strong>Q9. Who owns the recipe manifest schema (<code>recipe_manifest.yaml</code> / <code>recipe.yaml</code>, with
+  <code>hippo_version</code>): Mosaic or datahelix?</strong> The schema lives in Mosaic today, which validates it
+  closed and is its only reader. Other components author recipes against it: Aperture ships
+  <code>recipes/aperture-control-plane/recipe.yaml</code> with <code>hippo_version: "&gt;=0.11.0"</code>. Note that
+  Mosaic's "recipe" (sec10) is a content-addressed bundle of a LinkML <strong>schema fragment</strong>,
+  installed into one Mosaic instance and recorded in <code>hippo_meta.installed_recipes</code>. It is not a
+  datahelix deployment recipe (<code>deploy/recipes/*</code>, the compose stacks), which has no manifest
+  schema at all. The two share only a word. <strong>Recommendation:</strong> Mosaic owns it, with id
+  <code>https://w3id.org/datahelix/mosaic/recipe_manifest</code> and the key <code>hippo_version</code> →
+  <code>mosaic_version</code>. Another component <em>authoring</em> a Mosaic recipe is consuming the schema, not
+  defining it on equal terms, so the promotion rule doesn't apply. If datahelix later wants a
+  manifest for its deployment recipes, that is a new schema. It would sit in the root, under the
+  promotion rule and its own ADR, since it would describe several components. It should not
+  grow out of Mosaic's schema-recipe manifest. As a lower-priority follow-up, consider renaming
+  Mosaic's concept (for example "schema pack") to end the overloaded word. That is outside this
+  ADR.
+  <strong>Ruling (2026-11-17):</strong> Mosaic owns the recipe manifest schema, as recommended.</li>
+</ul>
+<h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
+<p><strong>w3id registration is deferred</strong> (confirmed at ratification, 2026-11-17). At the user's direction, registering
+<code>https://w3id.org/datahelix/</code> waits until a real deployment has been running for a while. Until
+then, the namespace URIs (<code>https://w3id.org/datahelix/mosaic/…</code>) are used unregistered, as
+<code>w3id.org/hippo/</code> was. When the time comes, registration is a PR to <code>perma-id/w3id.org</code> adding
+<code>datahelix/.htaccess</code>, with one directory covering every component path, plus optionally a
+bioregistry entry for each prefix in use. This is an external step for the user, not part of
+any PR here.</p>
+<p><strong>Prefix and w3id availability checks (2026-11-17; nothing registered).</strong> These checks were run
+while <code>dhlx</code> was proposed as a CURIE prefix. That is no longer proposed, but the results still
+apply to the scheme and to the root:</p>
+<ul>
+<li><strong>bioregistry.io:</strong> <code>dhlx</code> and <code>datahelix</code> have no record (<code>/api/registry/&lt;prefix&gt;</code> → 404),
+  and a search returns no prefix, name or synonym match (<code>/api/search?q=…</code> → <code>[]</code>). <code>hippo</code> has
+  no record either.</li>
+<li><strong>prefix.cc:</strong> <code>dhlx</code> and <code>datahelix</code> returned 404 ("not found") pages, as did <code>hippo</code>. The
+  site's TLS certificate has expired, so this result came from a request that skipped
+  certificate verification and was not checked against a known-good prefix. Treat it as
+  probably free, but unconfirmed.</li>
+<li><strong>Note:</strong> <code>dhlx</code> is now used only as a URI scheme (<code>dhlx://</code>), never as a CURIE prefix, so the
+  registry checks below matter only if a root prefix is ever defined (promotion rule).</li>
+<li><strong>w3id.org:</strong> <code>https://w3id.org/datahelix/</code> returns 404, and <code>perma-id/w3id.org</code> has no
+  <code>datahelix/</code> directory. The existing <code>https://w3id.org/hippo/…</code> namespace also returns 404,
+  with no <code>hippo/</code> directory, so it never resolved.</li>
+<li>The <code>mosaic:</code> prefix was not checked against bioregistry or prefix.cc. Collisions there
+  matter only for identifiers that are published, and nothing is published until registration.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "search.suggest", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>
