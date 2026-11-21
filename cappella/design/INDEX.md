@@ -17,7 +17,7 @@
 | `sec4_audit.md` | 4. Audit & Observability | ✅ Draft v0.1 | Structured log events, HarmonizationConflict provenance, health endpoint |
 | `sec5_workflows.md` | 5. Collection Resolution Workflow | ✅ Draft v0.1 | Schema-driven traversal, selection strategies, partial failure, async resolution, CLI |
 | `sec6_nfr.md` | 6. Non-Functional Requirements | ✅ Draft v0.1 | Performance targets, reliability, scalability tiers, extensibility, deployment, full cappella.yaml |
-| `sec7_testing.md` | 7. Trigger Engine Test Strategy | ✅ Draft v0.1 | Behavior matrix for schedule/manual/internal_event (v0.1) and webhook/hippo_poll (v0.2); STARLIMS and HALO scenarios; test file map |
+| `sec7_testing.md` | 7. Trigger Engine Test Strategy | ✅ Draft v0.1 | Behavior matrix for schedule/manual/internal_event (v0.1) and webhook/mosaic_poll (v0.2); STARLIMS and HALO scenarios; test file map |
 
 ---
 
@@ -32,11 +32,11 @@ See `platform/design/INDEX.md` for full rationale and config format examples.
 | Hippo dependency | Required — Cappella cannot function without a Hippo instance |
 | External adapter implementations | Live in Cappella (STARLIMS, HALO, REDCap, partner portals) — `ExternalSourceAdapter` ABC stays in Hippo |
 | Field mapping and transformation config | Lives in Cappella adapter config — separate from Hippo's canonical schema |
-| Trigger model | Unified `source` + `action` format: `webhook`, `schedule`, `hippo_poll`, `manual`, `internal_event` |
+| Trigger model | Unified `source` + `action` format: `webhook`, `schedule`, `mosaic_poll`, `manual`, `internal_event` |
 | Action chaining | Actions emit named internal events (`emits:`); triggers subscribe with `type: internal_event` |
 | Event payload | Entity IDs only — downstream actions query Hippo fresh at execution time |
 | Query-fresh-at-invocation | All actions read current Hippo state at execution time; never rely on stale trigger context |
-| Hippo reactive triggers (MVP) | Polling (`hippo_poll`) — sufficient because Cappella drives most Hippo writes in normal operation |
+| Hippo reactive triggers (MVP) | Polling (`mosaic_poll`) — sufficient because Cappella drives most Hippo writes in normal operation |
 | Hippo reactive triggers (future) | Hippo event hook plugin system — deferred |
 | Idempotency (MVP) | Upsert by ExternalID — look up by source system ID, update if changed, create if absent |
 | Idempotency (future) | Short-window digest deduplication for webhook retries — deferred to when live integrations are scoped |

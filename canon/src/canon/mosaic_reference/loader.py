@@ -17,8 +17,7 @@ class CanonReferenceLoader:
     """
     Mosaic reference loader for Canon's built-in entity schema.
 
-    Registered as an entry point under 'mosaic.reference_loaders' (and the
-    legacy 'hippo.reference_loaders' group):
+    Registered as an entry point under 'mosaic.reference_loaders':
         canon = canon.mosaic_reference.loader:CanonReferenceLoader
 
     Mosaic discovers and invokes this class to load Canon's entity type

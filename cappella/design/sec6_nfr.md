@@ -94,9 +94,9 @@ Full `cappella.yaml` reference:
 ```yaml
 # Cappella configuration
 
-hippo:
+mosaic:
   url: "http://localhost:8000"
-  token: "${HIPPO_API_TOKEN}"
+  token: "${MOSAIC_API_TOKEN}"
 
 canon:
   enabled: true

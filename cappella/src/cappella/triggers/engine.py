@@ -44,7 +44,7 @@ class InternalEventBus:
 
 
 class HippoPollState:
-    """Tracks state for hippo_poll triggers to enable deduplication."""
+    """Tracks state for mosaic_poll triggers to enable deduplication."""
 
     def __init__(self) -> None:
         self._last_seen: dict[str, str] = {}  # trigger_name -> last seen timestamp
@@ -229,7 +229,7 @@ class WebhookHandler:
 
 
 class HippoPollHandler:
-    """Handles hippo_poll triggers by polling Hippo for changed entities."""
+    """Handles mosaic_poll triggers by polling Hippo for changed entities."""
 
     def __init__(
         self,
@@ -247,7 +247,7 @@ class HippoPollHandler:
         return self._state
 
     def poll(self, trigger_name: str) -> dict[str, Any]:
-        """Execute a single poll cycle for a hippo_poll trigger.
+        """Execute a single poll cycle for a mosaic_poll trigger.
 
         Returns:
             Result dict with poll results and trigger execution outcome.
@@ -259,13 +259,13 @@ class HippoPollHandler:
             )
 
         trigger = self._triggers[trigger_name]
-        if trigger.type != "hippo_poll" or trigger.hippo_poll is None:
+        if trigger.type != "mosaic_poll" or trigger.mosaic_poll is None:
             raise TriggerError(
-                f"HippoPollHandler: trigger '{trigger_name}' is not a hippo_poll trigger",
+                f"HippoPollHandler: trigger '{trigger_name}' is not a mosaic_poll trigger",
                 {"trigger": trigger_name},
             )
 
-        poll_config = trigger.hippo_poll
+        poll_config = trigger.mosaic_poll
         last_seen = self._state.get_last_seen(trigger_name)
 
         # Query Hippo for changed entities
@@ -291,8 +291,8 @@ class HippoPollHandler:
 
         provenance = TriggerProvenance(
             trigger_name=trigger_name,
-            trigger_type="hippo_poll",
-            source=f"hippo:{poll_config.entity_type}",
+            trigger_type="mosaic_poll",
+            source=f"mosaic:{poll_config.entity_type}",
             timestamp=datetime.utcnow().isoformat() + "Z",
         )
 
@@ -305,7 +305,7 @@ class HippoPollHandler:
         }
 
         audit.emit_event(
-            "hippo_poll_executed",
+            "mosaic_poll_executed",
             trigger=trigger_name,
             entity_type=poll_config.entity_type,
             total_changed=len(changed_entities),
@@ -381,8 +381,8 @@ class TriggerEngine:
             raise TriggerError(f"Unknown trigger: '{trigger_name}'")
 
         trigger = self._triggers[trigger_name]
-        if trigger.type == "hippo_poll" and trigger.hippo_poll:
-            self._schedule_next(trigger_name, trigger.hippo_poll.interval)
+        if trigger.type == "mosaic_poll" and trigger.mosaic_poll:
+            self._schedule_next(trigger_name, trigger.mosaic_poll.interval)
             return
 
         if trigger.type != "schedule" or not trigger.schedule:
@@ -405,7 +405,7 @@ class TriggerEngine:
 
         def _run() -> None:
             try:
-                if trigger.type == "hippo_poll":
+                if trigger.type == "mosaic_poll":
                     self._hippo_poll_handler.poll(trigger_name)
                 else:
                     self._executor.run(trigger_name)
@@ -435,7 +435,7 @@ class TriggerEngine:
         return self._webhook_handler.handle_webhook(path, payload, signature)
 
     def poll_hippo(self, trigger_name: str) -> dict[str, Any]:
-        """Execute a hippo_poll trigger manually."""
+        """Execute a mosaic_poll trigger manually."""
         return self._hippo_poll_handler.poll(trigger_name)
 
     def emit_event(self, event: str, payload: dict | None = None) -> None:

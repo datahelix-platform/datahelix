@@ -28,7 +28,7 @@ prefixes:
 
 imports:
   - linkml:types
-  - hippo_core
+  - mosaic_core
 
 default_range: string
 
@@ -47,13 +47,13 @@ classes:
         required: true
         description: savedView | workflowDraft | config (equality-filtered).
         annotations:
-          hippo_index: true
+          mosaic_index: true
       name:
         range: string
         required: true
         description: Document key within its kind (equality-filtered).
         annotations:
-          hippo_index: true
+          mosaic_index: true
       payload:
         range: string
         required: true

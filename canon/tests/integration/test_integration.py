@@ -33,7 +33,7 @@ def _make_planner(
     work_dir: str = "/tmp/canon-integration-test",
 ) -> RecursivePlanner:
     ref_resolver = MagicMock()
-    ref_resolver.resolve.return_value = _make_entity("Unknown", "ref-uuid", "hippo://ref/unknown")
+    ref_resolver.resolve.return_value = _make_entity("Unknown", "ref-uuid", "dhlx://ref/unknown")
     return RecursivePlanner(
         hippo_client=hippo,
         rule_registry=registry,
@@ -53,7 +53,7 @@ def test_reuse_path_returns_existing_uri_no_executor_called():
     """When Hippo returns a pre-existing entity, executor must not be called."""
     hippo = MagicMock()
     existing_entity = _make_entity(
-        "AlignmentFile", "align-uuid-001", "hippo://alignments/sample-001"
+        "AlignmentFile", "align-uuid-001", "dhlx://alignments/sample-001"
     )
     hippo.find_entity.return_value = existing_entity
 
@@ -63,7 +63,7 @@ def test_reuse_path_returns_existing_uri_no_executor_called():
 
     uri = planner.resolve("AlignmentFile", {"sample": "sample-001"})
 
-    assert uri == "hippo://alignments/sample-001"
+    assert uri == "dhlx://alignments/sample-001"
     assert executor.run.call_count == 0
 
 
@@ -119,9 +119,9 @@ def test_build_path_invokes_executor_and_ingests_entity(tmp_path):
         ),
     )
 
-    raw_reads_entity = _make_entity("RawReads", "raw-uuid-001", "hippo://raw/sample-001")
+    raw_reads_entity = _make_entity("RawReads", "raw-uuid-001", "dhlx://raw/sample-001")
     trimmed_entity = _make_entity(
-        "TrimmedReads", "trim-uuid-001", "hippo://trimmed/sample-001"
+        "TrimmedReads", "trim-uuid-001", "dhlx://trimmed/sample-001"
     )
 
     hippo = MagicMock()
@@ -156,14 +156,14 @@ def test_build_path_invokes_executor_and_ingests_entity(tmp_path):
 
     # CWL inputs contain resolved values
     cwl_inputs = run_call[0][1]
-    assert cwl_inputs["fastq_input"] == "hippo://raw/sample-001"
+    assert cwl_inputs["fastq_input"] == "dhlx://raw/sample-001"
     assert cwl_inputs["sample_id"] == "sample-001"
 
     # ingest_entity called once for TrimmedReads
     assert hippo.ingest_entity.call_count == 1
     assert hippo.ingest_entity.call_args[0][0] == "TrimmedReads"
 
-    assert uri == "hippo://trimmed/sample-001"
+    assert uri == "dhlx://trimmed/sample-001"
 
 
 # ---------------------------------------------------------------------------
@@ -273,9 +273,9 @@ def test_three_level_dependency_chain_executes_in_order(tmp_path):
         execute=ExecuteSpec(workflow="c.cwl", inputs={"entity_b_uri": "{b_in.uri}"}),
     )
 
-    entity_a = _make_entity("EntityA", "a-uuid", "hippo://entity-a/s001")
-    entity_b = _make_entity("EntityB", "b-uuid", "hippo://entity-b/s001")
-    entity_c = _make_entity("EntityC", "c-uuid", "hippo://entity-c/s001")
+    entity_a = _make_entity("EntityA", "a-uuid", "dhlx://entity-a/s001")
+    entity_b = _make_entity("EntityB", "b-uuid", "dhlx://entity-b/s001")
+    entity_c = _make_entity("EntityC", "c-uuid", "dhlx://entity-c/s001")
 
     hippo = MagicMock()
     hippo.find_entity.return_value = None  # nothing pre-existing
@@ -305,4 +305,4 @@ def test_three_level_dependency_chain_executes_in_order(tmp_path):
     ingested_types = [c[0][0] for c in hippo.ingest_entity.call_args_list]
     assert ingested_types == ["EntityA", "EntityB", "EntityC"]
 
-    assert uri == "hippo://entity-c/s001"
+    assert uri == "dhlx://entity-c/s001"

@@ -47,13 +47,13 @@ class ActionConfig(BaseModel):
 
 class TriggerConfig(BaseModel):
     name: str
-    type: str  # "schedule" | "manual" | "internal_event" | "webhook" | "hippo_poll"
+    type: str  # "schedule" | "manual" | "internal_event" | "webhook" | "mosaic_poll"
     action: ActionConfig
     schedule: str | None = None
     event: str | None = None
     on_success: str | None = None
     webhook: dict[str, Any] | None = None  # raw dict, converted to triggers.WebhookConfig
-    hippo_poll: dict[str, Any] | None = None  # raw dict, converted to triggers.HippoPollConfig
+    mosaic_poll: dict[str, Any] | None = None  # raw dict, converted to triggers.HippoPollConfig
 
     def to_trigger_config(self) -> "TriggerConfig":
         """Convert to a triggers.models.TriggerConfig with typed sub-configs."""
@@ -65,7 +65,7 @@ class TriggerConfig(BaseModel):
         )
 
         webhook = WebhookConfig(**self.webhook) if self.webhook else None
-        hippo_poll = HippoPollConfig(**self.hippo_poll) if self.hippo_poll else None
+        mosaic_poll = HippoPollConfig(**self.mosaic_poll) if self.mosaic_poll else None
 
         return TTriggerConfig(
             name=self.name,
@@ -80,7 +80,7 @@ class TriggerConfig(BaseModel):
             event=self.event,
             on_success=self.on_success,
             webhook=webhook,
-            hippo_poll=hippo_poll,
+            mosaic_poll=mosaic_poll,
         )
 
 
@@ -91,7 +91,7 @@ class LoggingConfig(BaseModel):
 
 
 class CappellaConfig(BaseModel):
-    hippo: MosaicConfig = Field(default_factory=MosaicConfig)
+    mosaic: MosaicConfig = Field(default_factory=MosaicConfig)
     canon: CanonConfig = Field(default_factory=CanonConfig)
     server: ServerConfig = Field(default_factory=ServerConfig)
     resolution: ResolutionConfig = Field(default_factory=ResolutionConfig)

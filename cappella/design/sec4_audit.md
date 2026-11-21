@@ -132,7 +132,7 @@ This creates a permanent, queryable audit trail of every conflict and how it was
 ```json
 {
   "cappella_version": "0.1.0",
-  "hippo": {"status": "ok", "version": "0.3.1", "url": "http://localhost:8000"},
+  "mosaic": {"status": "ok", "version": "0.3.1", "url": "http://localhost:8000"},
   "canon": {"status": "ok", "version": "0.2.0", "url": "http://localhost:8001"},
   "adapters": {
     "starlims": {"status": "ok", "last_sync": "2026-03-25T02:00:47Z"},

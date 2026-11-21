@@ -39,7 +39,7 @@ services:
       # 'error' turn. The brainbank grounding is ~45k tokens per turn; 60s (the
       # default) is tight. nginx's /graphql timeout (nginx.conf) sits above it.
       MOSAIC_EXON_TIMEOUT: ${MOSAIC_EXON_TIMEOUT:-120}
-      VITE_HIPPO_GRAPHQL_URL: ${VITE_HIPPO_GRAPHQL_URL:-}
+      VITE_GRAPHQL_URL: ${VITE_GRAPHQL_URL:-}
       VITE_NAV: ${VITE_NAV:-}
       VITE_WORKFLOWS: ${VITE_WORKFLOWS:-}
     restart: unless-stopped

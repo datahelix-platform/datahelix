@@ -17,13 +17,13 @@ else
 fi
 export MOSAIC_CONFIG
 
-: "${VITE_HIPPO_GRAPHQL_URL:=/graphql}"
-export VITE_HIPPO_GRAPHQL_URL
+: "${VITE_GRAPHQL_URL:=/graphql}"
+export VITE_GRAPHQL_URL
 OUT=/srv/aperture/config.js
 {
   printf 'window.__APERTURE_CONFIG__ = {'
   sep=''
-  for key in VITE_HIPPO_GRAPHQL_URL VITE_HIPPO_CONTROL_PLANE_URL VITE_WORKFLOWS VITE_NAV; do
+  for key in VITE_GRAPHQL_URL VITE_CONTROL_PLANE_URL VITE_WORKFLOWS VITE_NAV; do
     value=$(printenv "$key" 2>/dev/null || true)
     if [ -n "$value" ]; then
       escaped=$(printf '%s' "$value" | sed 's/\\/\\\\/g; s/"/\\"/g')
@@ -33,6 +33,6 @@ OUT=/srv/aperture/config.js
   done
   printf '\n};\n'
 } > "$OUT"
-echo "demo: aperture runtime config written (endpoint: $VITE_HIPPO_GRAPHQL_URL)"
+echo "demo: aperture runtime config written (endpoint: $VITE_GRAPHQL_URL)"
 
 exec supervisord -n -c /etc/supervisor/supervisord.conf

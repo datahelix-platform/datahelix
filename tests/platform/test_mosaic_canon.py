@@ -54,7 +54,7 @@ def _make_planner(
     """Build a RecursivePlanner wired to the in-process shim."""
     ref_resolver = MagicMock()
     ref_resolver.resolve.return_value = Entity(
-        id="ref-uuid", entity_type="Unknown", data={}, uri="hippo://ref/unknown"
+        id="ref-uuid", entity_type="Unknown", data={}, uri="dhlx://ref/unknown"
     )
     return RecursivePlanner(
         hippo_client=hippo_shim,
@@ -76,7 +76,7 @@ def _make_planner_with_storage(
     """Build a RecursivePlanner wired to real storage adapters."""
     ref_resolver = MagicMock()
     ref_resolver.resolve.return_value = Entity(
-        id="ref-uuid", entity_type="Unknown", data={}, uri="hippo://ref/unknown"
+        id="ref-uuid", entity_type="Unknown", data={}, uri="dhlx://ref/unknown"
     )
     return RecursivePlanner(
         hippo_client=hippo_shim,
@@ -103,7 +103,7 @@ def test_reuse_existing_entity(hippo_client, hippo_shim, mock_executor, tmp_path
         {
             "sample_id": "s001",
             "fastq_uri": "file:///data/s001.fastq.gz",
-            "uri": "hippo://rawreads/s001",
+            "uri": "dhlx://rawreads/s001",
         },
     )
 
@@ -113,7 +113,7 @@ def test_reuse_existing_entity(hippo_client, hippo_shim, mock_executor, tmp_path
 
     uri = planner.resolve("RawReads", {"sample_id": "s001"})
 
-    assert uri == "hippo://rawreads/s001"
+    assert uri == "dhlx://rawreads/s001"
     assert mock_executor.run.call_count == 0
 
 
@@ -307,7 +307,7 @@ def test_dependency_chain_inserts_all(hippo_client, hippo_shim, mock_executor, t
         ]
         assert len(matching) == 1, f"{entity_type} not found in Mosaic after chain execution"
 
-    assert uri.startswith("hippo://alignedreads/")
+    assert uri.startswith("dhlx://alignedreads/")
 
 
 # ---------------------------------------------------------------------------
@@ -535,7 +535,7 @@ def test_plan_dry_run_reflects_real_mosaic_state(
     # RawReads exists in Mosaic; TrimmedReads does not
     hippo_client.create(
         "RawReads",
-        {"sample_id": "s001", "uri": "hippo://rawreads/s001"},
+        {"sample_id": "s001", "uri": "dhlx://rawreads/s001"},
     )
 
     rule_b = ProductionRule(
@@ -675,7 +675,7 @@ def test_full_bioinformatics_chain_sample_to_aligned(
         hits = [i for i in result.items if i["data"].get("sample_id") == "s001"]
         assert len(hits) == 1, f"{etype} missing from Mosaic after chain"
 
-    assert uri.startswith("hippo://alignedreads/")
+    assert uri.startswith("dhlx://alignedreads/")
 
 
 # ---------------------------------------------------------------------------

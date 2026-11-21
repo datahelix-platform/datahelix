@@ -98,7 +98,7 @@ into Mosaic.
 1. Parse CWL output JSON (cwltool stdout)
 2. Load .canon.yaml sidecar for the executed workflow
 3. For each output declared in the sidecar:
-   a. Evaluate hippo_fields expressions against CWL output + rule inputs
+   a. Evaluate mosaic_fields expressions against CWL output + rule inputs
    b. Relocate output file to configured output_storage (if needed)
    c. POST /ingest → create Mosaic entity
    d. Record returned UUID for WorkflowRun linkage
@@ -128,17 +128,17 @@ successful ingestion.
 
 **Entity field assembly:**
 
-The sidecar's `hippo_fields:` expressions are evaluated to produce the entity data dict:
+The sidecar's `mosaic_fields:` expressions are evaluated to produce the entity data dict:
 
 ```python
-def evaluate_hippo_fields(
+def evaluate_mosaic_fields(
     sidecar_output: SidecarOutput,
     cwl_outputs: dict,        # parsed CWL output JSON
     cwl_inputs: dict,         # inputs passed to CWL
     run_id: str
 ) -> dict:
     result = {}
-    for field_name, expr in sidecar_output.hippo_fields.items():
+    for field_name, expr in sidecar_output.mosaic_fields.items():
         result[field_name] = evaluate_expr(expr, cwl_outputs, cwl_inputs, run_id)
     return result
 ```

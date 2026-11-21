@@ -129,8 +129,8 @@ services:
     profiles: [aperture-image]
     image: ghcr.io/bu-neuromics/aperture:${APERTURE_VERSION:-0.7.1}
     environment:
-      VITE_HIPPO_GRAPHQL_URL: ${VITE_HIPPO_GRAPHQL_URL:-/graphql}
-      VITE_HIPPO_CONTROL_PLANE_URL: ${VITE_HIPPO_CONTROL_PLANE_URL:-}
+      VITE_GRAPHQL_URL: ${VITE_GRAPHQL_URL:-/graphql}
+      VITE_CONTROL_PLANE_URL: ${VITE_CONTROL_PLANE_URL:-}
       VITE_WORKFLOWS: ${VITE_WORKFLOWS:-}
       VITE_NAV: ${VITE_NAV:-}
     restart: unless-stopped
@@ -162,7 +162,7 @@ services:
     environment:
       # Relative endpoint: the browser resolves it against the gateway origin,
       # so dev exercises the production same-origin arrangement.
-      VITE_HIPPO_GRAPHQL_URL: ${VITE_HIPPO_GRAPHQL_URL:-/graphql}
+      VITE_GRAPHQL_URL: ${VITE_GRAPHQL_URL:-/graphql}
       IDE_PORT: ${IDE_PORT:-8080}
     volumes:
       - "${APERTURE_WEB:-../../../aperture/web}:/app"

@@ -60,8 +60,8 @@ services:
       SCHEMA_GIT_REF: ${SCHEMA_GIT_REF:-}
       SCHEMA_GIT_PATH: ${SCHEMA_GIT_PATH:-}
       # Aperture runtime config (ADR-0034); defaults to the same-origin seam.
-      VITE_HIPPO_GRAPHQL_URL: ${VITE_HIPPO_GRAPHQL_URL:-}
-      VITE_HIPPO_CONTROL_PLANE_URL: ${VITE_HIPPO_CONTROL_PLANE_URL:-}
+      VITE_GRAPHQL_URL: ${VITE_GRAPHQL_URL:-}
+      VITE_CONTROL_PLANE_URL: ${VITE_CONTROL_PLANE_URL:-}
       VITE_WORKFLOWS: ${VITE_WORKFLOWS:-}
       VITE_NAV: ${VITE_NAV:-}
     restart: unless-stopped

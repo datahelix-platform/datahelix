@@ -3,7 +3,7 @@
 #
 # Top-level keys are Mosaic's *ingest accessors*, not class names: snake_case
 # of the class plus "s" (Project -> projects, Note -> notes). Irregular plurals
-# need a `hippo_accessor` annotation on the class; see the demo recipe's
+# need a `mosaic_accessor` annotation on the class; see the demo recipe's
 # remap_accessors.py for the general case.
 #
 # Ingest is idempotent on identifiers, so re-running `make seed` updates these

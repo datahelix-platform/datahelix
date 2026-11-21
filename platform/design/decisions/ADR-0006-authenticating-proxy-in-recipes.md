@@ -63,6 +63,11 @@ Three properties make this a seam rather than a detour:
 3. **It is a partial Bridge, not a competitor.** It implements `sec6` §6.3 steps (1) and (4) and
    leaves (2)–(3) unimplemented. Bridge, when built, takes the same position and adds the PDP.
 
+> **Note (2026-11-20, [ADR-0007](./ADR-0007-retire-hippo-data-contract-identifiers.md)):** The
+> actor header named in this ADR is renamed `X-Hippo-Actor` → `X-DataHelix-Actor` (Q2), matching
+> Bridge's `X-DataHelix-*` header family. Mosaic v0.16.0 reads only the new name, and the `solo`
+> recipe's `nginx-auth.conf` sets it (datahelix#57). The decision itself is unchanged.
+
 **Authorization stays coarse and honest.** `--allowed-group` against a released group claim gives
 one binary decision: may this person use this deployment. Per-record predicates and slot-level
 masks remain Bridge's, unbuilt, and are not simulated.

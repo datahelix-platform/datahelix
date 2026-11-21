@@ -70,10 +70,10 @@ class MosaicClientShim:
     def ingest_entity(self, entity_type: str, data: dict) -> Entity:
         """Create entity in Hippo and return as a Canon Entity with a URI.
 
-        A synthetic URI (hippo://<type>/<uuid>) is added to the stored data so
+        A synthetic URI (dhlx://<type>/<uuid>) is added to the stored data so
         that RecursivePlanner.resolve() can return a non-None URI.
         """
-        synthetic_uri = f"hippo://{entity_type.lower()}/{uuid.uuid4()}"
+        synthetic_uri = f"dhlx://{entity_type.lower()}/{uuid.uuid4()}"
         data_with_uri = {**data, "uri": synthetic_uri}
         result = self._client.create(entity_type, data_with_uri)
         self._entity_type_cache[result["id"]] = entity_type

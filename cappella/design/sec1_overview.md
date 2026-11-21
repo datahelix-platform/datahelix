@@ -137,7 +137,7 @@ Cappella's primary output for collection resolution requests is a **HarmonizedCo
     }
   ],
   "provenance": {
-    "hippo_version": "0.3.1",
+    "mosaic_version": "0.3.1",
     "canon_version": "0.2.0",
     "cappella_version": "0.1.0",
     "genome_build": {"id": "uuid-genome", "name": "GRCh38", "release": "110"}
@@ -156,7 +156,7 @@ This format is stable and versioned. Composer and other consumers parse it to ex
 - Ingest pipeline: pull → transform → validate → upsert via ExternalID
 - Collection resolution: Hippo query + selection logic + Canon delegation + HarmonizedCollection output
 - Reconciliation: inconsistency detection and structured audit events
-- Trigger engine: schedule, manual, internal_event (webhook + hippo_poll deferred to v0.2)
+- Trigger engine: schedule, manual, internal_event (webhook + mosaic_poll deferred to v0.2)
 - Provenance: structured context on all Hippo writes
 - REST API: `POST /resolve`, `POST /ingest`, `GET /status`, `POST /triggers/{name}/run`
 

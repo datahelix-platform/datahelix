@@ -106,7 +106,7 @@ nav:
           - Auth Integration: mosaic/design/sec8_auth_integration.md
           - "Appendix A: Example Schema": mosaic/design/appendix_a_example_schema_omics.md
           - "Appendix B: Implementation Guide": mosaic/design/appendix_b_implementation_guide.md
-          - "Reference: hippo.yaml": mosaic/design/reference_hippo_yaml.md
+          - "Reference: mosaic.yaml": mosaic/design/reference_mosaic_yaml.md
           - "Reference: validators.yaml": mosaic/design/reference_validators_yaml.md
           - "Reference: CEL Context": mosaic/design/reference_cel_context.md
   - Cappella:

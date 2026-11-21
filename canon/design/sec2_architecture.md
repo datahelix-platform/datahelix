@@ -93,7 +93,7 @@ outputs:
       - aligner
       - genome_build
       - sample
-    hippo_fields:             # CWL output value → Hippo entity field mappings
+    mosaic_fields:             # CWL output value → Hippo entity field mappings
       uri: "{outputs.bam.location}"
       aligner: "{inputs.aligner}"
       genome_build: "{inputs.genome_build}"
@@ -334,7 +334,7 @@ User: canon get AlignmentFile \
 
 Canon relies on the following entity types being present in the Hippo deployment.
 These are defined in the **Canon Hippo reference schema**, which is bundled inside the
-`canon` package and registered as a `hippo.reference_loaders` entry point.
+`canon` package and registered as a `mosaic.reference_loaders` entry point.
 
 **Installing Canon's schema into a Hippo deployment:**
 

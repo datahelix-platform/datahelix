@@ -299,12 +299,12 @@ outputs:
     entity_type: <string>            # Hippo entity type for this output
     identity_fields:                 # fields that uniquely identify this artifact
       - <field_name>                 # must match fields declared in the rule's produces.match
-    hippo_fields:                    # CWL output/input → Hippo entity field mappings
-      <hippo_field>: <expression>    # expression may reference CWL outputs or rule inputs
+    mosaic_fields:                    # CWL output/input → Hippo entity field mappings
+      <mosaic_field>: <expression>    # expression may reference CWL outputs or rule inputs
     optional: <bool>                 # default false; if true, missing output is not an error
 ```
 
-**Expression syntax in `hippo_fields:`:**
+**Expression syntax in `mosaic_fields:`:**
 
 | Expression | Meaning |
 |---|---|
@@ -327,7 +327,7 @@ outputs:
       - aligner
       - quality_cutoff
       - min_length
-    hippo_fields:
+    mosaic_fields:
       uri: "{outputs.bam.location}"
       file_size_bytes: "{outputs.bam.size}"
       checksum_sha1: "{outputs.bam.checksum}"
@@ -342,14 +342,14 @@ outputs:
     entity_type: AlignmentIndex
     identity_fields:
       - alignment         # ref to parent AlignmentFile entity
-    hippo_fields:
+    mosaic_fields:
       uri: "{outputs.bam_index.location}"
       alignment: "{outputs.bam.entity_id}"   # UUID of the just-ingested AlignmentFile
     optional: true        # some aligners don't produce an index; not an error if missing
 ```
 
 **Validation rules for sidecars:**
-- Every `identity_field` must be present in `hippo_fields`
+- Every `identity_field` must be present in `mosaic_fields`
 - Every CWL output named in the sidecar must exist in the workflow's `outputs:` block
 - At least one non-optional output must be declared
 - Canon validates sidecars at startup against their paired CWL files

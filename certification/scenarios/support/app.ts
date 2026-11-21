@@ -72,8 +72,8 @@ export const sel = {
       p.getByRole("button", { name, exact: true }),
     ),
 
-  // The real footer reads "Control plane: LinkML-on-Hippo document store"
-  // (hippo-backed) or "Control plane: this browser only (…)" (local fallback).
+  // The real footer reads "Control plane: LinkML-on-Mosaic document store"
+  // (Mosaic-backed) or "Control plane: this browser only (…)" (local fallback).
   controlPlaneStatus: (p: Page): Locator =>
     p.getByTestId("control-plane-status").or(p.getByText(/^control plane:/i)).first(),
 

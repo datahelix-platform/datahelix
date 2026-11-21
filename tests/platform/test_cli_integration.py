@@ -36,7 +36,7 @@ from unittest.mock import MagicMock
 def _make_planner(hippo_shim, rules, executor, tmp_path) -> RecursivePlanner:
     ref_resolver = MagicMock()
     ref_resolver.resolve.return_value = Entity(
-        id="ref-uuid", entity_type="Unknown", data={}, uri="hippo://ref/unknown"
+        id="ref-uuid", entity_type="Unknown", data={}, uri="dhlx://ref/unknown"
     )
     return RecursivePlanner(
         hippo_client=hippo_shim,

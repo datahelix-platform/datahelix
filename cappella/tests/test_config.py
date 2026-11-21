@@ -49,7 +49,7 @@ class TestLoadConfig:
         p = _write(tmp_path, "")
         cfg = load_config(p)
         assert isinstance(cfg, CappellaConfig)
-        assert cfg.hippo.url == "http://localhost:8001"
+        assert cfg.mosaic.url == "http://localhost:8001"
 
     def test_file_not_found_raises_config_error(self, tmp_path):
         with pytest.raises(ConfigError, match="not found"):
@@ -61,15 +61,15 @@ class TestLoadConfig:
             load_config(p)
 
     def test_hippo_url_loaded(self, tmp_path):
-        p = _write(tmp_path, "hippo:\n  url: http://hippo.example.com\n")
+        p = _write(tmp_path, "mosaic:\n  url: http://mosaic.example.com\n")
         cfg = load_config(p)
-        assert cfg.hippo.url == "http://hippo.example.com"
+        assert cfg.mosaic.url == "http://mosaic.example.com"
 
     def test_env_var_substitution_in_file(self, tmp_path, monkeypatch):
-        monkeypatch.setenv("HIPPO_TOKEN", "tok-abc")
-        p = _write(tmp_path, "hippo:\n  token: ${HIPPO_TOKEN}\n")
+        monkeypatch.setenv("MOSAIC_TOKEN", "tok-abc")
+        p = _write(tmp_path, "mosaic:\n  token: ${MOSAIC_TOKEN}\n")
         cfg = load_config(p)
-        assert cfg.hippo.token == "tok-abc"
+        assert cfg.mosaic.token == "tok-abc"
 
     def test_invalid_field_raises_config_error(self, tmp_path):
         p = _write(tmp_path, "server:\n  port: not_a_number\n")
@@ -139,7 +139,7 @@ class TestLoggingConfig:
 class TestCappellaConfig:
     def test_all_defaults(self):
         cfg = CappellaConfig()
-        assert isinstance(cfg.hippo, MosaicConfig)
+        assert isinstance(cfg.mosaic, MosaicConfig)
         assert isinstance(cfg.canon, CanonConfig)
         assert isinstance(cfg.server, ServerConfig)
         assert isinstance(cfg.resolution, ResolutionConfig)

@@ -5,7 +5,7 @@ linkml-data-gen keys its output by the schema's own tree-root slot names
 (``processes:``, ``analyses:``). Mosaic's ingest bundle instead recognizes an
 accessor per class, derived from the class name — and for irregular plurals
 the naive derivation differs (``Process`` -> ``processs``, ``Analysis`` ->
-``analysiss``) unless the class carries a ``hippo_accessor`` annotation.
+``analysiss``) unless the class carries a ``mosaic_accessor`` annotation.
 
 We compute the mapping straight from the schema, reusing the running image's
 OWN accessor helper so the remap always matches whatever version does the
@@ -20,26 +20,23 @@ import sys
 import yaml
 from linkml_runtime import SchemaView
 
-# Reuse the installed runtime's accessor helper across the rename window;
-# fall back to the documented default (snake_case + "s") if neither is present.
+# Reuse the installed runtime's accessor helper; fall back to the documented
+# default (snake_case + "s", or a `mosaic_accessor` override) if it is absent.
 try:
     from mosaic.linkml_bridge import class_accessor_name  # type: ignore
 except Exception:  # pragma: no cover - version-dependent
-    try:
-        from hippo.linkml_bridge import class_accessor_name  # type: ignore
-    except Exception:  # pragma: no cover
-        import re
+    import re
 
-        def class_accessor_name(class_name, cls_obj):  # noqa: ANN001
-            ann = getattr(cls_obj, "annotations", None) or {}
-            override = None
-            if hasattr(ann, "get"):
-                a = ann.get("hippo_accessor")
-                override = getattr(a, "value", a) if a is not None else None
-            if isinstance(override, str) and override:
-                return override
-            s1 = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1_\2", class_name)
-            return re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", s1).lower() + "s"
+    def class_accessor_name(class_name, cls_obj):  # noqa: ANN001
+        ann = getattr(cls_obj, "annotations", None) or {}
+        override = None
+        if hasattr(ann, "get"):
+            a = ann.get("mosaic_accessor")
+            override = getattr(a, "value", a) if a is not None else None
+        if isinstance(override, str) and override:
+            return override
+        s1 = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1_\2", class_name)
+        return re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", s1).lower() + "s"
 
 
 def main() -> int:

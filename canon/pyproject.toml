@@ -46,9 +46,6 @@ markers = [
     "integration: marks tests as integration tests (run real subprocesses)",
 ]
 
-[project.entry-points."hippo.reference_loaders"]
-canon = "canon.mosaic_reference.loader:CanonReferenceLoader"
-
 [project.entry-points."mosaic.reference_loaders"]
 canon = "canon.mosaic_reference.loader:CanonReferenceLoader"
 
