@@ -493,8 +493,8 @@ outputs:
     entity_type: <string>
     identity_fields:
       - <field>
-    hippo_fields:
-      <hippo_field>: <expression>
+    mosaic_fields:
+      <mosaic_field>: <expression>
     optional: <bool>
 ```
 
@@ -522,7 +522,7 @@ outputs:
 **Type:** `list[string]`
 **Required:** Yes
 
-The subset of `hippo_fields` that uniquely identify this artifact. These fields are used by Canon for the registry lookup query in Phase 2 of the resolution algorithm. Every field listed here must appear in `hippo_fields`.
+The subset of `mosaic_fields` that uniquely identify this artifact. These fields are used by Canon for the registry lookup query in Phase 2 of the resolution algorithm. Every field listed here must appear in `mosaic_fields`.
 
 Identity fields should match the parameters in the corresponding rule's `produces.match` block.
 
@@ -535,11 +535,11 @@ identity_fields:
   - min_length
 ```
 
-**Validation:** every `identity_field` must be present in `hippo_fields` — `CanonRuleValidationError: identity_field '{field}' is not declared in hippo_fields`.
+**Validation:** every `identity_field` must be present in `mosaic_fields` — `CanonRuleValidationError: identity_field '{field}' is not declared in mosaic_fields`.
 
 ---
 
-### `outputs.<name>.hippo_fields`
+### `outputs.<name>.mosaic_fields`
 
 **Type:** `mapping`
 **Required:** Yes
@@ -547,7 +547,7 @@ identity_fields:
 Maps Hippo entity field names to expressions that compute their values from the CWL execution context. See [Sidecar Expression Syntax](#sidecar-expression-syntax) below.
 
 ```yaml
-hippo_fields:
+mosaic_fields:
   uri: "{outputs.bam.location}"
   file_size_bytes: "{outputs.bam.size}"
   checksum_sha1: "{outputs.bam.checksum}"
@@ -581,7 +581,7 @@ bam_index:
 
 ### Sidecar Expression Syntax
 
-All expressions in `hippo_fields` are strings containing `{...}` placeholders:
+All expressions in `mosaic_fields` are strings containing `{...}` placeholders:
 
 | Expression | Source | Description |
 |---|---|---|
@@ -614,7 +614,7 @@ outputs:
       - aligner
       - quality_cutoff
       - min_length
-    hippo_fields:
+    mosaic_fields:
       uri: "{outputs.bam.location}"
       file_size_bytes: "{outputs.bam.size}"
       checksum_sha1: "{outputs.bam.checksum}"
@@ -628,7 +628,7 @@ outputs:
     entity_type: AlignmentIndex
     identity_fields:
       - alignment
-    hippo_fields:
+    mosaic_fields:
       uri: "{outputs.bam_index.location}"
       alignment: "{outputs.bam.entity_id}"    # UUID of the AlignmentFile just ingested
     optional: true
@@ -652,7 +652,7 @@ Canon validates all rules and sidecars at startup before accepting any requests.
 | Not a Workflow | CWL file `class` is `CommandLineTool` or other | `Canon rules must reference a CWL Workflow, not {class}: {path}` |
 | Sidecar not found | No `.canon.yaml` alongside the CWL file | `sidecar not found: {path}.canon.yaml` |
 | Sidecar output not in CWL | A sidecar output name is not in the CWL `outputs:` block | `unknown CWL output '{name}' in sidecar {sidecar_path}` |
-| Missing identity_field | An `identity_field` is not in `hippo_fields` | `identity_field '{field}' is not declared in hippo_fields` |
+| Missing identity_field | An `identity_field` is not in `mosaic_fields` | `identity_field '{field}' is not declared in mosaic_fields` |
 | No required outputs | All sidecar outputs are `optional: true` | `sidecar has no required outputs: {path}` |
 | Unpropagated wildcard | A wildcard in `requires[].match` is absent from `produces.match` | `unpropagated wildcard '{name}' in rule '{rule}' requires[{i}].match — must appear in produces.match` |
 | Tool ref without version | An entity ref to `ToolVersion` lacks a `version` field (or `version` is itself a wildcard on a non-wildcard produces spec) | `tool version required in rule '{rule}' — entity ref to ToolVersion must include a version field` |

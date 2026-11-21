@@ -1,4 +1,4 @@
-# Bootstrap fixture package (v1.2.0)
+# Bootstrap fixture package (v2.0.0)
 
 The single versioned source of the seed **schema**, seed **data**, and the
 Aperture **control-plane document recipe** used to boot a certification

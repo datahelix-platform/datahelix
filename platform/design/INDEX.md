@@ -285,8 +285,8 @@ A **trigger** is a first-class Cappella concept: `source` (what fires it) + opti
 | Decision | Choice | Rationale |
 |---|---|---|
 | Unified trigger abstraction | Single config format for all trigger sources | Webhook, schedule, poll, manual, and internal events are all treated as event sources feeding the same trigger engine. Consistent mental model. |
-| Trigger sources (MVP) | `webhook`, `schedule`, `hippo_poll`, `manual`, `internal_event` | Covers all real integration patterns. Internal events enable action chaining without tight coupling. |
-| Reactive Mosaic triggers (MVP) | Polling (`hippo_poll`) — query `updated_at > last_watermark` at configurable interval | Sufficient for MVP. Mosaic event hooks deferred. Polling works because Cappella drives most Mosaic writes in normal operation; admin changes are infrequent and the actor can trigger manually. |
+| Trigger sources (MVP) | `webhook`, `schedule`, `mosaic_poll`, `manual`, `internal_event` | Covers all real integration patterns. Internal events enable action chaining without tight coupling. |
+| Reactive Mosaic triggers (MVP) | Polling (`mosaic_poll`) — query `updated_at > last_watermark` at configurable interval | Sufficient for MVP. Mosaic event hooks deferred. Polling works because Cappella drives most Mosaic writes in normal operation; admin changes are infrequent and the actor can trigger manually. |
 | Mosaic event hooks | Deferred — not in MVP | Would add a notification plugin hook to Mosaic's write path. Add when sub-minute reactive latency becomes a requirement. |
 | Action chaining | Internal events as first-class trigger sources | Actions `emit:` named events on completion; other triggers subscribe with `type: internal_event`. Decouples adapters from downstream workflows. Supports fan-out (multiple triggers subscribe to one event). |
 | Chained action context | Entity IDs only — chained actions query Mosaic at invocation time | Prevents stale-data bugs from queue delays. Actions treat IDs as a prompt to fetch current state fresh. |
@@ -333,7 +333,7 @@ triggers:
   # Mosaic poll: reacts to entities created/updated outside Cappella
   - name: admin_sample_qc
     source:
-      type: hippo_poll
+      type: mosaic_poll
       entity_type: Sample
       on: create
       interval: 60s
@@ -374,7 +374,7 @@ A **trigger** is the fundamental unit of Cappella automation — a named pairing
 | Decision | Choice | Rationale |
 |---|---|---|
 | Trigger abstraction | Unified `source` + `action` config format across all trigger types | All sources (webhook, schedule, poll, manual, internal event) produce a trigger event that the trigger engine routes to the action. One mental model throughout. |
-| Trigger sources | `webhook`, `schedule`, `hippo_poll`, `manual`, `internal_event` | Covers all integration patterns from MVP batch syncs through to future live integrations. |
+| Trigger sources | `webhook`, `schedule`, `mosaic_poll`, `manual`, `internal_event` | Covers all integration patterns from MVP batch syncs through to future live integrations. |
 | Reactive Mosaic triggers (MVP) | Polling — Cappella queries Mosaic for entities with `updated_at > last_poll_time` | Sufficient for MVP: Cappella drives most Mosaic writes in normal operation; admin changes are infrequent and the actor can trigger downstream manually. No Mosaic changes required. |
 | Reactive Mosaic triggers (future) | Mosaic event hook plugin system — deferred | When sub-minute reactivity is needed, a `mosaic.event_hooks` entry point group (parallel to `mosaic.write_validators`) can be added without restructuring the trigger model. |
 | Action chaining | Internal events as first-class trigger sources | Actions emit named internal events on completion; other triggers subscribe to them. Decouples adapters from downstream workflows. Supports fan-out naturally. |
@@ -421,7 +421,7 @@ triggers:
   # Mosaic poll (edge case: reacting to non-Cappella writes)
   - name: admin_sample_qc
     source:
-      type: hippo_poll
+      type: mosaic_poll
       entity_type: Sample
       on: create
       interval: 60s
@@ -477,7 +477,7 @@ triggers:
 | Bridge federation extension (future) | Medium | Bridge's core role — auth gateway / unified-API integration middleware (sole PEP/PDP) — is **settled** (`bridge/design/sec1`–`sec6`, `sec2_components.md` §2.6, `sec6_security_model.md`). Open only for v2.0: an inter-DataHelix-instance data-sharing / **federation** extension. Needs design before a federation spec can start. |
 | Platform name | Low | Settled as **DataHelix**. |
 | Cappella config format | High | Adapter configs need to express more than field-to-field mappings — transformation pipelines with rules, vocabulary normalization, confidence thresholds. Format TBD. |
-| Reference data versioning | Low | Resolved at the loader level — each loader version pins a reference ontology release. `mosaic reference update` diffs schema and data. Internal tracking of installed loader name + version in `hippo_meta` table (sec3b). Detail TBD in Mosaic sec5 (Ingestion). |
+| Reference data versioning | Low | Resolved at the loader level — each loader version pins a reference ontology release. `mosaic reference update` diffs schema and data. Internal tracking of installed loader name + version in `mosaic_meta` table (sec3b). Detail TBD in Mosaic sec5 (Ingestion). |
 | Cappella trigger model | ✅ Resolved | See Cappella Trigger Model section above. |
 | Idempotency for live integrations | High | MVP uses ExternalID upsert. Full design for webhook deduplication, out-of-order delivery, and SyncRun provenance deferred until live integrations are in scope. |
 | Multi-institution deployment model | Medium | For the deferred v2.0 **federation** extension of Bridge: what does a federated query look like? Does each institution run a full DataHelix stack? What data leaves the institution boundary? |
@@ -509,13 +509,13 @@ Decisions recorded here that require updates to existing or future component spe
 | `mosaic/design/sec3_data_model.md` | Add `search` field declaration to schema config field type table | Fuzzy search decision |
 | `mosaic/design/sec3_data_model.md` | Add `requires:` block to schema config format | Reference loader plugin system decision |
 | `mosaic/design/sec4_api_layer.md` | *(not started)* Include fuzzy search endpoint (`?q=&match=`) and `ScoredMatch` response type | Fuzzy search decision |
-| `mosaic/design/sec5_ingestion.md` | *(not started)* Include `mosaic reference install/update/list` CLI commands; `ReferenceLoader` lifecycle; reference loader version tracking in `hippo_meta` | Reference loader plugin system decision |
+| `mosaic/design/sec5_ingestion.md` | *(not started)* Include `mosaic reference install/update/list` CLI commands; `ReferenceLoader` lifecycle; reference loader version tracking in `mosaic_meta` | Reference loader plugin system decision |
 | `mosaic/design/sec2_architecture.md` | Add unified config validator infrastructure: `validators.yaml` loading, expand path engine, CEL evaluation with `entity`/`existing` context, cycle detection, batch list fetching, built-in preset registry | Unified validation architecture |
 | `mosaic/design/sec3_data_model.md` | Formalise `base:` schema inheritance as polymorphic (is-a); document subtype semantics for queries, validators, and migrations | Schema inheritance decision |
 | `mosaic/design/sec3b_relational_storage.md` | Add storage strategy for polymorphic inheritance: type discriminator column vs. joined tables | Schema inheritance decision |
 | `mosaic/design/INDEX.md` | Add decisions from today's session to Mosaic key decisions log | All Mosaic-touching decisions |
 | `cappella/design/sec1_overview.md` | *(not started)* Cappella overview: conductor/integration engine role, stateless design, Mosaic as sole storage backend | Cappella architecture session |
-| `cappella/design/sec2_architecture.md` | *(not started)* Trigger engine architecture: webhook server, cron scheduler, hippo_poll loop, internal event bus, action dispatcher | Trigger model decisions |
+| `cappella/design/sec2_architecture.md` | *(not started)* Trigger engine architecture: webhook server, cron scheduler, mosaic_poll loop, internal event bus, action dispatcher | Trigger model decisions |
 | `cappella/design/sec3_adapters.md` | *(not started)* Adapter architecture: ExternalSourceAdapter implementations, field mapping config format, transformation pipeline, upsert-by-ExternalID idempotency | Adapter boundary + idempotency decisions |
 | `cappella/design/sec4_audit.md` | *(not started)* Operational audit: structured JSON run logs (MVP), future SyncRun entities in Mosaic | Audit logging decisions |
 
@@ -524,4 +524,4 @@ Decisions recorded here that require updates to existing or future component spe
 ## Design Session Notes
 
 **2026-03-13** — Initial platform architecture session (Adam + Stanley).  
-Topics covered: Cappella scope and conductor metaphor, adapter boundary between Mosaic and Cappella, field mapping ownership, reference/config/operational data category distinction, data loading tiers, reference loader plugin system (MVP scope), fuzzy search abstraction, gene/anatomy canonical identifiers, Cappella-independence principle, unified validation architecture (3-layer: schema field validators / config-driven CEL validators with expand paths / Python plugin validators), CEL expression language (over DSL), expand path syntax with `[]` list traversal, entity graph expansion design (explicit paths over lazy evaluation), built-in validator presets as ergonomic shortcuts, polymorphic schema inheritance (`base:` = is-a), subtype-aware `entity_types` matching in validators, Cappella trigger model (unified source+action format, internal events for chaining, query-fresh-at-invocation, hippo_poll as edge case), idempotency MVP (ExternalID upsert, live integration deferred), Cappella operational audit (structured logs MVP, SyncRun entities future).
+Topics covered: Cappella scope and conductor metaphor, adapter boundary between Mosaic and Cappella, field mapping ownership, reference/config/operational data category distinction, data loading tiers, reference loader plugin system (MVP scope), fuzzy search abstraction, gene/anatomy canonical identifiers, Cappella-independence principle, unified validation architecture (3-layer: schema field validators / config-driven CEL validators with expand paths / Python plugin validators), CEL expression language (over DSL), expand path syntax with `[]` list traversal, entity graph expansion design (explicit paths over lazy evaluation), built-in validator presets as ergonomic shortcuts, polymorphic schema inheritance (`base:` = is-a), subtype-aware `entity_types` matching in validators, Cappella trigger model (unified source+action format, internal events for chaining, query-fresh-at-invocation, mosaic_poll as edge case), idempotency MVP (ExternalID upsert, live integration deferred), Cappella operational audit (structured logs MVP, SyncRun entities future).

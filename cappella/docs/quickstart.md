@@ -17,9 +17,9 @@ pip install cappella[dev]
 Create `cappella.yaml`:
 
 ```yaml
-hippo:
+mosaic:
   url: "http://localhost:8001"
-  token: "${HIPPO_TOKEN}"
+  token: "${MOSAIC_TOKEN}"
 
 canon:
   enabled: true
@@ -144,7 +144,7 @@ cappella status --config cappella.yaml
 ```json
 {
   "cappella_version": "0.1.0",
-  "hippo": {"status": "ok", "version": "0.3.1"},
+  "mosaic": {"status": "ok", "version": "0.3.1"},
   "adapters": {
     "donors": {"status": "ok", "last_sync": "2026-03-26T02:00:47Z"}
   }

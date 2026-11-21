@@ -34,9 +34,9 @@ cappella --help
 Create a `cappella.yaml` configuration file. At minimum you need a Hippo connection:
 
 ```yaml
-hippo:
+mosaic:
   url: "http://localhost:8001"
-  token: "${HIPPO_TOKEN}"
+  token: "${MOSAIC_TOKEN}"
 ```
 
 See the [Quick Start](quickstart.md) for a minimal working example, or the [User Guide](user_guide.md) for the full configuration reference.
@@ -70,7 +70,7 @@ Expected output:
 ```json
 {
   "cappella_version": "0.1.0",
-  "hippo": {"status": "ok", "version": "0.3.1"},
+  "mosaic": {"status": "ok", "version": "0.3.1"},
   "canon": {"status": "ok", "version": "0.2.0"},
   "adapters": {}
 }

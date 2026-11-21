@@ -10,7 +10,7 @@ Cappella automates ingest and resolution operations through a lightweight trigge
 | `manual` | CLI or API call | v0.1 |
 | `internal_event` | Named event emitted by another trigger's `on_success` | v0.1 |
 | `webhook` | External system sends an HTTP POST to the configured path | v0.2 |
-| `hippo_poll` | Hippo entities matching a filter are created or updated | v0.2 |
+| `mosaic_poll` | Hippo entities matching a filter are created or updated | v0.2 |
 
 ### Schedule Triggers
 
@@ -95,7 +95,7 @@ triggers:
 ```yaml
 triggers:
   - name: trigger_alignment_on_new_sample
-    type: hippo_poll
+    type: mosaic_poll
     poll:
       entity_type: Sample
       filter: "tissue == 'DLPFC' && status == 'received'"

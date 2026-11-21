@@ -120,7 +120,7 @@ _TEST_ATTRIBUTES: dict[str, dict[str, str]] = {
 def build_test_schema_registry() -> "SchemaRegistry":
     """Return a ``SchemaRegistry`` covering all DataHelix test entity classes.
 
-    Built from an in-memory LinkML overlay that imports ``hippo_core`` and
+    Built from an in-memory LinkML overlay that imports ``mosaic_core`` and
     declares the user-domain classes used by DataHelix contract and platform
     tests. Each declared class extends ``Entity`` and carries the union of
     string-typed attributes those tests write.
@@ -135,9 +135,9 @@ def build_test_schema_registry() -> "SchemaRegistry":
         "name": "datahelix_tests_minimal",
         "prefixes": {
             "linkml": "https://w3id.org/linkml/",
-            "hippo": "https://w3id.org/hippo/",
+            "mosaic": "https://w3id.org/datahelix/mosaic/",
         },
-        "imports": ["linkml:types", "hippo_core"],
+        "imports": ["linkml:types", "mosaic_core"],
         "default_range": "string",
         "classes": {
             cls: {"is_a": "Entity", "attributes": _TEST_ATTRIBUTES}

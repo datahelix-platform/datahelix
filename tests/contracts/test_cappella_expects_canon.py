@@ -15,7 +15,7 @@ DO NOT add Canon-internal tests here. This file only asserts what Cappella needs
 See TESTING.md §"CanonClient — Cappella's View" for the full behavioral spec.
 
 Cappella depends on Canon (RecursivePlanner) for:
-  - resolve(entity_type, params) → URI string — non-empty, hippo:// scheme
+  - resolve(entity_type, params) → URI string — non-empty, dhlx:// scheme
   - resolve_with_decision() → dict with 'decision' and 'uri' keys
   - Idempotency: same URI on repeated calls; executor called only once (BUILD)
   - CanonNoRuleError: raised when no rule matches (NO_RULE unresolved reason)
@@ -87,7 +87,7 @@ class _HippoShim:
         return None
 
     def ingest_entity(self, entity_type: str, data: dict) -> Entity:
-        synthetic_uri = f"hippo://{entity_type.lower()}/{uuid.uuid4()}"
+        synthetic_uri = f"dhlx://{entity_type.lower()}/{uuid.uuid4()}"
         data_with_uri = {**data, "uri": synthetic_uri}
         result = self._client.create(entity_type, data_with_uri)
         self._type_cache[result["id"]] = entity_type
@@ -185,7 +185,7 @@ def _make_planner(
 ) -> RecursivePlanner:
     ref_resolver = MagicMock()
     ref_resolver.resolve.return_value = Entity(
-        id="ref-uuid", entity_type="Unknown", data={}, uri="hippo://ref/unknown"
+        id="ref-uuid", entity_type="Unknown", data={}, uri="dhlx://ref/unknown"
     )
     return RecursivePlanner(
         hippo_client=shim,
@@ -199,7 +199,7 @@ def _make_planner(
 
 # URI pattern Cappella uses to parse Canon results
 # See TESTING.md §"CanonClient — Cappella's View" — URI structure guarantee
-CANON_URI_RE = re.compile(r"^hippo://\w+/[0-9a-f-]{36}$")
+CANON_URI_RE = re.compile(r"^dhlx://\w+/[0-9a-f-]{36}$")
 
 
 # ---------------------------------------------------------------------------
@@ -218,7 +218,7 @@ class TestResolveURIContract:
         """REUSE path: entity exists in Hippo — resolve() returns its URI."""
         hippo_client.create(
             "AlignedDatafile",
-            {"sample_id": "s001", "uri": f"hippo://aligneddatafile/{uuid.uuid4()}"},
+            {"sample_id": "s001", "uri": f"dhlx://aligneddatafile/{uuid.uuid4()}"},
         )
         planner = _make_planner(shim, [], mock_executor, tmp_path)
         uri = planner.resolve("AlignedDatafile", {"sample_id": "s001"})
@@ -243,7 +243,7 @@ class TestResolveURIContract:
         """
         hippo_client.create(
             "AlignedDatafile",
-            {"sample_id": "s001", "uri": f"hippo://aligneddatafile/{uuid.uuid4()}"},
+            {"sample_id": "s001", "uri": f"dhlx://aligneddatafile/{uuid.uuid4()}"},
         )
         planner = _make_planner(shim, [], mock_executor, tmp_path)
         planner.resolve("AlignedDatafile", {"sample_id": "s001"})
@@ -254,7 +254,7 @@ class TestResolveURIContract:
 
 
 # ---------------------------------------------------------------------------
-# CONTRACT: URI format — hippo://<entity_type>/<uuid36>
+# CONTRACT: URI format — dhlx://<entity_type>/<uuid36>
 #
 # Cappella parses Canon URIs to extract entity_type and UUID for downstream
 # Hippo queries and provenance tracking.  The format must be stable.
@@ -263,17 +263,17 @@ class TestResolveURIContract:
 
 
 class TestURIFormatContract:
-    """Cappella parses Canon URIs — the hippo://<type>/<uuid> format must be stable."""
+    """Cappella parses Canon URIs — the dhlx://<type>/<uuid> format must be stable."""
 
-    def test_build_uri_matches_hippo_scheme(
+    def test_build_uri_matches_dhlx_scheme(
         self, hippo_client, shim, mock_executor, align_rule, tmp_path
     ):
-        """BUILD URI must match hippo://<entity_type>/<uuid36>."""
+        """BUILD URI must match dhlx://<entity_type>/<uuid36>."""
         hippo_client.create("Sample", {"sample_id": "s001"})
         planner = _make_planner(shim, [align_rule], mock_executor, tmp_path)
         uri = planner.resolve("AlignedDatafile", {"sample_id": "s001"})
         assert CANON_URI_RE.match(uri), (
-            f"URI {uri!r} does not match hippo://<type>/<uuid36> — "
+            f"URI {uri!r} does not match dhlx://<type>/<uuid36> — "
             "Cappella extracts entity_type and UUID from this URI for Hippo queries"
         )
 
@@ -347,7 +347,7 @@ class TestResolveWithDecisionContract:
         """REUSE path: resolve_with_decision()['decision'] must equal 'REUSE'."""
         hippo_client.create(
             "AlignedDatafile",
-            {"sample_id": "s001", "uri": f"hippo://aligneddatafile/{uuid.uuid4()}"},
+            {"sample_id": "s001", "uri": f"dhlx://aligneddatafile/{uuid.uuid4()}"},
         )
         planner = _make_planner(shim, [], mock_executor, tmp_path)
         result = planner.resolve_with_decision("AlignedDatafile", {"sample_id": "s001"})
@@ -464,7 +464,7 @@ class TestExceptionBehaviorContract:
         hippo_client.create("Sample", {"sample_id": "s001"})
         ref_resolver = MagicMock()
         ref_resolver.resolve.return_value = Entity(
-            id="ref-uuid", entity_type="Unknown", data={}, uri="hippo://ref/unknown"
+            id="ref-uuid", entity_type="Unknown", data={}, uri="dhlx://ref/unknown"
         )
         planner = RecursivePlanner(
             hippo_client=shim,

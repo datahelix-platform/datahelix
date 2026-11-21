@@ -45,7 +45,7 @@ def _make_cwl_and_sidecar(tmp_path: Path, workflow: str = "workflows/star_align.
         "  aligned_bam:\n"
         "    entity_type: AlignedReads\n"
         "    identity_fields: [sample]\n"
-        "    hippo_fields:\n"
+        "    mosaic_fields:\n"
         "      uri: '{outputs.bam.location}'\n"
     )
     return cwl

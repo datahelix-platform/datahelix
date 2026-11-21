@@ -11,8 +11,8 @@
 # (fixture_version) — changing the fixture is a suite change and re-certifies.
 
 name: datahelix-certification-bootstrap
-version: 1.2.0            # keep in sync with ./VERSION
-schema_min_hippo_core: 0.6.0   # hippo_core version these classes were authored against
+version: 2.0.0            # keep in sync with ./VERSION
+schema_min_mosaic_core: 0.6.0  # mosaic_core version these classes were authored against
 
 provides:
   schema:

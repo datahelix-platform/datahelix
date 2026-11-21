@@ -163,7 +163,7 @@ The test fixture creates the following entities in Mosaic before the round-trip 
 
 **Assertions:**
 - Return value is a non-empty URI string
-- The URI matches `hippo://AlignedDatafile/<existing_uuid>`
+- The URI matches `dhlx://AlignedDatafile/<existing_uuid>`
 - No `WorkflowRun` entity was created in Mosaic (REUSE does not write)
 - `canon plan(...)` output shows `REUSE` decision for this spec
 
@@ -212,8 +212,8 @@ The round-trip test includes a **partial failure scenario** to validate Cappella
 ```json
 {
   "resolved": [
-    {"sample_id": "uuid-1", "uri": "hippo://AlignedDatafile/uuid-A"},
-    {"sample_id": "uuid-2", "uri": "hippo://AlignedDatafile/uuid-B"}
+    {"sample_id": "uuid-1", "uri": "dhlx://AlignedDatafile/uuid-A"},
+    {"sample_id": "uuid-2", "uri": "dhlx://AlignedDatafile/uuid-B"}
   ],
   "unresolved": [
     {

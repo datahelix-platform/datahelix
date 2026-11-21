@@ -8,7 +8,7 @@ from typing import Any
 
 from canon.exceptions import CanonIngestionError, CanonStorageError
 from canon.executors.base import CWLRunResult
-from canon.ingestion.sidecar import evaluate_hippo_fields, load_sidecar
+from canon.ingestion.sidecar import evaluate_mosaic_fields, load_sidecar
 from canon.storage.base import StorageAdapter
 from canon.types import Entity
 
@@ -20,7 +20,7 @@ class OutputIngestionPipeline:
     Ingests CWL outputs into Hippo after a successful workflow run.
 
     For each sidecar output definition:
-      1. Evaluate hippo_fields expressions against CWL outputs + inputs
+      1. Evaluate mosaic_fields expressions against CWL outputs + inputs
       2. Optionally relocate output files via the configured StorageAdapter
       3. POST entity to Hippo
     """
@@ -88,7 +88,7 @@ class OutputIngestionPipeline:
             logger.info("Ingesting sidecar output '%s' as %s", output_name, sidecar_output.entity_type)
 
             try:
-                hippo_fields = evaluate_hippo_fields(
+                mosaic_fields = evaluate_mosaic_fields(
                     sidecar_output,
                     cwl_outputs=cwl_outputs,
                     cwl_inputs=cwl_inputs,
@@ -96,24 +96,24 @@ class OutputIngestionPipeline:
                 )
             except Exception as e:
                 raise CanonIngestionError(
-                    f"Rule {rule_name}: failed to evaluate hippo_fields for "
+                    f"Rule {rule_name}: failed to evaluate mosaic_fields for "
                     f"output '{output_name}': {e}"
                 ) from e
 
             # Relocate file outputs if present
-            uri_field = hippo_fields.get("uri") or hippo_fields.get("location")
+            uri_field = mosaic_fields.get("uri") or mosaic_fields.get("location")
             if uri_field and isinstance(uri_field, str):
                 try:
                     new_uri = self.relocate_output(uri_field, sidecar_output.entity_type, run_id)
-                    if "uri" in hippo_fields:
-                        hippo_fields["uri"] = new_uri
-                    elif "location" in hippo_fields:
-                        hippo_fields["location"] = new_uri
+                    if "uri" in mosaic_fields:
+                        mosaic_fields["uri"] = new_uri
+                    elif "location" in mosaic_fields:
+                        mosaic_fields["location"] = new_uri
                 except CanonStorageError:
                     logger.warning("Could not relocate %s, using original", uri_field)
 
             try:
-                entity = self._hippo.ingest_entity(sidecar_output.entity_type, hippo_fields)
+                entity = self._hippo.ingest_entity(sidecar_output.entity_type, mosaic_fields)
                 ingested[output_name] = entity
                 # Also index by entity_type for planner lookup
                 ingested[sidecar_output.entity_type] = entity

@@ -476,7 +476,7 @@ outputs:
       - trimmer
       - quality_cutoff
       - min_length
-    hippo_fields:
+    mosaic_fields:
       uri: "{outputs.trimmed_fastq.location}"
       file_size_bytes: "{outputs.trimmed_fastq.size}"
       checksum_sha1: "{outputs.trimmed_fastq.checksum}"
@@ -489,7 +489,7 @@ outputs:
     identity_fields:
       - sample
       - trimmer
-    hippo_fields:
+    mosaic_fields:
       uri: "{outputs.report.location}"
       sample: "{inputs.sample_id}"
       trimmer: "{inputs.trimmer}"
@@ -736,7 +736,7 @@ outputs:
       - trimmer
       - quality_cutoff
       - min_length
-    hippo_fields:
+    mosaic_fields:
       uri: "{outputs.bam.location}"
       file_size_bytes: "{outputs.bam.size}"
       checksum_sha1: "{outputs.bam.checksum}"
@@ -751,7 +751,7 @@ outputs:
     entity_type: AlignmentIndex
     identity_fields:
       - alignment
-    hippo_fields:
+    mosaic_fields:
       uri: "{outputs.bam_index.location}"
       alignment: "{outputs.bam.entity_id}"   # UUID assigned to AlignmentFile above
     optional: true
@@ -856,7 +856,7 @@ outputs:
       - strand_specific
       - quality_cutoff
       - min_length
-    hippo_fields:
+    mosaic_fields:
       uri: "{outputs.counts.location}"
       file_size_bytes: "{outputs.counts.size}"
       checksum_sha1: "{outputs.counts.checksum}"

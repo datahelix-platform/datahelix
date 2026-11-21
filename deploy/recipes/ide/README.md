@@ -88,7 +88,7 @@ make seed         # ingests every *.yaml there; idempotent on `id`
 ```
 
 Top-level keys are Mosaic's *ingest accessors* — snake_case of the class plus
-"s" (`Project` → `projects`). Irregular plurals need a `hippo_accessor`
+"s" (`Project` → `projects`). Irregular plurals need a `mosaic_accessor`
 annotation on the class; the `demo` recipe's `remap_accessors.py` shows the
 general case.
 
@@ -135,7 +135,7 @@ whatever was last built, by whatever toolchain happened to be on the host.
 
 ## Why the endpoint is relative
 
-Aperture is configured with `VITE_HIPPO_GRAPHQL_URL=/graphql` — a **relative**
+Aperture is configured with `VITE_GRAPHQL_URL=/graphql` — a **relative**
 path, resolved by the browser against the gateway's origin. That is the same
 seam `solo` uses in production, which means:
 

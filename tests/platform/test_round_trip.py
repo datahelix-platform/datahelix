@@ -93,7 +93,7 @@ def align_rule() -> ProductionRule:
 def _make_planner(hippo_shim, rules, executor, tmp_path) -> RecursivePlanner:
     ref_resolver = MagicMock()
     ref_resolver.resolve.return_value = Entity(
-        id="ref-uuid", entity_type="Unknown", data={}, uri="hippo://ref/unknown"
+        id="ref-uuid", entity_type="Unknown", data={}, uri="dhlx://ref/unknown"
     )
     return RecursivePlanner(
         hippo_client=hippo_shim,
@@ -219,7 +219,7 @@ def test_stage2_entity_has_version(hippo_client):
 def test_stage3_reuse_returns_uri(hippo_client, hippo_shim, mock_executor, align_rule, tmp_path):
     """REUSE: existing AlignedDatafile returned; executor not called (§5.4 Stage 3)."""
     sample = hippo_client.create("Sample", {"sample_id": "s001", "tissue_type": "brain"})
-    existing_uri = f"hippo://aligneddatafile/{sample['id']}-aligned"
+    existing_uri = f"dhlx://aligneddatafile/{sample['id']}-aligned"
     hippo_client.create(
         "AlignedDatafile",
         {"sample_id": "s001", "uri": existing_uri},
@@ -241,7 +241,7 @@ def test_stage3_reuse_plan_shows_reuse_decision(
     hippo_client, hippo_shim, mock_executor, align_rule, tmp_path
 ):
     """canon.plan() shows REUSE decision for pre-existing entity (§5.4 Stage 3)."""
-    existing_uri = f"hippo://aligneddatafile/{hippo_client.create('Sample', {'sample_id': 's001', 'tissue_type': 'brain'})['id']}"
+    existing_uri = f"dhlx://aligneddatafile/{hippo_client.create('Sample', {'sample_id': 's001', 'tissue_type': 'brain'})['id']}"
     hippo_client.create("AlignedDatafile", {"sample_id": "s001", "uri": existing_uri})
 
     planner = _make_planner(hippo_shim, [align_rule], mock_executor, tmp_path)
@@ -449,7 +449,7 @@ def test_full_round_trip_reuse_path(
     sample = hippo_client.create(
         "Sample", {"sample_id": "s001", "tissue_type": "brain"}
     )
-    pre_existing_uri = f"hippo://aligneddatafile/{sample['id']}"
+    pre_existing_uri = f"dhlx://aligneddatafile/{sample['id']}"
     hippo_client.create(
         "AlignedDatafile",
         {"sample_id": "s001", "uri": pre_existing_uri},
@@ -555,6 +555,6 @@ def test_partial_failure_resolved_uris_are_valid(
         "entity identity is per-sample"
     )
     for uri in uris:
-        assert uri.startswith("hippo://"), (
-            f"URI {uri!r} must use hippo:// scheme"
+        assert uri.startswith("dhlx://"), (
+            f"URI {uri!r} must use dhlx:// scheme"
         )

@@ -29,7 +29,7 @@ prefixes:
 
 imports:
   - linkml:types
-  - hippo_core
+  - mosaic_core
 
 default_range: string
 
@@ -57,7 +57,7 @@ classes:
         range: string
         required: true
         annotations:
-          hippo_search: fts5
+          mosaic_search: fts5
       bio:
         range: string
       books:
@@ -79,13 +79,13 @@ classes:
         range: string
         required: true
         annotations:
-          hippo_search: fts5
+          mosaic_search: fts5
       author:
         range: Author
         required: true
         description: The Book's author (typed reference → cross-link + batch resolution).
         annotations:
-          hippo_index: true
+          mosaic_index: true
       co_authors:
         range: Author
         multivalued: true
@@ -134,7 +134,7 @@ classes:
         range: Book
         required: true
         annotations:
-          hippo_index: true
+          mosaic_index: true
       rating:
         range: integer
         required: true
@@ -142,4 +142,4 @@ classes:
       body:
         range: string
         annotations:
-          hippo_search: fts5
+          mosaic_search: fts5

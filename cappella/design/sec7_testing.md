@@ -17,7 +17,7 @@ This section defines the test strategy for Cappella's trigger engine. It covers 
 | `manual` | v0.1 | Implemented |
 | `internal_event` | v0.1 | Implemented |
 | `webhook` | v0.2 | Deferred — spec complete here |
-| `hippo_poll` | v0.2 | Deferred — spec complete here |
+| `mosaic_poll` | v0.2 | Deferred — spec complete here |
 
 For each trigger source, this section defines:
 - The behavior matrix (inputs → expected outcomes)
@@ -222,16 +222,16 @@ The secret is loaded from the environment variable named in `secret_env`. If the
 
 ---
 
-## 7.6 `hippo_poll` Trigger Behavior Matrix (v0.2)
+## 7.6 `mosaic_poll` Trigger Behavior Matrix (v0.2)
 
-`hippo_poll` triggers fire when Hippo entities matching a query change. Cappella polls Hippo periodically using the `updated_at` index.
+`mosaic_poll` triggers fire when Hippo entities matching a query change. Cappella polls Hippo periodically using the `updated_at` index.
 
 ### 7.6.1 Configuration
 
 ```yaml
 triggers:
   - name: on_new_sample
-    type: hippo_poll
+    type: mosaic_poll
     poll:
       entity_type: Sample
       filter: "status == 'received'"     # CEL filter on entity fields
@@ -246,7 +246,7 @@ triggers:
         genome: GRCh38
 ```
 
-### 7.6.2 Core `hippo_poll` Scenarios
+### 7.6.2 Core `mosaic_poll` Scenarios
 
 | Test ID | Scenario | Expected outcome |
 |---------|----------|-----------------|
@@ -258,14 +258,14 @@ triggers:
 | `HP-06` | Hippo query times out during poll | Poll cycle aborted; cursor NOT advanced (retry on next interval); error logged |
 | `HP-07` | Action triggered by poll fails (e.g., Canon unreachable) | Poll cursor advances regardless; failed action logged; entity is NOT re-triggered on next poll (to avoid retry storms) |
 
-### 7.6.3 Polling Against STARLIMS Ingestion (hippo_poll)
+### 7.6.3 Polling Against STARLIMS Ingestion (mosaic_poll)
 
-The canonical `hippo_poll` use case is triggering alignment resolution when new samples arrive from STARLIMS.
+The canonical `mosaic_poll` use case is triggering alignment resolution when new samples arrive from STARLIMS.
 
 ```yaml
 triggers:
   - name: trigger_alignment_on_new_sample
-    type: hippo_poll
+    type: mosaic_poll
     poll:
       entity_type: Sample
       filter: "tissue == 'DLPFC' && status == 'received'"
@@ -290,7 +290,7 @@ triggers:
 
 ### 7.6.4 Change Detection Implementation Notes
 
-Cappella's `hippo_poll` uses Hippo's `GET /entities/{type}?updated_after={cursor}&limit=N` query (Phase 1 REST gap — cursor pagination). The poll cursor is stored as a `CappellaPollCursor` Hippo entity (keyed by trigger name). This means:
+Cappella's `mosaic_poll` uses Hippo's `GET /entities/{type}?updated_after={cursor}&limit=N` query (Phase 1 REST gap — cursor pagination). The poll cursor is stored as a `CappellaPollCursor` Hippo entity (keyed by trigger name). This means:
 
 - Cursor state survives Cappella restarts (it's in Hippo, not in-process memory)
 - Multiple Cappella instances polling the same trigger must coordinate — advisory lock on cursor entity update (v0.2 design detail)
@@ -304,9 +304,9 @@ These tests validate behavior when multiple trigger types interact.
 
 | Test ID | Scenario | Expected outcome |
 |---------|----------|-----------------|
-| `XTR-01` | `schedule` trigger fires; emits event; `internal_event` trigger chains into `hippo_poll` subscription | Chain resolves correctly; no event lost between trigger types |
-| `XTR-02` | `webhook` fires; `internal_event` subscriber starts ingest; `hippo_poll` fires before ingest completes | Both run independently; no interference; both logged with distinct `run_id` |
-| `XTR-03` | Two `hippo_poll` triggers watching same entity type with different filters | Both fire independently when their respective filters match; no cross-trigger dedup |
+| `XTR-01` | `schedule` trigger fires; emits event; `internal_event` trigger chains into `mosaic_poll` subscription | Chain resolves correctly; no event lost between trigger types |
+| `XTR-02` | `webhook` fires; `internal_event` subscriber starts ingest; `mosaic_poll` fires before ingest completes | Both run independently; no interference; both logged with distinct `run_id` |
+| `XTR-03` | Two `mosaic_poll` triggers watching same entity type with different filters | Both fire independently when their respective filters match; no cross-trigger dedup |
 | `XTR-04` | `schedule` ingest and `webhook` ingest both write to same entity within same second | Conflict resolution (`trust_level` or last-write-wins) applies; `HarmonizationConflict` event written |
 
 ---
@@ -355,12 +355,12 @@ Every trigger execution produces a structured JSON log entry:
 | `manual` | MAN-01–04 | — | — |
 | `internal_event` | EVT-01–05 | XTR-01–02 | — |
 | `webhook` | WH-01–07 | WH-HALO-01–05 | FakeExternalSource (HALO pattern) |
-| `hippo_poll` | HP-01–07 | HP-STAR-01–04, XTR-03–04 | FakeHippoClient (STARLIMS post-ingest) |
+| `mosaic_poll` | HP-01–07 | HP-STAR-01–04, XTR-03–04 | FakeHippoClient (STARLIMS post-ingest) |
 
 Test files:
 - `cappella/tests/test_trigger_schedule.py` — SCH-* scenarios
 - `cappella/tests/test_trigger_manual.py` — MAN-* scenarios
 - `cappella/tests/test_trigger_internal_event.py` — EVT-* scenarios
 - `cappella/tests/test_trigger_webhook.py` — WH-* scenarios (v0.2)
-- `cappella/tests/test_trigger_hippo_poll.py` — HP-* scenarios (v0.2)
+- `cappella/tests/test_trigger_mosaic_poll.py` — HP-* scenarios (v0.2)
 - `cappella/tests/test_trigger_cross.py` — XTR-* scenarios

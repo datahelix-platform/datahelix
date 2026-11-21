@@ -97,7 +97,7 @@ starting SSO onboarding, not after.
 
 **You get:** a real session with an expiry; sign-out that ends the IdP session, not just a
 cookie; one coarse authorization decision (`--allowed-group`); and — the quiet win —
-**provenance attributed to the real user**. nginx injects `X-Hippo-Actor: actor:<user>`, the
+**provenance attributed to the real user**. nginx injects `X-DataHelix-Actor: actor:<user>`, the
 format `mosaic.core.middleware` already parses, replacing the `Bearer solo` under which every
 write is currently attributed to nobody.
 
@@ -113,7 +113,7 @@ in `oidc` mode instead.
 
 - **Mosaic's REST port (8001) is outside the auth boundary** — it is unproxied by construction.
   If you enable auth, keep that port closed or route it through the proxy.
-- **The proxy must be the only path to Mosaic.** nginx overrides `X-Hippo-Actor` on every
+- **The proxy must be the only path to Mosaic.** nginx overrides `X-DataHelix-Actor` on every
   proxied request, which is what makes it trustworthy; anything reaching Mosaic directly bypasses
   that.
 
@@ -178,7 +178,7 @@ volume: ./project → /project   (workdir; mosaic.yaml auto-discovered)
 Same-origin proxying is the certification-proven seam (the certify stack runs
 the identical topology): Aperture is runtime-configured with the **relative**
 endpoint `/graphql`, so there is no CORS anywhere. Override any Aperture
-runtime var (`VITE_HIPPO_GRAPHQL_URL`, `VITE_HIPPO_CONTROL_PLANE_URL`,
+runtime var (`VITE_GRAPHQL_URL`, `VITE_CONTROL_PLANE_URL`,
 `VITE_WORKFLOWS`, `VITE_NAV`) via compose environment (ADR-0034).
 
 ## Certification (platform ADR-0001)
@@ -220,7 +220,7 @@ follow-on (proposal §4.4).
   in `team`.
 - Migrations are additive-only; breaking changes are a manual
   `schema safe-deploy` operation.
-- The certified frontier pins Mosaic 0.12.0; the component image name and
-  ledger key keep the `hippo` spelling by design until the coordinated repo
-  rename, and data-contract identifiers stay `hippo` permanently (Mosaic
-  ADR-0004).
+- The certified frontier pins are in `certification/composition.lock.json`.
+  Mosaic's data-contract identifiers (`mosaic_core`, the `mosaic_*` annotation
+  keys, the `X-DataHelix-Actor` header) follow platform ADR-0007; schemas that
+  still use `hippo_*` keys fail validation on Mosaic v0.16.0+.

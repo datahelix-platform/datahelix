@@ -19,7 +19,7 @@ services:
     ports:
       - "${DEMO_PORT:-8080}:8080"
     environment:
-      VITE_HIPPO_GRAPHQL_URL: ${VITE_HIPPO_GRAPHQL_URL:-}
+      VITE_GRAPHQL_URL: ${VITE_GRAPHQL_URL:-}
       VITE_NAV: ${VITE_NAV:-}
       VITE_WORKFLOWS: ${VITE_WORKFLOWS:-}
     restart: unless-stopped

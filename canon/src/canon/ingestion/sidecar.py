@@ -21,7 +21,7 @@ class SidecarOutput:
 
     entity_type: str
     identity_fields: list[str]
-    hippo_fields: dict[str, str]  # hippo_field_name → expression string
+    mosaic_fields: dict[str, str]  # mosaic_field_name → expression string
 
 
 @dataclass
@@ -76,15 +76,15 @@ def load_sidecar(path: str) -> SidecarSpec:
             raise CanonIngestionError(
                 f"Sidecar {path}: output '{name}'.identity_fields must be a list"
             )
-        hippo_fields_raw = spec.get("hippo_fields", {})
-        if not isinstance(hippo_fields_raw, dict):
+        mosaic_fields_raw = spec.get("mosaic_fields", {})
+        if not isinstance(mosaic_fields_raw, dict):
             raise CanonIngestionError(
-                f"Sidecar {path}: output '{name}'.hippo_fields must be a mapping"
+                f"Sidecar {path}: output '{name}'.mosaic_fields must be a mapping"
             )
         outputs[name] = SidecarOutput(
             entity_type=str(entity_type),
             identity_fields=[str(f) for f in identity_fields],
-            hippo_fields={str(k): str(v) for k, v in hippo_fields_raw.items()},
+            mosaic_fields={str(k): str(v) for k, v in mosaic_fields_raw.items()},
         )
 
     return SidecarSpec(outputs=outputs)
@@ -103,14 +103,14 @@ def _resolve_dot_path(obj: Any, dot_path: str) -> Any:
     return obj
 
 
-def evaluate_hippo_fields(
+def evaluate_mosaic_fields(
     sidecar_output: SidecarOutput,
     cwl_outputs: dict[str, Any],
     cwl_inputs: dict[str, Any],
     run_id: str,
 ) -> dict[str, Any]:
     """
-    Evaluate expression strings in sidecar_output.hippo_fields.
+    Evaluate expression strings in sidecar_output.mosaic_fields.
 
     Supported expression contexts (dot-notation):
       {outputs.<name>.<attr>}  — field from CWL output object
@@ -118,7 +118,7 @@ def evaluate_hippo_fields(
       {run_id}                 — the current run UUID
 
     Returns:
-        Dict of hippo_field_name → resolved value.
+        Dict of mosaic_field_name → resolved value.
     """
     context: dict[str, Any] = {
         "outputs": cwl_outputs,
@@ -127,9 +127,9 @@ def evaluate_hippo_fields(
     }
 
     result: dict[str, Any] = {}
-    for hippo_field, expr in sidecar_output.hippo_fields.items():
+    for mosaic_field, expr in sidecar_output.mosaic_fields.items():
         if not isinstance(expr, str):
-            result[hippo_field] = expr
+            result[mosaic_field] = expr
             continue
 
         # If the entire expression is a single placeholder, return the resolved value directly
@@ -143,9 +143,9 @@ def evaluate_hippo_fields(
                 val = context[root]
                 if rest is not None:
                     val = _resolve_dot_path(val, rest)
-                result[hippo_field] = val
+                result[mosaic_field] = val
             else:
-                result[hippo_field] = None
+                result[mosaic_field] = None
         else:
             # String interpolation: replace each {expr} with its string value
             def _replace(m: re.Match) -> str:
@@ -160,6 +160,6 @@ def evaluate_hippo_fields(
                     return str(val) if val is not None else ""
                 return m.group(0)  # leave unresolved placeholders as-is
 
-            result[hippo_field] = _EXPR_RE.sub(_replace, expr)
+            result[mosaic_field] = _EXPR_RE.sub(_replace, expr)
 
     return result

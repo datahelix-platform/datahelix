@@ -64,6 +64,11 @@ components can run from source with live reload, behind a single nginx gateway**
   same-origin data plane in development, identical to `solo` (decision 1.3), and no CORS is
   involved anywhere in the stack.
 
+> **Note (2026-11-20, [ADR-0007](./ADR-0007-retire-hippo-data-contract-identifiers.md)):** The
+> Aperture env var named here is renamed `VITE_HIPPO_GRAPHQL_URL` → `VITE_GRAPHQL_URL` (Q5;
+> aperture#35), and the `ide` recipe sets the new name (datahelix#57). The decision itself is
+> unchanged.
+
 Everything else in decision 1.9 stands unchanged. This ADR adds the `dev-aperture` profile and
 the obligation that the gateway carry the HMR websocket.
 

@@ -20,7 +20,7 @@
 # unmodified through the `demo` additional build context (docker-compose.yml),
 # not copied, so the two recipes cannot drift.
 
-ARG MOSAIC_IMAGE=ghcr.io/datahelix-platform/mosaic@sha256:27ea806f7cb61bd0217b8b247996196cfb4b6241aa9a06800779484c776d87ed
+ARG MOSAIC_IMAGE=ghcr.io/datahelix-platform/mosaic@sha256:6ae467fe8cfff80a9cd5f34328badd5eef6ec7b37bb85660f41b41c4d0120024
 ARG APERTURE_IMAGE=ghcr.io/bu-neuromics/aperture@sha256:dbe6d7b8b8657e27f79f04e9a7b987df7b32813a3bb5f43b21dcbd11a8c805f6
 
 ARG DEMO_DATASET=brainbank

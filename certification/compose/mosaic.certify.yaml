@@ -11,8 +11,7 @@
 #
 # Postgres matches the production single-node compose (multivalued reference
 # slots persist as relationships — Hippo ADR-0002 — unlike the v0.1 SQLite
-# adapter). `postgres` is the mosaic.storage_adapters entry-point name (dual-
-# registered under the legacy hippo.storage_adapters spelling too), and
+# adapter). `postgres` is the mosaic.storage_adapters entry-point name, and
 # ${MOSAIC_DATABASE_URL} is substituted from the container environment by
 # mosaic's config loader.
 #
