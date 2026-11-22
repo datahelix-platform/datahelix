@@ -59,7 +59,7 @@ services:
   # the log says what it is waiting for. A schema change does not happen here
   # (the dataset is baked), so grounding never goes stale.
   reel:
-    image: ghcr.io/bu-neuromics/reel:0.1.0@sha256:cbcc72954f80c673e0cd953ccf2eb845d81a50c9dbe9390bfa5a40016bd240c6
+    image: ghcr.io/datahelix-platform/reel:0.2.0@sha256:aad73d79d532ce780cbd32793af5ad5f4225b3ee4dc1aed6a962c815a26ab880
     # The invoking user, not the image's uid-10001 `reel`: ~/.aws/credentials
     # is normally mode 600, which uid 10001 cannot read through a bind mount —
     # the planner would start, fail every turn on "Unable to locate
