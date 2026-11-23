@@ -21,13 +21,14 @@
       "0.13.0",
       "0.14.0",
       "0.15.0",
-      "0.16.0"
+      "0.16.0",
+      "0.16.1"
     ]
   },
   "counts": {
     "failing": 0,
-    "passing": 14,
-    "total": 14
+    "passing": 15,
+    "total": 15
   },
   "entries": [
     {
@@ -337,6 +338,28 @@
       "result": "pass",
       "suite_sha": "321fc3eae5ed4545e5ae2c5d4b1d83bbbf05d548",
       "timestamp": "2026-11-23T17:37:36Z"
+    },
+    {
+      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/45246988059",
+      "components": [
+        {
+          "digest": "sha256:515b1e45b5f94f9d1a900e91b85cca228602b9645fbaee35bd2b3b5068be7712",
+          "name": "aperture",
+          "version": "0.8.0"
+        },
+        {
+          "digest": "sha256:6e81db4bfd0619d822fa0fcd55cc7d1850d2198e5c35a205349375de36d2c2bc",
+          "name": "mosaic",
+          "version": "0.16.1"
+        }
+      ],
+      "failing_check": null,
+      "fixture_version": "2.0.0",
+      "label": "aperture-0.8.0+mosaic-0.16.1",
+      "line": "frontier",
+      "result": "pass",
+      "suite_sha": "5f580272b900848b93ece1e99f092fdf78f7f400",
+      "timestamp": "2026-11-23T19:16:28Z"
     }
   ],
   "generated_from": "certified/* git tags (source of truth)",
