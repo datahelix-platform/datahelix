@@ -127,7 +127,7 @@ services:
   # The image injects its runtime config at start from VITE_* env (ADR-0034).
   aperture:
     profiles: [aperture-image]
-    image: ghcr.io/bu-neuromics/aperture:${APERTURE_VERSION:-0.7.1}
+    image: ghcr.io/datahelix-platform/aperture:${APERTURE_VERSION:-0.8.0}
     environment:
       VITE_GRAPHQL_URL: ${VITE_GRAPHQL_URL:-/graphql}
       VITE_CONTROL_PLANE_URL: ${VITE_CONTROL_PLANE_URL:-}
@@ -198,7 +198,7 @@ services:
   # Mosaic -- this is the only service in the stack that talks to a model.
   reel:
     profiles: [reel-image]
-    image: ghcr.io/datahelix-platform/reel:${REEL_VERSION:-0.2.0}
+    image: ghcr.io/datahelix-platform/reel:${REEL_VERSION:-0.3.0}
     environment:
       MOSAIC_MCP_URL: ${MOSAIC_MCP_URL:-http://mosaic:8001/mcp}
       AWS_REGION: ${AWS_REGION:-us-east-1}
@@ -224,7 +224,7 @@ services:
   # edit; `make restart-planner` is the deliberate way to pick up changes.
   reel-dev:
     profiles: [reel-source]
-    image: ghcr.io/datahelix-platform/reel:${REEL_VERSION:-0.2.0}
+    image: ghcr.io/datahelix-platform/reel:${REEL_VERSION:-0.3.0}
     environment:
       PYTHONPATH: /src
       # `mosaic-dev`, not `mosaic`: the source profile is a different service
