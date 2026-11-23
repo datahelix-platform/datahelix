@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4449,7 +4449,7 @@ This doc is the working surface where requirements are drafted and locked step b
 </tr>
 <tr>
 <td>L10</td>
-<td><strong>Resumable drafts are first-class; the draft is an <em>inert</em> control-plane buffer.</strong> In-progress forms &amp; workflow runs persist as <strong>draft state</strong> in the control plane (LinkML-on-Hippo, ADR-0017) — <em>not</em> committed domain entities. Because nothing is committed until the atomic pivot (L9), resume is "reload a draft document," with <strong>no</strong> entity-stamping / dual-write / query-before-run reconciliation against the domain graph (the saga-era complexity is gone). The draft <strong>pins the workflow + schema version</strong> it began under, so an admin schema edit (L5) between save and resume is detectable rather than silently breaking.</td>
+<td><strong>Resumable drafts are first-class; the draft is an <em>inert</em> control-plane buffer.</strong> In-progress forms &amp; workflow runs persist as <strong>draft state</strong> in the control plane (LinkML-on-Mosaic, ADR-0017) — <em>not</em> committed domain entities. Because nothing is committed until the atomic pivot (L9), resume is "reload a draft document," with <strong>no</strong> entity-stamping / dual-write / query-before-run reconciliation against the domain graph (the saga-era complexity is gone). The draft <strong>pins the workflow + schema version</strong> it began under, so an admin schema edit (L5) between save and resume is detectable rather than silently breaking.</td>
 <td>2026-06-25→<strong>rev 2026-06-30</strong></td>
 <td>Step 4 W4.6/W4.8; ADR-0017; L5</td>
 </tr>
@@ -4467,7 +4467,7 @@ This doc is the working surface where requirements are drafted and locked step b
 </tr>
 <tr>
 <td>L13</td>
-<td><strong>Embedded schema editing is deferred — post-MVP enhancement (supersedes L5/L11/L12).</strong> An in-app schema-editing surface is <strong>not</strong> in the MVP. The MVP delivers read + write loops; schema authoring continues <strong>upstream via Hippo's SDK/CLI <code>recipe_import</code></strong> for MVP. The worked-out design (Step 4b, L11/L12, S4b.1–S4b.9) is retained as the design of record and tracked in <strong><a href="https://github.com/BU-Neuromics/aperture/issues/2">BU-Neuromics/aperture#2</a></strong>. Defers actor #5's in-app role and the Hippo deps <strong>X3a/X3b</strong> out of the MVP.</td>
+<td><strong>Embedded schema editing is deferred — post-MVP enhancement (supersedes L5/L11/L12).</strong> An in-app schema-editing surface is <strong>not</strong> in the MVP. The MVP delivers read + write loops; schema authoring continues <strong>upstream via Hippo's SDK/CLI <code>recipe_import</code></strong> for MVP. The worked-out design (Step 4b, L11/L12, S4b.1–S4b.9) is retained as the design of record and tracked in <strong><a href="https://github.com/datahelix-platform/aperture/issues/2">datahelix-platform/aperture#2</a></strong>. Defers actor #5's in-app role and the Hippo deps <strong>X3a/X3b</strong> out of the MVP.</td>
 <td>2026-06-30</td>
 <td>Supersedes L5/L11/L12; defers X3a/X3b; aperture#2</td>
 </tr>
@@ -4565,7 +4565,7 @@ coding agent</strong> become first-class in-app/authoring actors (L5/L6).</p>
 <li><strong>Schema author / data modeler — ⛔ in-app role DEFERRED post-MVP (L13).</strong> Authors/edits the
    LinkML domain schema everything derives from. For MVP this stays an <strong>upstream</strong> role (Hippo
    SDK/CLI <code>recipe_import</code>); the in-app <strong>embedded schema editor</strong> is a tracked future enhancement
-   (<a href="https://github.com/BU-Neuromics/aperture/issues/2">aperture#2</a>).</li>
+   (<a href="https://github.com/datahelix-platform/aperture/issues/2">aperture#2</a>).</li>
 <li><strong>(Boundary) Bridge / permissions owner — deferred.</strong> Roles &amp; enforcement live here, not
    Aperture (ADR-0008/0016). Local = max permissions.</li>
 <li><strong>Coding agent — build-time actor (L6), not runtime.</strong> Scaffolds components for authors via
@@ -4629,7 +4629,7 @@ feature to what the active endpoint declares — the UI never fakes a capability
 <tbody>
 <tr>
 <td>R3.1</td>
-<td><strong>Collection nav</strong> — derive browsable collections from <code>hippoSchema</code>; admin config reorders/relabels/hides (derive-all + override).</td>
+<td><strong>Collection nav</strong> — derive browsable collections from <code>mosaicSchema</code>; admin config reorders/relabels/hides (derive-all + override).</td>
 <td>(a)</td>
 </tr>
 <tr>
@@ -4812,7 +4812,7 @@ Hippo dependency — <a href="https://github.com/BU-Neuromics/hippo/issues/84">B
 <h2 id="step-4b-functional-requirements-embedded-schema-editing-deferred-post-mvp-l13">Step 4b — Functional requirements: embedded schema editing  <em>(⛔ DEFERRED post-MVP — L13)</em><a class="headerlink" href="#step-4b-functional-requirements-embedded-schema-editing-deferred-post-mvp-l13" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p><strong>Status: deferred from MVP (2026-06-30, L13).</strong> Not part of the MVP portal; tracked as a
-future enhancement in <strong><a href="https://github.com/BU-Neuromics/aperture/issues/2">BU-Neuromics/aperture#2</a></strong>.
+future enhancement in <strong><a href="https://github.com/datahelix-platform/aperture/issues/2">datahelix-platform/aperture#2</a></strong>.
 For MVP, schema authoring happens <strong>upstream</strong> via Hippo's SDK/CLI <code>recipe_import</code>. The
 requirements below are retained as the <strong>design of record</strong> for when the feature is picked up;
 the Hippo deps <strong>X3a/X3b</strong> are deferred with it.</p>
@@ -4836,7 +4836,7 @@ L12 (recipe + dry-run; X3a transport ask).</p>
 <tbody>
 <tr>
 <td>S4b.1</td>
-<td><strong>Schema browser</strong> — render the active schema (entity types, slots, enums, relationships) from <code>hippoSchema</code> introspection; the editor's read side reuses the read-loop detail renderers.</td>
+<td><strong>Schema browser</strong> — render the active schema (entity types, slots, enums, relationships) from <code>mosaicSchema</code> introspection; the editor's read side reuses the read-loop detail renderers.</td>
 <td>(a)</td>
 </tr>
 <tr>
@@ -4851,7 +4851,7 @@ L12 (recipe + dry-run; X3a transport ask).</p>
 </tr>
 <tr>
 <td>S4b.4</td>
-<td><strong>Recipe packaging (L12)</strong> — the editor emits a recipe (<code>recipe.yaml</code> manifest + <code>schema.yaml</code> fragment): id, version, <code>hippo_version</code> constraint, prefix. Aperture owns the UI→recipe translation.</td>
+<td><strong>Recipe packaging (L12)</strong> — the editor emits a recipe (<code>recipe.yaml</code> manifest + <code>schema.yaml</code> fragment): id, version, <code>mosaic_version</code> constraint, prefix. Aperture owns the UI→recipe translation.</td>
 <td>(c)</td>
 </tr>
 <tr>
@@ -4888,7 +4888,7 @@ dry-run is the source of truth for what will happen, never a client-side guess.<
 schema = in-memory <code>SchemaRegistry</code>; live changes only via <code>client.recipe_import(source,
 dry_run=)</code> → <code>SchemaManager.merge_fragment</code> → <code>set_registry</code> (no restart), schema-merge +
 <code>recipe_imported</code> provenance in <strong>one transaction</strong>. Dry-run validates (manifest, LinkML, prefix
-collision, digest, <code>hippo_version</code>, no-in-place-override) with <strong>no writes</strong>. <code>schema_version</code>
+collision, digest, <code>mosaic_version</code>, no-in-place-override) with <strong>no writes</strong>. <code>schema_version</code>
 rides on every provenance record; <code>installed_recipes</code> + lockfile give reproducibility. <strong>No</strong>
 <code>POST/PUT /schemas</code> and <strong>no</strong> <code>client.apply_schema()</code> — recipe import is the only seam, and it's
 SDK/CLI-only. <strong>Bootstrap-only/additive</strong> merging; overlay (modify existing + 3-way merge + data
@@ -4910,7 +4910,7 @@ constraint set; the few genuine MVP stances are flagged. Each constraint cites i
 <tbody>
 <tr>
 <td>N5.1</td>
-<td><strong>Capability negotiation (Layer D).</strong> The source adapter <strong>declares</strong> what the endpoint supports (FTS, equality facets, offset pagination, sort, aggregation/counts, relationship traversal, batch write/validate, schema introspection); the UI <strong>gates</strong> features on it and <strong>never fakes</strong> a capability (L7). Baseline = GraphQL <code>__schema</code> + Hippo's <code>hippoSchema</code>/<code>hippoEntityType</code> enrichment.</td>
+<td><strong>Capability negotiation (Layer D).</strong> The source adapter <strong>declares</strong> what the endpoint supports (FTS, equality facets, offset pagination, sort, aggregation/counts, relationship traversal, batch write/validate, schema introspection); the UI <strong>gates</strong> features on it and <strong>never fakes</strong> a capability (L7). Baseline = GraphQL <code>__schema</code> + Mosaic's <code>mosaicSchema</code>/<code>mosaicEntityType</code> enrichment.</td>
 <td>In MVP. Hippo's current surface = FTS + equality facets + offset pages + relationship traversal + the #84 batch write/validate; counts/sort/range gated off until X1.</td>
 <td>ADR-0002/0017; arch Layer D; L7</td>
 </tr>
@@ -4928,7 +4928,7 @@ constraint set; the few genuine MVP stances are flagged. Each constraint cites i
 </tr>
 <tr>
 <td>N5.4</td>
-<td><strong>Control plane vs data plane.</strong> Aperture's own config + user state (saved views, query-state, <strong>drafts L10</strong>) live in a <strong>control-plane store</strong> (LinkML-on-Hippo reference impl), distinct from the browsed data plane.</td>
+<td><strong>Control plane vs data plane.</strong> Aperture's own config + user state (saved views, query-state, <strong>drafts L10</strong>) live in a <strong>control-plane store</strong> (LinkML-on-Mosaic reference impl), distinct from the browsed data plane.</td>
 <td>In MVP: a Hippo control-plane store (may be the same instance as the data plane).</td>
 <td>ADR-0017; L10</td>
 </tr>
@@ -4998,7 +4998,7 @@ two-sided-dependency rule.</p>
 <tr>
 <td>X1</td>
 <td>Hippo</td>
-<td><strong>Aggregation primitive</strong> — facet/group-by counts, <code>totalCount</code>, range filters, <code>order_by</code> on the GraphQL list surface. Enables real faceted browse (R3.3r–R3.6). <strong>✅ Promoted</strong> — designed as <strong>Mosaic ADR-0007</strong> (<a href="https://github.com/BU-Neuromics/mosaic/issues/154">mosaic#154</a>, Accepted; implementation staged as OpenSpec <code>aggregation-and-ordering</code>, <a href="https://github.com/BU-Neuromics/mosaic/issues/156">mosaic#156</a>), with the availability-consistency rule pinned (aggregates see exactly what list queries see). Was tracked as hippo#96.</td>
+<td><strong>Aggregation primitive</strong> — facet/group-by counts, <code>totalCount</code>, range filters, <code>order_by</code> on the GraphQL list surface. Enables real faceted browse (R3.3r–R3.6). <strong>✅ Promoted</strong> — designed as <strong>Mosaic ADR-0007</strong> (<a href="https://github.com/datahelix-platform/mosaic/issues/154">mosaic#154</a>, Accepted; implementation staged as OpenSpec <code>aggregation-and-ordering</code>, <a href="https://github.com/datahelix-platform/mosaic/issues/156">mosaic#156</a>), with the availability-consistency rule pinned (aggregates see exactly what list queries see). Was tracked as hippo#96.</td>
 <td>L7</td>
 <td><strong>High</strong> — top ask; unblocks v1.x faceting</td>
 </tr>
@@ -5021,19 +5021,19 @@ two-sided-dependency rule.</p>
 <td>Hippo</td>
 <td><strong>Transport-expose recipe validate + import</strong> — REST/GraphQL over the existing <code>recipe_import(dry_run=)</code> so a browser editor can dry-run-preview and apply an <strong>additive</strong> schema change. Mirrors the #84 transport increment.</td>
 <td>L13</td>
-<td><strong>Deferred (post-MVP)</strong> with the schema editor — tracked in <a href="https://github.com/BU-Neuromics/aperture/issues/2">aperture#2</a>. Tractable when picked up.</td>
+<td><strong>Deferred (post-MVP)</strong> with the schema editor — tracked in <a href="https://github.com/datahelix-platform/aperture/issues/2">aperture#2</a>. Tractable when picked up.</td>
 </tr>
 <tr>
 <td>X3b</td>
 <td>Hippo</td>
 <td><strong>Overlay / breaking-change schema mode</strong> — modify/rename/remove existing elements (3-way merge + conflict resolution) + data migration. Hippo's own deferred <strong>v2</strong> item (sec10 §10.9).</td>
 <td>L13</td>
-<td><strong>Deferred (post-MVP)</strong> — unlocks full (non-additive) editing; <a href="https://github.com/BU-Neuromics/aperture/issues/2">aperture#2</a>.</td>
+<td><strong>Deferred (post-MVP)</strong> — unlocks full (non-additive) editing; <a href="https://github.com/datahelix-platform/aperture/issues/2">aperture#2</a>.</td>
 </tr>
 <tr>
 <td>X5</td>
 <td>Hippo</td>
-<td><strong>Typed operator + relationship-predicate filter contract</strong> — generated per-class <code>&lt;Type&gt;Filter</code> input objects (per-slot operator objects <code>eq/neq/in/gt/gte/lt/lte/contains/isNull</code> by slot kind/range, <code>and/or/not</code>, <code>where:</code> arg) with phased relationship predicates (to-one nesting, then to-many <code>some</code>/<code>none</code> quantifiers); explicitly <strong>not</strong> CEL on the wire, so the introspected schema is the capability contract. Designed as <strong>Mosaic ADR-0006</strong> (<a href="https://github.com/BU-Neuromics/mosaic/issues/153">mosaic#153</a>, Accepted; implementation staged as OpenSpec <code>typed-filter-inputs</code>, <a href="https://github.com/BU-Neuromics/mosaic/issues/155">mosaic#155</a>; search composition and heterogeneous roots ride alongside as <a href="https://github.com/BU-Neuromics/mosaic/issues/157">mosaic#157</a>/<a href="https://github.com/BU-Neuromics/mosaic/issues/158">mosaic#158</a>). Driven by <a href="../decisions/ADR-0035-cross-class-queries-typed-queryspec/">ADR-0035</a> (<code>cross-class-query.md</code> §7 names this "X3"; filed as X5 since X3a/X3b were taken).</td>
+<td><strong>Typed operator + relationship-predicate filter contract</strong> — generated per-class <code>&lt;Type&gt;Filter</code> input objects (per-slot operator objects <code>eq/neq/in/gt/gte/lt/lte/contains/isNull</code> by slot kind/range, <code>and/or/not</code>, <code>where:</code> arg) with phased relationship predicates (to-one nesting, then to-many <code>some</code>/<code>none</code> quantifiers); explicitly <strong>not</strong> CEL on the wire, so the introspected schema is the capability contract. Designed as <strong>Mosaic ADR-0006</strong> (<a href="https://github.com/datahelix-platform/mosaic/issues/153">mosaic#153</a>, Accepted; implementation staged as OpenSpec <code>typed-filter-inputs</code>, <a href="https://github.com/datahelix-platform/mosaic/issues/155">mosaic#155</a>; search composition and heterogeneous roots ride alongside as <a href="https://github.com/datahelix-platform/mosaic/issues/157">mosaic#157</a>/<a href="https://github.com/datahelix-platform/mosaic/issues/158">mosaic#158</a>). Driven by <a href="../decisions/ADR-0035-cross-class-queries-typed-queryspec/">ADR-0035</a> (<code>cross-class-query.md</code> §7 names this "X3"; filed as X5 since X3a/X3b were taken).</td>
 <td>ADR-0035</td>
 <td><strong>High</strong> — keystone for cross-class criteria queries</td>
 </tr>
@@ -5044,7 +5044,7 @@ two-sided-dependency rule.</p>
 <ul>
 <li>~~Step 1 — Scope &amp; framing~~ ✅ · ~~Step 2 — Actors &amp; jobs~~ ✅ · ~~Step 3 — Read loop~~ ✅ ·
   ~~Step 4 — Write loop~~ ✅ (W4.7 atomicity = stage→validate→commit, L9/L10; Hippo X4 <strong>delivered</strong> #84)</li>
-<li>⛔ ~~Step 4b — Schema editing~~ <strong>DEFERRED post-MVP</strong> (L13; tracked in <a href="https://github.com/BU-Neuromics/aperture/issues/2">aperture#2</a>) — design of record retained.</li>
+<li>⛔ ~~Step 4b — Schema editing~~ <strong>DEFERRED post-MVP</strong> (L13; tracked in <a href="https://github.com/datahelix-platform/aperture/issues/2">aperture#2</a>) — design of record retained.</li>
 <li>~~Step 5 — Non-functional &amp; platform constraints (MVP)~~ ✅ (N5.1–N5.11; MVP stances: auth
   pass-through, co-located control plane, SPA — L14 defers agent-assist, keeps the component substrate)</li>
 <li>~~Step 6 — Promote to ADRs~~ ✅ (2026-06-30): new <strong>ADR-0026</strong> (portal-first MVP + deferrals,

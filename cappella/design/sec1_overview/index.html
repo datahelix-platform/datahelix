@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1764,14 +1764,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4625,7 +4625,7 @@
 <a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">    </span><span class="p">}</span>
 <a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">  </span><span class="p">],</span>
 <a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">  </span><span class="nt">"provenance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">    </span><span class="nt">"hippo_version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.3.1"</span><span class="p">,</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">    </span><span class="nt">"mosaic_version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.3.1"</span><span class="p">,</span>
 <a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">    </span><span class="nt">"canon_version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.2.0"</span><span class="p">,</span>
 <a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">    </span><span class="nt">"cappella_version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.1.0"</span><span class="p">,</span>
 <a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">    </span><span class="nt">"genome_build"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"uuid-genome"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GRCh38"</span><span class="p">,</span><span class="w"> </span><span class="nt">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"110"</span><span class="p">}</span>
@@ -4640,7 +4640,7 @@
 - Ingest pipeline: pull → transform → validate → upsert via ExternalID
 - Collection resolution: Hippo query + selection logic + Canon delegation + HarmonizedCollection output
 - Reconciliation: inconsistency detection and structured audit events
-- Trigger engine: schedule, manual, internal_event (webhook + hippo_poll deferred to v0.2)
+- Trigger engine: schedule, manual, internal_event (webhook + mosaic_poll deferred to v0.2)
 - Provenance: structured context on all Hippo writes
 - REST API: <code>POST /resolve</code>, <code>POST /ingest</code>, <code>GET /status</code>, <code>POST /triggers/{name}/run</code></p>
 <p><strong>Deferred to v0.2:</strong>

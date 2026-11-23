@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4663,21 +4663,21 @@
 </ul>
 <p>Recipes are identified by a stable reverse-DNS <code>id</code> (e.g., <code>org.broad.scrnaseq</code>) and a version slug. At install time the schema fragment is merged into the running deployment's live schema via <code>SchemaManager</code>, and the import is recorded in provenance. The result is reproducible from the manifest alone.</p>
 <h4 id="1012-how-recipes-generalise-reference-loaders">10.1.2 How Recipes Generalise Reference Loaders<a class="headerlink" href="#1012-how-recipes-generalise-reference-loaders" title="Permanent link">&para;</a></h4>
-<p>Hippo's existing <strong>Reference Loader</strong> system ships imperative Python code that runs data ingestion logic and registers itself via the <code>hippo.reference_loaders</code> entry point. Reference Loaders handle bulk reference-data loading and are distributed as Python packages.</p>
+<p>Hippo's existing <strong>Reference Loader</strong> system ships imperative Python code that runs data ingestion logic and registers itself via the <code>mosaic.reference_loaders</code> entry point. Reference Loaders handle bulk reference-data loading and are distributed as Python packages.</p>
 <p>Recipes occupy a complementary, lower-level role: they carry <strong>schema</strong>, not code. Where a Reference Loader brings data into a running deployment, a recipe brings the schema fragment that gives that data its shape. The two systems coexist in v1 — Reference Loaders remain unchanged; recipes are not yet their schema-publishing mechanism. That convergence is a future phase.</p>
 <p>The distinction matters for reproducibility: a deployment's schema state is not fully described by listing which Reference Loaders are installed. Recipes make the schema-contribution layer explicit, version-pinned, and verifiable.</p>
 <h4 id="1013-the-reproducibility-problem">10.1.3 The Reproducibility Problem<a class="headerlink" href="#1013-the-reproducibility-problem" title="Permanent link">&para;</a></h4>
-<p>A Hippo deployment's operational schema — the union of <code>hippo_core</code>, user-authored classes, and any imported fragments — can diverge across peer instances when schema fragments are loaded manually or evolved in place. There is no portable artifact that describes "exactly the schema this instance uses and where each fragment came from."</p>
+<p>A Hippo deployment's operational schema — the union of <code>mosaic_core</code>, user-authored classes, and any imported fragments — can diverge across peer instances when schema fragments are loaded manually or evolved in place. There is no portable artifact that describes "exactly the schema this instance uses and where each fragment came from."</p>
 <p>Recipes solve this by introducing two primitives:</p>
 <ol>
 <li><strong>Content addressing:</strong> every recipe is identified by a sha256 digest over its canonical content. Installing a recipe by URI plus digest is a reproducible, tamper-evident act.</li>
-<li><strong>Lockfile:</strong> the <code>hippo_meta.installed_recipes</code> registry captures the full installation record. <code>hippo recipe export-lockfile</code> serialises it as <code>recipe.lock.yaml</code>; <code>hippo recipe install-from-lockfile</code> replays it on a peer instance, verifying each digest. A deployment's exact schema state can be transferred as a single file.</li>
+<li><strong>Lockfile:</strong> the <code>mosaic_meta.installed_recipes</code> registry captures the full installation record. <code>mosaic recipe export-lockfile</code> serialises it as <code>recipe.lock.yaml</code>; <code>mosaic recipe install-from-lockfile</code> replays it on a peer instance, verifying each digest. A deployment's exact schema state can be transferred as a single file.</li>
 </ol>
 <hr />
 <h3 id="102-architecture">10.2 Architecture<a class="headerlink" href="#102-architecture" title="Permanent link">&para;</a></h3>
 <h4 id="1021-service-composition">10.2.1 Service Composition<a class="headerlink" href="#1021-service-composition" title="Permanent link">&para;</a></h4>
-<p><code>RecipeService</code> is a service facade that follows the same pattern as <code>IngestionService</code>, <code>ProvenanceService</code>, and <code>QueryService</code>. It is instantiated once in <code>HippoClient.__init__</code> and holds references to <code>SchemaManager</code> and <code>ProvenanceService</code>. It never touches <code>SchemaView</code> directly for merging — all schema writes flow through <code>SchemaManager</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>HippoClient
+<p><code>RecipeService</code> is a service facade that follows the same pattern as <code>IngestionService</code>, <code>ProvenanceService</code>, and <code>QueryService</code>. It is instantiated once in <code>MosaicClient.__init__</code> and holds references to <code>SchemaManager</code> and <code>ProvenanceService</code>. It never touches <code>SchemaView</code> directly for merging — all schema writes flow through <code>SchemaManager</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>MosaicClient
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── SchemaManager          (schema access, merge, validation)
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── ProvenanceService      (audit trail)
@@ -4688,7 +4688,7 @@
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        ├── delegates provenance      →  ProvenanceService.record(recipe_imported)
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        └── holds resolvers           →  [FileResolver, HttpsResolver]
 </code></pre></div>
-<p><code>HippoClient</code> exposes one thin delegating wrapper per <code>RecipeService</code> public method, named <code>recipe_&lt;verb&gt;</code> (e.g., <code>client.recipe_import(source)</code>). CLI commands call <code>HippoClient</code> delegators; they never reach <code>RecipeService</code> directly.</p>
+<p><code>MosaicClient</code> exposes one thin delegating wrapper per <code>RecipeService</code> public method, named <code>recipe_&lt;verb&gt;</code> (e.g., <code>client.recipe_import(source)</code>). CLI commands call <code>MosaicClient</code> delegators; they never reach <code>RecipeService</code> directly.</p>
 <h4 id="1022-install-pipeline">10.2.2 Install Pipeline<a class="headerlink" href="#1022-install-pipeline" title="Permanent link">&para;</a></h4>
 <p>The install pipeline for a single recipe proceeds in the following stages. Bottom-up dependency resolution means the entire pipeline runs recursively for each dependency before the depending recipe is merged.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>   caller
@@ -4701,7 +4701,7 @@
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        │  raw bytes / directory
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        ▼
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a> ┌─────────────┐
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a> │  Cache      │  ~/.hippo/recipe-cache/&lt;sha256&gt;/
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a> │  Cache      │  ~/.mosaic/recipe-cache/&lt;sha256&gt;/
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a> │  (https     │  Cache hit → skip network on subsequent calls
 <a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a> │  only)      │
 <a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a> └──────┬──────┘
@@ -4738,7 +4738,7 @@
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>        <span class="n">storage</span><span class="p">:</span> <span class="n">SQLiteAdapter</span><span class="p">,</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="n">schema_manager</span><span class="p">:</span> <span class="n">SchemaManager</span><span class="p">,</span>
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="n">provenance_service</span><span class="p">:</span> <span class="n">ProvenanceService</span><span class="p">,</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        <span class="n">cache_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>        <span class="c1"># default: ~/.hippo/recipe-cache/</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        <span class="n">cache_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>        <span class="c1"># default: ~/.mosaic/recipe-cache/</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>        <span class="n">resolvers</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">RecipeResolver</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span>
 <a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
@@ -4760,7 +4760,7 @@
 </code></pre></div>
 <p>Tarball form: <code>tar -czf my-recipe.tar.gz my-recipe/</code> — the contained directory MUST be the recipe root, not the tarball root. Resolvers normalise tarballs by extracting into a temporary directory and operating on the directory form. Both forms produce identical digests (see §10.4.3).</p>
 <h4 id="1032-recipemanifest-fields">10.3.2 RecipeManifest Fields<a class="headerlink" href="#1032-recipemanifest-fields" title="Permanent link">&para;</a></h4>
-<p>Defined in <code>src/hippo/schemas/recipe_manifest.yaml</code>. The LinkML schema is the authoritative field spec.</p>
+<p>Defined in <code>src/mosaic/schemas/recipe_manifest.yaml</code>. The LinkML schema is the authoritative field spec.</p>
 <table>
 <thead>
 <tr>
@@ -4806,7 +4806,7 @@
 <td>ISO 8601 UTC instant.</td>
 </tr>
 <tr>
-<td><code>hippo_version</code></td>
+<td><code>mosaic_version</code></td>
 <td>yes</td>
 <td>PEP 440 version specifier (e.g. <code>"&gt;=0.3,&lt;0.5"</code>). Parsed with <code>packaging.specifiers.SpecifierSet</code>. Import fails with <code>RecipeVersionIncompatibleError</code> when the running Hippo version is excluded.</td>
 </tr>
@@ -4866,7 +4866,7 @@
 </tbody>
 </table>
 <h4 id="1034-installed-recipes-registry">10.3.4 Installed Recipes Registry<a class="headerlink" href="#1034-installed-recipes-registry" title="Permanent link">&para;</a></h4>
-<p><code>hippo_meta.installed_recipes</code> is a JSON object keyed by recipe <code>id</code>. Each entry extends <code>RecipeRef</code> with additional fields captured at install time:</p>
+<p><code>mosaic_meta.installed_recipes</code> is a JSON object keyed by recipe <code>id</code>. Each entry extends <code>RecipeRef</code> with additional fields captured at install time:</p>
 <table>
 <thead>
 <tr>
@@ -4901,9 +4901,9 @@
 </tr>
 </tbody>
 </table>
-<p>This registry is the input to <code>hippo recipe export-lockfile</code> and the source of truth for <code>hippo recipe list</code>.</p>
+<p>This registry is the input to <code>mosaic recipe export-lockfile</code> and the source of truth for <code>mosaic recipe list</code>.</p>
 <h4 id="1035-lineage-via-parent">10.3.5 Lineage via Parent<a class="headerlink" href="#1035-lineage-via-parent" title="Permanent link">&para;</a></h4>
-<p>The <code>parent</code> field establishes explicit recipe lineage. Only <code>hippo recipe extend</code> creates lineage; editing the live schema after a recipe import does NOT retroactively attach those edits to any recipe (invariant 5). The <code>parent</code> pointer in an installed recipe's manifest is preserved in <code>installed_recipes</code> for audit.</p>
+<p>The <code>parent</code> field establishes explicit recipe lineage. Only <code>mosaic recipe extend</code> creates lineage; editing the live schema after a recipe import does NOT retroactively attach those edits to any recipe (invariant 5). The <code>parent</code> pointer in an installed recipe's manifest is preserved in <code>installed_recipes</code> for audit.</p>
 <hr />
 <h3 id="104-install-semantics">10.4 Install Semantics<a class="headerlink" href="#104-install-semantics" title="Permanent link">&para;</a></h3>
 <h4 id="1041-resolvers">10.4.1 Resolvers<a class="headerlink" href="#1041-resolvers" title="Permanent link">&para;</a></h4>
@@ -4931,8 +4931,8 @@
 </table>
 <p>No other URI schemes are supported in v1. Attempts to resolve a <code>git:</code> or <code>oci:</code> URI produce <code>RecipeFetchError</code>.</p>
 <h4 id="1042-content-addressable-cache">10.4.2 Content-Addressable Cache<a class="headerlink" href="#1042-content-addressable-cache" title="Permanent link">&para;</a></h4>
-<p>The cache lives at <code>~/.hippo/recipe-cache/&lt;sha256&gt;/</code>. The cache key is the recipe's sha256 canonical-content-hash digest. A cache hit skips network fetch entirely; the cached directory is used directly. Cache eviction is out of scope for v1.</p>
-<p>The cache directory can be overridden with the <code>HIPPO_RECIPE_CACHE</code> environment variable (resolution: open question 3 — adopted; see §10.4.6). This is parallel to Hippo's existing cache-override conventions.</p>
+<p>The cache lives at <code>~/.mosaic/recipe-cache/&lt;sha256&gt;/</code>. The cache key is the recipe's sha256 canonical-content-hash digest. A cache hit skips network fetch entirely; the cached directory is used directly. Cache eviction is out of scope for v1.</p>
+<p>The cache directory can be overridden with the <code>MOSAIC_RECIPE_CACHE</code> environment variable (resolution: open question 3 — adopted; see §10.4.6). This is parallel to Hippo's existing cache-override conventions.</p>
 <h4 id="1043-digest-algorithm">10.4.3 Digest Algorithm<a class="headerlink" href="#1043-digest-algorithm" title="Permanent link">&para;</a></h4>
 <p>The digest is computed over the recipe's <strong>canonical content hash</strong>, not over tarball bytes (which are repack-sensitive). This yields identical digests for directory and tarball forms of the same recipe.</p>
 <p>Algorithm:</p>
@@ -4942,7 +4942,7 @@
 <li>Build a buffer by concatenating, for each file in sorted order: <code>&lt;relative-path-as-utf8&gt;\n&lt;lowercase-hex-sha256-of-file-bytes&gt;\n</code>.</li>
 <li>The recipe digest is <code>sha256(buffer)</code>, lowercase hex. No files are excluded.</li>
 </ol>
-<p>The reference implementation lives in <code>core/recipe/digest.py</code> as a single ~20-line function. <code>hippo recipe inspect</code> prints the computed digest so recipe authors can verify it before publishing.</p>
+<p>The reference implementation lives in <code>core/recipe/digest.py</code> as a single ~20-line function. <code>mosaic recipe inspect</code> prints the computed digest so recipe authors can verify it before publishing.</p>
 <h4 id="1044-dependency-resolution">10.4.4 Dependency Resolution<a class="headerlink" href="#1044-dependency-resolution" title="Permanent link">&para;</a></h4>
 <p>Dependencies are resolved bottom-up: <code>parent</code> and all <code>requires.recipes</code> entries are installed before the depending recipe is merged. The merge order is:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>parent (if present) → requires.recipes (in declaration order) → self
@@ -4952,12 +4952,12 @@
 <h4 id="1045-reference-loader-preconditions">10.4.5 Reference Loader Preconditions<a class="headerlink" href="#1045-reference-loader-preconditions" title="Permanent link">&para;</a></h4>
 <p><strong>Open question 1 (resolved):</strong> <code>requires.reference_loaders</code> pins (<code>name==version</code>) are treated as <strong>preconditions only</strong> in v1. Hippo checks that each named Reference Loader is installed at the declared version before proceeding with the recipe import. Hippo does NOT install Reference Loaders as a side effect of recipe import. If a required loader is absent or at the wrong version, the import fails with <code>RecipeRequiresUnsatisfiedError</code>. This is the handoff recommendation and preserves a clear separation between the schema-only recipe system and the data-loading Reference Loader system.</p>
 <h4 id="1046-cache-directory-override">10.4.6 Cache Directory Override<a class="headerlink" href="#1046-cache-directory-override" title="Permanent link">&para;</a></h4>
-<p><strong>Open question 3 (resolved):</strong> The <code>HIPPO_RECIPE_CACHE</code> environment variable overrides the default cache directory <code>~/.hippo/recipe-cache/</code>. This is adopted from the handoff recommendation and is consistent with Hippo's existing conventions for cache path overrides. When set, the env var value is used as the cache root for all <code>HttpsResolver</code> fetches in that process.</p>
+<p><strong>Open question 3 (resolved):</strong> The <code>MOSAIC_RECIPE_CACHE</code> environment variable overrides the default cache directory <code>~/.mosaic/recipe-cache/</code>. This is adopted from the handoff recommendation and is consistent with Hippo's existing conventions for cache path overrides. When set, the env var value is used as the cache root for all <code>HttpsResolver</code> fetches in that process.</p>
 <h4 id="1047-atomicity">10.4.7 Atomicity<a class="headerlink" href="#1047-atomicity" title="Permanent link">&para;</a></h4>
 <p>The schema merge and provenance write execute in a single storage transaction. A failure at any stage — digest mismatch, prefix collision, schema validation rejection, provenance write error — rolls back both. A failed import leaves the database in the state it was before the call. <code>dry_run=True</code> skips all state writes and returns an <code>ImportResult</code> describing what would have happened.</p>
 <hr />
 <h3 id="105-export-semantics">10.5 Export Semantics<a class="headerlink" href="#105-export-semantics" title="Permanent link">&para;</a></h3>
-<p><code>hippo recipe export</code> packages the locally-authored content of the live schema into a new recipe directory or tarball.</p>
+<p><code>mosaic recipe export</code> packages the locally-authored content of the live schema into a new recipe directory or tarball.</p>
 <h4 id="1051-selectivity">10.5.1 Selectivity<a class="headerlink" href="#1051-selectivity" title="Permanent link">&para;</a></h4>
 <p>Only classes and slots whose <code>provided_by</code> annotation is <strong>absent</strong> or does not begin with <code>recipe.</code> or <code>loader.</code> are included in the export. Content contributed by installed recipes or Reference Loaders is excluded. This rule:</p>
 <ul>
@@ -4972,15 +4972,15 @@
 <ul>
 <li>Classes and slots with <code>provided_by</code> starting <code>recipe.</code> or <code>loader.</code> (upstream content).</li>
 <li>Reference data (seed rows). Controlled vocabularies that live as LinkML <code>permissible_values:</code> inside <code>schema.yaml</code> ARE included; bulk reference data continues to ship via Reference Loaders.</li>
-<li>Runtime state (<code>hippo_meta</code>, entity data, provenance records).</li>
+<li>Runtime state (<code>mosaic_meta</code>, entity data, provenance records).</li>
 </ul>
 <hr />
 <h3 id="106-reproducibility-model">10.6 Reproducibility Model<a class="headerlink" href="#106-reproducibility-model" title="Permanent link">&para;</a></h3>
 <h4 id="1061-two-primitives">10.6.1 Two Primitives<a class="headerlink" href="#1061-two-primitives" title="Permanent link">&para;</a></h4>
 <p><strong>Content addressing.</strong> A recipe is identified by its sha256 canonical-content-hash digest (§10.4.3). The declared digest in a <code>RecipeRef</code> is verified against freshly-fetched bytes at install time; mismatch aborts with <code>RecipeDigestMismatchError</code>. For <code>file:</code> sources where no digest is declared, the digest is computed and recorded in <code>installed_recipes</code>. Tag drift, link rot of mutable URLs, and substitution attacks are all caught loudly.</p>
-<p><strong>Lockfile.</strong> <code>hippo recipe export-lockfile</code> serialises <code>hippo_meta.installed_recipes</code> as <code>recipe.lock.yaml</code>. <code>hippo recipe install-from-lockfile</code> re-fetches each entry by its <code>source</code>, verifies each <code>digest</code>, and installs in dependency order. Together these provide a full reproducibility round-trip: a deployment's exact schema state can be recreated on a peer instance from a single file, provided each entry's <code>source</code> URI is still resolvable.</p>
+<p><strong>Lockfile.</strong> <code>mosaic recipe export-lockfile</code> serialises <code>mosaic_meta.installed_recipes</code> as <code>recipe.lock.yaml</code>. <code>mosaic recipe install-from-lockfile</code> re-fetches each entry by its <code>source</code>, verifies each <code>digest</code>, and installs in dependency order. Together these provide a full reproducibility round-trip: a deployment's exact schema state can be recreated on a peer instance from a single file, provided each entry's <code>source</code> URI is still resolvable.</p>
 <h4 id="1062-lockfile-format">10.6.2 Lockfile Format<a class="headerlink" href="#1062-lockfile-format" title="Permanent link">&para;</a></h4>
-<p><code>recipe.lock.yaml</code> is a YAML document. It carries <code>lockfile_version: 1</code> at the top level for forward-compatibility parsing. Each entry under <code>installed_recipes</code> corresponds to one entry in the <code>hippo_meta.installed_recipes</code> registry and includes <code>id</code>, <code>version</code>, <code>source</code>, <code>digest</code>, <code>installed_at</code>, and <code>parent</code> (if set).</p>
+<p><code>recipe.lock.yaml</code> is a YAML document. It carries <code>lockfile_version: 1</code> at the top level for forward-compatibility parsing. Each entry under <code>installed_recipes</code> corresponds to one entry in the <code>mosaic_meta.installed_recipes</code> registry and includes <code>id</code>, <code>version</code>, <code>source</code>, <code>digest</code>, <code>installed_at</code>, and <code>parent</code> (if set).</p>
 <p><strong>Open question 2 (resolved):</strong> <code>recipe.lock.yaml</code> carries <code>lockfile_version: 1</code>. This is adopted from the handoff recommendation. The version key allows future parsers to branch on lockfile format without breaking existing lockfiles.</p>
 <p>Example:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">lockfile_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
@@ -5033,12 +5033,12 @@
 <p><code>SchemaManager.merge_fragment</code> enforces the following check: if a recipe's schema fragment attempts to modify a class or slot whose <code>provided_by</code> annotation names a different recipe or loader, the merge is rejected with <code>RecipeSchemaError</code>. This is invariant 6.</p>
 <p>The rationale: in-place override of upstream classes creates hidden dependencies between the overriding deployment and the upstream recipe author's future changes. It also makes the <code>provided_by</code> annotation semantics ambiguous. Users who need to change upstream behaviour must subclass.</p>
 <h4 id="1073-the-extend-workflow">10.7.3 The <code>extend</code> Workflow<a class="headerlink" href="#1073-the-extend-workflow" title="Permanent link">&para;</a></h4>
-<p><code>hippo recipe extend &lt;installed-id&gt; --out &lt;dir&gt;</code> scaffolds a new recipe directory pre-populated with:</p>
+<p><code>mosaic recipe extend &lt;installed-id&gt; --out &lt;dir&gt;</code> scaffolds a new recipe directory pre-populated with:</p>
 <ul>
 <li>A <code>recipe.yaml</code> manifest with <code>parent</code> set to a <code>RecipeRef</code> for <code>&lt;installed-id&gt;</code> (resolved from <code>installed_recipes</code>).</li>
 <li>An empty <code>schema.yaml</code> importing the parent's prefix, ready for local additions.</li>
 </ul>
-<p>The extended recipe's manifest carries explicit <code>parent</code> lineage. When installed, the parent is auto-resolved and installed first (§10.4.4). Lineage is explicit and traceable: <code>hippo recipe list</code> shows the <code>parent</code> field for each installed recipe.</p>
+<p>The extended recipe's manifest carries explicit <code>parent</code> lineage. When installed, the parent is auto-resolved and installed first (§10.4.4). Lineage is explicit and traceable: <code>mosaic recipe list</code> shows the <code>parent</code> field for each installed recipe.</p>
 <p>No implicit lineage is created by any other operation (invariant 5). Editing the live schema after a recipe import does not retroactively attach those edits to the recipe.</p>
 <hr />
 <h3 id="108-error-model-provenance">10.8 Error Model &amp; Provenance<a class="headerlink" href="#108-error-model-provenance" title="Permanent link">&para;</a></h3>
@@ -5066,7 +5066,7 @@
 </tr>
 <tr>
 <td><code>RecipeVersionIncompatibleError</code></td>
-<td><code>hippo_version</code> SpecifierSet excludes the running Hippo version.</td>
+<td><code>mosaic_version</code> SpecifierSet excludes the running Hippo version.</td>
 </tr>
 <tr>
 <td><code>RecipeLineageCycleError</code></td>
@@ -5087,7 +5087,7 @@
 </tbody>
 </table>
 <h4 id="1082-provenance-event-recipe_imported">10.8.2 Provenance Event: <code>recipe_imported</code><a class="headerlink" href="#1082-provenance-event-recipe_imported" title="Permanent link">&para;</a></h4>
-<p>One new provenance event kind is introduced. Its schema lives in <code>hippo_core.yaml</code> alongside existing event kinds. Exactly one <code>recipe_imported</code> event is emitted per top-level <code>import_()</code> call; bottom-up dependency installs each emit their own event in the same transaction.</p>
+<p>One new provenance event kind is introduced. Its schema lives in <code>mosaic_core.yaml</code> alongside existing event kinds. Exactly one <code>recipe_imported</code> event is emitted per top-level <code>import_()</code> call; bottom-up dependency installs each emit their own event in the same transaction.</p>
 <table>
 <thead>
 <tr>
@@ -5142,12 +5142,12 @@
 <tr>
 <td><strong>Federation / HTTP <code>/recipe</code> endpoint</strong></td>
 <td>Serving recipes over HTTP from a Hippo instance requires auth, versioning, and discovery design that is premature before adoption patterns are clear.</td>
-<td><code>hippo serve</code> will expose a <code>/recipes</code> read endpoint in a future phase.</td>
+<td><code>mosaic serve</code> will expose a <code>/recipes</code> read endpoint in a future phase.</td>
 </tr>
 <tr>
 <td><strong>Overlay / harmonize import modes</strong></td>
 <td>Bootstrap-only install (schema must be additive) keeps the merge logic simple and safe. Overlay (modifying existing schema elements via import) requires a 3-way merge and conflict-resolution semantics not yet designed.</td>
-<td><code>hippo recipe import --mode overlay</code> in v2.</td>
+<td><code>mosaic recipe import --mode overlay</code> in v2.</td>
 </tr>
 <tr>
 <td><strong>Data sidecar / seed rows</strong></td>
@@ -5162,11 +5162,11 @@
 <tr>
 <td><strong>Recipe uninstall</strong></td>
 <td>Consistent with Hippo's no-hard-deletes principle. Schema elements contributed by a recipe cannot be removed without potentially breaking entities that reference those types. Workaround: rebuild the instance from a lockfile that omits the unwanted recipe.</td>
-<td>A future <code>hippo recipe uninstall --force</code> with explicit cascade warnings may be scoped in v2.</td>
+<td>A future <code>mosaic recipe uninstall --force</code> with explicit cascade warnings may be scoped in v2.</td>
 </tr>
 <tr>
 <td><strong>Discovery / search</strong></td>
-<td>No <code>hippo recipe search</code>. Users find recipes via READMEs, lab wikis, and DOI-minted releases. A public registry is a community governance problem, not a core Hippo feature.</td>
+<td>No <code>mosaic recipe search</code>. Users find recipes via READMEs, lab wikis, and DOI-minted releases. A public registry is a community governance problem, not a core Hippo feature.</td>
 <td>Community registry in a future phase, if adoption warrants it.</td>
 </tr>
 <tr>
@@ -5181,8 +5181,8 @@
 </tr>
 <tr>
 <td><strong><code>recipe rebase</code> / 3-way schema merge</strong></td>
-<td>Rebasing a recipe against an updated parent requires semantic understanding of schema-level diffs that is deferred until <code>hippo recipe diff</code> and <code>linkml-diff</code> integration are proven at scale.</td>
-<td><code>hippo recipe rebase</code> in v2.</td>
+<td>Rebasing a recipe against an updated parent requires semantic understanding of schema-level diffs that is deferred until <code>mosaic recipe diff</code> and <code>linkml-diff</code> integration are proven at scale.</td>
+<td><code>mosaic recipe rebase</code> in v2.</td>
 </tr>
 </tbody>
 </table>
@@ -5194,22 +5194,22 @@
 <li><strong>All recipe schema writes flow through <code>SchemaManager.merge_fragment(...)</code></strong> (or whichever exact method the implementer chooses to add/use) so future invariants added to <code>SchemaManager</code> apply to recipes automatically.</li>
 <li><strong>Provenance is unconditional.</strong> Every successful recipe import writes exactly one <code>recipe_imported</code> provenance entry in the same transaction as the schema merge. Failed imports leave no state change in either store.</li>
 <li><strong>Digest is the source of truth.</strong> When a <code>RecipeRef</code> declares a <code>digest</code>, the install path verifies it against the freshly fetched bytes and aborts on mismatch with <code>RecipeDigestMismatchError</code>. When no digest is declared (only legal for <code>file:</code> sources in v1), the install path computes one and records it in <code>installed_recipes</code>.</li>
-<li><strong>No implicit lineage.</strong> Editing the live schema after a recipe import does not retroactively attach those edits to the recipe. Lineage is created only by <code>hippo recipe extend</code> and propagated only by an explicit subsequent <code>import</code> of the extended recipe.</li>
+<li><strong>No implicit lineage.</strong> Editing the live schema after a recipe import does not retroactively attach those edits to the recipe. Lineage is created only by <code>mosaic recipe extend</code> and propagated only by an explicit subsequent <code>import</code> of the extended recipe.</li>
 <li><strong>No in-place override of upstream classes.</strong> The merge layer rejects a recipe whose schema modifies a class or slot whose <code>provided_by</code> annotation names a different recipe or loader. Users override by subclassing (<code>is_a:</code>). The implementing agent must add a check for this in the <code>SchemaManager</code> seam.</li>
 <li><strong><code>provided_by</code> is set, not inferred.</strong> <code>recipe.&lt;id&gt;@&lt;version&gt;</code> is injected by the merge layer. <code>loader.&lt;name&gt;@&lt;version&gt;</code> continues to be injected by the Reference Loader path. <code>provided_by</code> values a recipe author hand-writes are overwritten — the manifest identity wins.</li>
 </ol>
 <hr />
 <h3 id="1011-cli-surface">10.11 CLI Surface<a class="headerlink" href="#1011-cli-surface" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>hippo recipe list                              # list installed recipes with id, version, source
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>hippo recipe inspect &lt;path-or-uri&gt;             # parse + validate manifest; print computed digest; no DB writes
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>hippo recipe import &lt;path-or-uri&gt; [--dry-run]  # bootstrap-only install
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>hippo recipe export [--out PATH] [--parent &lt;installed-id&gt;]
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>hippo recipe extend &lt;installed-id&gt; --out PATH  # scaffold derivative recipe directory
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>hippo recipe diff &lt;a&gt; &lt;b&gt;                      # structural diff between two recipes (paths or URIs)
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>hippo recipe export-lockfile [--out PATH]      # write recipe.lock.yaml from installed_recipes
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>hippo recipe install-from-lockfile &lt;file&gt;      # re-fetch + verify + install from lockfile
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>mosaic recipe list                              # list installed recipes with id, version, source
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>mosaic recipe inspect &lt;path-or-uri&gt;             # parse + validate manifest; print computed digest; no DB writes
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>mosaic recipe import &lt;path-or-uri&gt; [--dry-run]  # bootstrap-only install
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>mosaic recipe export [--out PATH] [--parent &lt;installed-id&gt;]
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>mosaic recipe extend &lt;installed-id&gt; --out PATH  # scaffold derivative recipe directory
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>mosaic recipe diff &lt;a&gt; &lt;b&gt;                      # structural diff between two recipes (paths or URIs)
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>mosaic recipe export-lockfile [--out PATH]      # write recipe.lock.yaml from installed_recipes
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>mosaic recipe install-from-lockfile &lt;file&gt;      # re-fetch + verify + install from lockfile
 </code></pre></div>
-<p>CLI is implemented in <code>hippo/cli/recipe.py</code>, mirroring the structure of other subcommand modules. CLI calls <code>HippoClient</code> delegators; it never reaches <code>RecipeService</code> directly.</p>
+<p>CLI is implemented in <code>hippo/cli/recipe.py</code>, mirroring the structure of other subcommand modules. CLI calls <code>MosaicClient</code> delegators; it never reaches <code>RecipeService</code> directly.</p>
 <hr />
 <h3 id="1012-open-questions-resolved">10.12 Open Questions Resolved<a class="headerlink" href="#1012-open-questions-resolved" title="Permanent link">&para;</a></h3>
 <p>This section records the three open questions flagged in the handoff document and their resolutions.</p>
@@ -5235,7 +5235,7 @@
 <tr>
 <td>3</td>
 <td>Cache-dir override</td>
-<td><strong>Yes — <code>HIPPO_RECIPE_CACHE</code> env var.</strong> Overrides the default <code>~/.hippo/recipe-cache/</code> directory, parallel to existing Hippo cache conventions. Adopted from handoff recommendation. See §10.4.2 and §10.4.6.</td>
+<td><strong>Yes — <code>MOSAIC_RECIPE_CACHE</code> env var.</strong> Overrides the default <code>~/.mosaic/recipe-cache/</code> directory, parallel to existing Hippo cache conventions. Adopted from handoff recommendation. See §10.4.2 and §10.4.6.</td>
 </tr>
 </tbody>
 </table>

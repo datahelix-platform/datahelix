@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1764,14 +1764,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4669,11 +4669,11 @@ same directory. The sidecar declares what Hippo entities the CWL outputs map to.
 <a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="nt">entity_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;string&gt;</span><span class="w">            </span><span class="c1"># Hippo entity type for this output</span>
 <a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="nt">identity_fields</span><span class="p">:</span><span class="w">                 </span><span class="c1"># fields that uniquely identify this artifact</span>
 <a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;field_name&gt;</span><span class="w">                 </span><span class="c1"># must match fields declared in the rule's produces.match</span>
-<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="nt">hippo_fields</span><span class="p">:</span><span class="w">                    </span><span class="c1"># CWL output/input → Hippo entity field mappings</span>
-<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">      </span><span class="nt">&lt;hippo_field&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;expression&gt;</span><span class="w">    </span><span class="c1"># expression may reference CWL outputs or rule inputs</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="nt">mosaic_fields</span><span class="p">:</span><span class="w">                    </span><span class="c1"># CWL output/input → Hippo entity field mappings</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">      </span><span class="nt">&lt;mosaic_field&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;expression&gt;</span><span class="w">    </span><span class="c1"># expression may reference CWL outputs or rule inputs</span>
 <a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">    </span><span class="nt">optional</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;bool&gt;</span><span class="w">                 </span><span class="c1"># default false; if true, missing output is not an error</span>
 </code></pre></div>
-<p><strong>Expression syntax in <code>hippo_fields:</code>:</strong></p>
+<p><strong>Expression syntax in <code>mosaic_fields:</code>:</strong></p>
 <table>
 <thead>
 <tr>
@@ -4715,7 +4715,7 @@ same directory. The sidecar declares what Hippo entities the CWL outputs map to.
 <a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aligner</span>
 <a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quality_cutoff</span>
 <a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">min_length</span>
-<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">    </span><span class="nt">hippo_fields</span><span class="p">:</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">    </span><span class="nt">mosaic_fields</span><span class="p">:</span>
 <a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="w">      </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="s">"{outputs.bam.location}"</span>
 <a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="w">      </span><span class="nt">file_size_bytes</span><span class="p">:</span><span class="w"> </span><span class="s">"{outputs.bam.size}"</span>
 <a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="w">      </span><span class="nt">checksum_sha1</span><span class="p">:</span><span class="w"> </span><span class="s">"{outputs.bam.checksum}"</span>
@@ -4730,13 +4730,13 @@ same directory. The sidecar declares what Hippo entities the CWL outputs map to.
 <a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="w">    </span><span class="nt">entity_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AlignmentIndex</span>
 <a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="w">    </span><span class="nt">identity_fields</span><span class="p">:</span>
 <a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">alignment</span><span class="w">         </span><span class="c1"># ref to parent AlignmentFile entity</span>
-<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="w">    </span><span class="nt">hippo_fields</span><span class="p">:</span>
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="w">    </span><span class="nt">mosaic_fields</span><span class="p">:</span>
 <a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a><span class="w">      </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="s">"{outputs.bam_index.location}"</span>
 <a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a><span class="w">      </span><span class="nt">alignment</span><span class="p">:</span><span class="w"> </span><span class="s">"{outputs.bam.entity_id}"</span><span class="w">   </span><span class="c1"># UUID of the just-ingested AlignmentFile</span>
 <a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a><span class="w">    </span><span class="nt">optional</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">        </span><span class="c1"># some aligners don't produce an index; not an error if missing</span>
 </code></pre></div>
 <p><strong>Validation rules for sidecars:</strong>
-- Every <code>identity_field</code> must be present in <code>hippo_fields</code>
+- Every <code>identity_field</code> must be present in <code>mosaic_fields</code>
 - Every CWL output named in the sidecar must exist in the workflow's <code>outputs:</code> block
 - At least one non-optional output must be declared
 - Canon validates sidecars at startup against their paired CWL files</p>

@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1802,10 +1802,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#832-backwards-compatibility-x-hippo-actor-header" class="md-nav__link">
+  <a href="#832-backwards-compatibility-x-datahelix-actor-header" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.3.2 Backwards Compatibility: X-Hippo-Actor Header
+        8.3.2 Backwards Compatibility: X-DataHelix-Actor Header
       
     </span>
   </a>
@@ -1988,14 +1988,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4391,10 +4391,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#832-backwards-compatibility-x-hippo-actor-header" class="md-nav__link">
+  <a href="#832-backwards-compatibility-x-datahelix-actor-header" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8.3.2 Backwards Compatibility: X-Hippo-Actor Header
+        8.3.2 Backwards Compatibility: X-DataHelix-Actor Header
       
     </span>
   </a>
@@ -4533,7 +4533,7 @@
 <p>Hippo's auth story has two distinct modes that coexist by design:</p>
 <ol>
 <li>
-<p><strong>SDK mode (no auth):</strong> The <code>HippoClient</code> accepts an <code>actor</code> string parameter with no
+<p><strong>SDK mode (no auth):</strong> The <code>MosaicClient</code> accepts an <code>actor</code> string parameter with no
    validation. There is no Bridge, no credential check, and no middleware. This is correct for
    local single-user deployments where auth friction is unwanted.</p>
 </li>
@@ -4597,13 +4597,13 @@ full auth — no restructuring of the SDK or REST app is required.</p>
 <a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="sd">    """</span>
 <a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>
 <a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a>        <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"X-Hippo-Actor"</span><span class="p">,</span> <span class="s2">"anonymous"</span><span class="p">)</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a>        <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"X-DataHelix-Actor"</span><span class="p">,</span> <span class="s2">"anonymous"</span><span class="p">)</span>
 <a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a>
 <a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">authorize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a>        <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div>
 <p>The stub (<code>PassThroughAuthMiddleware</code>) is registered as the default in the FastAPI app. The
-<code>BridgeAuthMiddleware</code> replaces it when <code>bridge.enabled: true</code> is set in <code>hippo.yaml</code>.</p>
+<code>BridgeAuthMiddleware</code> replaces it when <code>bridge.enabled: true</code> is set in <code>mosaic.yaml</code>.</p>
 <hr />
 <h3 id="83-bridgeauthmiddleware-bridge-aware-implementation">8.3 <code>BridgeAuthMiddleware</code> — Bridge-Aware Implementation<a class="headerlink" href="#83-bridgeauthmiddleware-bridge-aware-implementation" title="Permanent link">&para;</a></h3>
 <p>When Hippo is deployed behind Bridge, all incoming requests have already been authenticated.
@@ -4633,7 +4633,7 @@ Bridge strips the original <code>Authorization</code> header and injects two ver
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># hippo/rest/auth_bridge.py</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">HTTPException</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">hippo.rest.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthMiddleware</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">mosaic.core.middleware</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthMiddleware</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># Maps Bridge roles to permitted Hippo operations.</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">_ROLE_PERMISSIONS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
@@ -4690,21 +4690,21 @@ network:</p>
 <li>If Hippo receives a request directly (bypassing Bridge) that contains <code>X-DataHelix-Actor</code>,
   it must be rejected with <code>403 Forbidden</code> — components must not be exposed on the public
   network when Bridge auth is expected</li>
-<li>The <code>hippo.yaml</code> <code>bridge.trust_proxy</code> configuration key (CIDR list) controls which source
+<li>The <code>mosaic.yaml</code> <code>bridge.trust_proxy</code> configuration key (CIDR list) controls which source
   IPs are allowed to set these headers; requests from outside this range that carry
   <code>X-DataHelix-Actor</code> are rejected</li>
 </ul>
-<h4 id="832-backwards-compatibility-x-hippo-actor-header">8.3.2 Backwards Compatibility: <code>X-Hippo-Actor</code> Header<a class="headerlink" href="#832-backwards-compatibility-x-hippo-actor-header" title="Permanent link">&para;</a></h4>
-<p>The v0.1 <code>X-Hippo-Actor</code> header (caller-supplied actor) is superseded when Bridge auth is
-active. <code>BridgeAuthMiddleware.authenticate()</code> ignores <code>X-Hippo-Actor</code> entirely and reads only
+<h4 id="832-backwards-compatibility-x-datahelix-actor-header">8.3.2 Backwards Compatibility: <code>X-DataHelix-Actor</code> Header<a class="headerlink" href="#832-backwards-compatibility-x-datahelix-actor-header" title="Permanent link">&para;</a></h4>
+<p>The v0.1 <code>X-DataHelix-Actor</code> header (caller-supplied actor) is superseded when Bridge auth is
+active. <code>BridgeAuthMiddleware.authenticate()</code> ignores <code>X-DataHelix-Actor</code> entirely and reads only
 <code>X-DataHelix-Actor</code>. This prevents actor spoofing — a caller behind Bridge cannot override the
-authenticated identity by setting <code>X-Hippo-Actor</code>.</p>
-<p>In <code>PassThroughAuthMiddleware</code> (standalone mode), <code>X-Hippo-Actor</code> continues to be read as
+authenticated identity by setting <code>X-DataHelix-Actor</code>.</p>
+<p>In <code>PassThroughAuthMiddleware</code> (standalone mode), <code>X-DataHelix-Actor</code> continues to be read as
 before, for backwards compatibility.</p>
 <hr />
 <h3 id="84-request-context-wiring">8.4 Request Context Wiring<a class="headerlink" href="#84-request-context-wiring" title="Permanent link">&para;</a></h3>
 <p>The FastAPI app registers auth middleware as a startup-time dependency:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># hippo.yaml (relevant keys)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># mosaic.yaml (relevant keys)</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">bridge</span><span class="p">:</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                        </span><span class="c1"># Activates BridgeAuthMiddleware</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">trust_proxy</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"10.0.0.0/8"</span><span class="p p-Indicator">]</span><span class="w">         </span><span class="c1"># CIDRs allowed to set X-DataHelix-* headers</span>
@@ -4738,7 +4738,7 @@ before, for backwards compatibility.</p>
 <a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>└─────────────────────────────────┘
 </code></pre></div>
 <p>The actor string stored on <code>request.state.actor</code> is the single value passed into every
-<code>HippoClient</code> call made during that request. There is no ambient global state — the actor is
+<code>MosaicClient</code> call made during that request. There is no ambient global state — the actor is
 threaded explicitly through the call chain.</p>
 <hr />
 <h3 id="85-actor-propagation-to-provenance">8.5 Actor Propagation to Provenance<a class="headerlink" href="#85-actor-propagation-to-provenance" title="Permanent link">&para;</a></h3>
@@ -4904,7 +4904,7 @@ scoping is disabled for that type and all entities are returned for authenticate
 appropriate role.</p>
 <hr />
 <h3 id="88-configuration-reference">8.8 Configuration Reference<a class="headerlink" href="#88-configuration-reference" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># hippo.yaml — auth section (new in Phase 3)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># mosaic.yaml — auth section (new in Phase 3)</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nt">bridge</span><span class="p">:</span>
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">                     </span><span class="c1"># Default: standalone mode (PassThroughAuthMiddleware)</span>
@@ -4928,7 +4928,7 @@ appropriate role.</p>
 <td><strong>Local dev (standalone)</strong></td>
 <td><code>false</code></td>
 <td><code>PassThroughAuthMiddleware</code></td>
-<td><code>X-Hippo-Actor</code> header or <code>"anonymous"</code></td>
+<td><code>X-DataHelix-Actor</code> header or <code>"anonymous"</code></td>
 </tr>
 <tr>
 <td><strong>Team server (Bridge-enabled)</strong></td>

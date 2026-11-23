@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4138,6 +4138,45 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#split-2026-11-10-decision-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Split (2026-11-10 — decision pass)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Split (2026-11-10 — decision pass)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cross-links-accepted-as-built" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-links — Accepted (as built)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#composition-deferred-from-mvp-with-adr-0010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Composition — ⛔ Deferred from MVP (with ADR-0010)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4157,9 +4196,9 @@
 
 <h1 id="adr-0015-composability-and-cross-links-hrefs">ADR-0015: Composability and cross-links (hrefs)<a class="headerlink" href="#adr-0015-composability-and-cross-links-hrefs" title="Permanent link">&para;</a></h1>
 <ul>
-<li><strong>Status:</strong> Proposed</li>
-<li><strong>Date:</strong> 2026-06-13</li>
-<li><strong>Deciders:</strong> —</li>
+<li><strong>Status:</strong> Accepted in part (cross-links, as built) — ⛔ <strong>Deferred in part</strong> (composition, from MVP with ADR-0010; ADR-0026). See the 2026-11-10 split below.</li>
+<li><strong>Date:</strong> 2026-06-13 (split 2026-11-10, decision pass)</li>
+<li><strong>Deciders:</strong> labadorf</li>
 <li><strong>Related:</strong> raised 2026-06-13 ("composition composability and cross links / hrefs"); depends on ADR-0009, ADR-0010; informed by ADR-0014; Hippo sec4 §4.7, issue #48 (xref)</li>
 </ul>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
@@ -4210,6 +4249,39 @@ entities (Level 2 binding). Two related questions need a recorded decision:</p>
   that stay a noun (a <code>view-ref</code> primitive) rather than becoming a macro/expression layer
   (ADR-0004 line)?</li>
 </ul>
+<h2 id="split-2026-11-10-decision-pass">Split (2026-11-10 — decision pass)<a class="headerlink" href="#split-2026-11-10-decision-pass" title="Permanent link">&para;</a></h2>
+<p>Decided by labadorf in the 2026-11-10 decision pass. This ADR asked two questions, and they
+resolve differently. It is amended in place rather than renumbered, so existing citations of
+ADR-0015 stay valid.</p>
+<h3 id="cross-links-accepted-as-built">Cross-links — Accepted (as built)<a class="headerlink" href="#cross-links-accepted-as-built" title="Permanent link">&para;</a></h3>
+<p>Cross-links are derived from the schema and config, never hand-coded (ADR-0002). Checked
+against <code>web/src/features/collections/EntityDetail.tsx</code>:</p>
+<ul>
+<li><strong>Single-valued reference</strong> → navigates to the target collection's detail view via
+  <code>openIn(targetCollection, refId)</code>. It is a logical target (collection + id) that the
+  URL-state router turns into a route, which keeps it architecture-neutral as the Notes asked.</li>
+<li><strong>Multivalued reference</strong> → shows a count and a <code>View in &lt;target&gt;</code> link via
+  <code>pivotTo(targetCollection, backRefField, entityId)</code>. The link appears only when the target
+  is filterable by its back-reference (an equality facet). Otherwise only the count shows,
+  which is how the link degrades gracefully.</li>
+<li><strong>External identifier</strong> → links out via <code>xrefUrl(field, value)</code>, a per-deployment
+  field → URL-template table (<code>{value}</code> placeholder), as proposed.</li>
+</ul>
+<p><strong>Known defect:</strong> the external tier is wired in code but not in config. <code>XREF_TEMPLATES</code> in
+<code>web/src/config/xrefs.ts</code> is a hard-coded <code>{}</code> that nothing populates, so external links never
+render. Tracked as a bug: <a href="https://github.com/datahelix-platform/aperture/issues/96">aperture#96</a>.
+The decision stands; only its configuration is missing.</p>
+<h3 id="composition-deferred-from-mvp-with-adr-0010">Composition — ⛔ Deferred from MVP (with ADR-0010)<a class="headerlink" href="#composition-deferred-from-mvp-with-adr-0010" title="Permanent link">&para;</a></h3>
+<p>The composition model (nesting primitives in layout containers, a <code>view-ref</code> /
+transclusion primitive) depends on the view-description vocabulary. That is ADR-0010, now
+<strong>Deferred from MVP</strong> and expected to be superseded by the platform View Contract ADR.
+Composition is deferred with it. <strong>Shell-level layout is already settled</strong> by ADR-0031 (a
+library of fixed layouts selected by config, with a typed named-slot contract), so the MVP
+has no open composition question. The candidate framing above is kept as the starting point
+for when ADR-0010's successor lands.</p>
+<blockquote>
+<p><strong>Note (2026-11-20, platform <a href="../../../platform/design/decisions/ADR-0007-retire-hippo-data-contract-identifiers.md">ADR-0007</a>):</strong> Mosaic v0.16.0 renamed the annotation key named here: <code>hippo_external_xref</code> → <code>mosaic_external_xref</code>. The decision itself is unchanged.</p>
+</blockquote>
 
 
 

@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4172,6 +4172,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#ratification-2026-11-10-accepted-amended-the-core-is-narrowed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ratification (2026-11-10) — Accepted, amended: the core is narrowed
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4196,9 +4207,9 @@
 
 <h1 id="adr-0005-reel-is-a-headless-interaction-core-a-thin-replaceable-shell">ADR-0005: Reel is a headless interaction core + a thin, replaceable shell<a class="headerlink" href="#adr-0005-reel-is-a-headless-interaction-core-a-thin-replaceable-shell" title="Permanent link">&para;</a></h1>
 <ul>
-<li><strong>Status:</strong> Proposed</li>
-<li><strong>Date:</strong> 2026-06-22</li>
-<li><strong>Deciders:</strong> labadorf, design session</li>
+<li><strong>Status:</strong> Accepted (amended at ratification — see <em>Ratification (2026-11-10)</em>)</li>
+<li><strong>Date:</strong> 2026-11-10 (proposed 2026-06-22)</li>
+<li><strong>Deciders:</strong> labadorf (decision pass 2026-11-10); originally labadorf, design session</li>
 <li><strong>Related:</strong> reframes Aperture ADR-0014 (application architecture); depends on Aperture ADR-0008 (injected capability-scoped client), Aperture ADR-0009 (view-descriptions, not DOM), Aperture ADR-0017 (data plane / control-plane port), ADR-0001 (instruction-path model); informs Aperture ADR-0011 (component runtime), Aperture ADR-0015 (composability); <code>vision.md</code>; Aperture <code>architecture.md</code>; <code>datahelix:platform/design/view-contract.md</code></li>
 </ul>
 <blockquote>
@@ -4214,7 +4225,9 @@ renderer/shell injection seam (#3 below) is the <strong>View Contract</strong>
 cross-component form of this decision. References to the <em>portal's</em> decisions are qualified
 <strong>"Aperture ADR-NNNN"</strong>; bare <code>ADR-NNNN</code> refers to Reel's own ADRs.
 <strong>Names updated 2026-09-11:</strong> Hippo → <strong>Mosaic</strong> (Mosaic ADR-0004), BASS/drylims → <strong>DataHelix</strong>;
-data-contract identifiers (e.g. <code>hippoSchema</code>, <code>hippo_core</code>) deliberately keep their spelling.</p>
+data-contract identifiers (e.g. <code>hippoSchema</code>, <code>hippo_core</code>) deliberately keep their spelling.
+<strong>2026-11-20:</strong> platform ADR-0007 retired that carve-out. Since Mosaic v0.16.0 these identifiers are
+<code>mosaicSchema</code> / <code>mosaicEntityType</code>, <code>mosaic_core</code> and <code>mosaic_*</code>.</p>
 </blockquote>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
 <p>The 2026-06-17 reframe (<code>vision.md</code>) replaced the product framing: the AI-native surface over the
@@ -4362,6 +4375,45 @@ MCP agent, or the headless validators.</p>
   is the v1 wire form of "how a host drives an instruction-path session" —
   <a href="../ADR-0008-exon-seeds-reel/">ADR-0008</a>.</li>
 </ul>
+<h3 id="ratification-2026-11-10-accepted-amended-the-core-is-narrowed">Ratification (2026-11-10) — Accepted, amended: the core is narrowed<a class="headerlink" href="#ratification-2026-11-10-accepted-amended-the-core-is-narrowed" title="Permanent link">&para;</a></h3>
+<p>Ratified by labadorf in the 2026-11-10 decision pass. The boundary stands — <strong>Reel is a headless
+core; any renderer is a thin, replaceable shell on the far side of the View Contract; no
+interaction logic in the shell.</strong> What changes is the inventory of the core. The Decision's
+six-bullet list above is history; <strong>the core is now exactly:</strong></p>
+<ol>
+<li><strong>the instruction-path engine</strong> — <code>state[n] = apply(instruction[n], state[n-1])</code>, the turn
+   list, rewind/edit (ADR-0001/0003/0004), as-of pinning (ADR-0002);</li>
+<li><strong>the planner</strong> — natural language → QuerySpec, grounded in Mosaic's capability manifest
+   (ADR-0006, ADR-0008);</li>
+<li><strong>the producer of View Contract instances</strong> — Reel's output toward any renderer
+   (<code>datahelix:platform/design/view-contract.md</code>).</li>
+</ol>
+<p><strong>Dropped from the core:</strong></p>
+<ul>
+<li><strong>The component runtime</strong> (Aperture ADR-0011 — Web Worker / Pyodide). Not Reel's; Aperture
+  ADR-0011 was itself deferred in the same 2026-11-10 decision pass.</li>
+<li><strong>The headless validators.</strong> Query validation is Mosaic's — Reel
+  <a href="../ADR-0007-reel-delegates-to-the-mosaic-boundary/">ADR-0007</a>, Mosaic ADR-0009/0010. Reel
+  hosts no validator (<code>CLAUDE.md</code>: "Never design a Reel-owned validator, executor, or query
+  dialect"). Conformance checking of View Contract instances, when it exists, belongs with the
+  platform View Contract spec, not in Reel's core.</li>
+<li><strong>The MCP / agent surface</strong> (Aperture ADR-0021). Mosaic hosts it (Mosaic ADR-0009) and may
+  delegate outbound to Reel as an untrusted planner behind its validating relay (Mosaic
+  ADR-0010; Reel ADR-0007). Reel's only inbound surface is the relay-facing turn endpoint.</li>
+</ul>
+<p><strong>The shell side is settled</strong> by Aperture ADR-0014 (Accepted as posed), <strong>ADR-0030</strong> (React +
+Vite SPA) and <strong>ADR-0031</strong> (config-selected layout library); see the 2026-09-11 status update
+above. The "framework ADR" this ADR anticipated is Aperture's, and the open sub-question on where
+the framework-neutral renderer lives is Aperture's to settle, not Reel's.</p>
+<p>The three injection seams are unchanged in principle: (1) the capability-scoped client is
+realized as Reel's MCP client onto Mosaic's boundary (<code>src/reel/planner/boundary.py</code>), with Reel
+auth-unaware; (2) the control-plane store port remains the seam for <code>DataStory</code> persistence
+(unbuilt — migration delta D1); (3) the renderer seam is the View Contract.</p>
+<p><strong>As built</strong> (verified against <code>src/reel/</code> at commit <code>1b050e6</code>): items 1 and 2 exist in their
+v1 forms (<code>reel.story</code>, <code>reel.planner</code>; linear, unpinned — see ADR-0002/0003). <strong>Item 3 does not
+exist yet</strong>: Reel emits QuerySpecs inside turns and no View Contract instances — unsurprising,
+since the View Contract is still a stub (<code>datahelix:platform/design/view-contract.md</code>). It is
+the core's target output, not a shipped one.</p>
 
 
 

@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4182,7 +4182,7 @@
 <li><strong>Status:</strong> Accepted</li>
 <li><strong>Date:</strong> 2026-07-06</li>
 <li><strong>Deciders:</strong> labadorf (via Phase-4 review/merge, PR #14), dev sprint</li>
-<li><strong>Related:</strong> ADR-0017 (data plane vs control plane — refines its reference impl), ADR-0003/0004 (config-as-data), ADR-0029 (honest degradation), N5.4; aperture#17 (recipe), aperture#19 (removal affordance); ownership amendment: aperture#56, BU-Neuromics/mosaic#178 (enforcement)</li>
+<li><strong>Related:</strong> ADR-0017 (data plane vs control plane — refines its reference impl), ADR-0003/0004 (config-as-data), ADR-0029 (honest degradation), N5.4; aperture#17 (recipe), aperture#19 (removal affordance); ownership amendment: aperture#56, datahelix-platform/mosaic#178 (enforcement)</li>
 </ul>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
 <p>Phase 4 needs a concrete shape for the control-plane store ADR-0017 mandates: where saved
@@ -4297,7 +4297,7 @@ guarantee — a determined user can still reach the same-origin GraphQL endpoint
 Enforcement belongs to the store. The reference implementation is a Mosaic
 <code>AuthMiddleware</code> subclass (<code>mosaic.core.middleware</code>, already an ABC with actor extraction
 implemented) that stamps <code>owner</code> from the verified actor header on create and rejects updates
-where <code>owner != actor</code> — BU-Neuromics/mosaic#178. Until that lands, the partition is advisory
+where <code>owner != actor</code> — datahelix-platform/mosaic#178. Until that lands, the partition is advisory
 and the UI says so. <strong>ADR-0008 and ADR-0016 are preserved: Aperture holds no
 authority, and enforcement is never added to it.</strong></p>
 <p><strong>Capability-gated, so nothing breaks.</strong> <code>owner</code>/<code>visibility</code> are recognized structurally and
@@ -4336,6 +4336,9 @@ platform-spec judgment, not a free consequence of this ADR.</p>
   is then unfilterable, unvalidatable, and forgeable by anyone who can type a name with a
   colon in it. Rejected as a false economy.</li>
 </ul>
+<blockquote>
+<p><strong>Note (2026-11-20, platform <a href="../../../platform/design/decisions/ADR-0007-retire-hippo-data-contract-identifiers.md">ADR-0007</a>):</strong> The env var named here is renamed <code>VITE_HIPPO_CONTROL_PLANE_URL</code> → <code>VITE_CONTROL_PLANE_URL</code> (Q5; aperture#35). The recipe schema now imports <code>mosaic_core</code> and uses <code>mosaic_index</code>, and its manifest key is <code>mosaic_version</code> (Q9). The decision itself is unchanged.</p>
+</blockquote>
 
 
 

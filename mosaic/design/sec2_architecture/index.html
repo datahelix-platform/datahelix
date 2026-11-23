@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -2176,14 +2176,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4911,7 +4911,7 @@ accessibility. The Infrastructure Layer is optional and adds cloud-scale storage
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   ┌─────────────────────────┐   ┌───────────────────────────┐  │
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   │      REST API           │   │    GraphQL API (optional) │  │
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   │  hippo.rest (FastAPI)   │   │   hippo.graphql           │  │
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│   │  `hippo serve`          │   │                           │  │
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│   │  `mosaic serve`         │   │                           │  │
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│   └────────────┬────────────┘   └─────────────┬─────────────┘  │
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>└────────────────│─────────────────────────────│─────────────────┘
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>                 │  both call SDK directly      │
@@ -4922,7 +4922,7 @@ accessibility. The Infrastructure Layer is optional and adds cloud-scale storage
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│   │  QueryEngine │  │IngestionPipe │  │  ProvenanceManager  │  │
 <a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│   └──────────────┘  └──────────────┘  └─────────────────────┘  │
 <a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│   ┌──────────────┐  ┌──────────────┐  ┌─────────────────────┐  │
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│   │ SchemaConfig │  │  EntityStore │  │  HippoClient        │  │
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│   │ SchemaConfig │  │  EntityStore │  │  MosaicClient       │  │
 <a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│   │  (YAML)      │  │  (interface) │  │  (public API)       │  │
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│   └──────────────┘  └──────┬───────┘  └─────────────────────┘  │
 <a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>└──────────────────────────── │ ───────────────────────────────── ┘
@@ -4943,7 +4943,7 @@ accessibility. The Infrastructure Layer is optional and adds cloud-scale storage
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>hippo/
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>│
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>├── core/                        # All business logic — no I/O
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│   ├── client.py                # HippoClient: primary public interface
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│   ├── client.py                # MosaicClient: primary public interface
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│   ├── query.py                 # QueryEngine: filter, join, resolve, search
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│   ├── ingestion.py             # IngestionPipeline: validate &amp; write entities
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│   ├── provenance.py            # ProvenanceManager: change tracking
@@ -4989,7 +4989,7 @@ accessibility. The Infrastructure Layer is optional and adds cloud-scale storage
 <a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>├── graphql/                     # GraphQL transport (optional `graphql` extra; sec4 §4.7)
 <a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>│   ├── __init__.py              # Lazy entry points + extra detection
 <a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>│   ├── schema_builder.py        # schema_typing type model → strawberry types
-<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>│   ├── resolvers.py             # Query/Mutation roots; thin HippoClient delegation
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>│   ├── resolvers.py             # Query/Mutation roots; thin MosaicClient delegation
 <a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>│   └── router.py                # FastAPI GraphQLRouter (GraphiQL, bearer auth)
 <a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>│
 <a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>├── cli/
@@ -5053,7 +5053,7 @@ live in Cappella, not Hippo; this ABC defines the contract only):</p>
 <p>Adapters are registered in a central registry keyed by adapter type string. When Hippo loads
 its config, it resolves the configured adapter type to its implementation class and instantiates
 it with the adapter-specific config block:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># hippo.yaml</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># mosaic.yaml</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">adapter</span><span class="p">:</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqlite</span>
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">sqlite</span><span class="p">:</span>
@@ -5099,35 +5099,35 @@ packages without forking Hippo or contributing to the core repository.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>hippo.storage_adapters</code></td>
+<td><code>mosaic.storage_adapters</code></td>
 <td>Storage backend implementations</td>
-<td><code>hippo-adapter-&lt;name&gt;</code></td>
+<td><code>mosaic-adapter-&lt;name&gt;</code></td>
 </tr>
 <tr>
-<td><code>hippo.external_adapters</code></td>
+<td><code>mosaic.external_adapters</code></td>
 <td>External system connector implementations (Cappella ships these)</td>
 <td><code>cappella-adapter-&lt;name&gt;</code></td>
 </tr>
 <tr>
-<td><code>hippo.write_validators</code></td>
+<td><code>mosaic.write_validators</code></td>
 <td>Write-path business rule validators</td>
-<td><code>hippo-validators-&lt;name&gt;</code></td>
+<td><code>mosaic-validators-&lt;name&gt;</code></td>
 </tr>
 <tr>
-<td><code>hippo.reference_loaders</code></td>
+<td><code>mosaic.reference_loaders</code></td>
 <td>Reference ontology data loaders</td>
-<td><code>hippo-reference-&lt;name&gt;</code></td>
+<td><code>mosaic-reference-&lt;name&gt;</code></td>
 </tr>
 </tbody>
 </table>
 <p><strong>Declaring plugins</strong> (in the third-party package's <code>pyproject.toml</code>):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">[project.entry-points.</span><span class="s2">"hippo.storage_adapters"</span><span class="k">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">[project.entry-points.</span><span class="s2">"mosaic.storage_adapters"</span><span class="k">]</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">myadapter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"mypkg.adapters.storage:MyStorageAdapter"</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="k">[project.entry-points.</span><span class="s2">"hippo.write_validators"</span><span class="k">]</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="k">[project.entry-points.</span><span class="s2">"mosaic.write_validators"</span><span class="k">]</span>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">my_rules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"mypkg.validators:MyBusinessRuleValidator"</span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="k">[project.entry-points.</span><span class="s2">"hippo.reference_loaders"</span><span class="k">]</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="k">[project.entry-points.</span><span class="s2">"mosaic.reference_loaders"</span><span class="k">]</span>
 <a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="n">my_ontology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"mypkg.reference:MyOntologyLoader"</span>
 </code></pre></div>
 <p>Once the package is <code>pip install</code>ed alongside Hippo, its contributions are available with no
@@ -5153,17 +5153,17 @@ Once v1.0 is released, breaking changes constitute a semver-major bump. Pre-1.0,
 changes may occur with deprecation notices. Plugin authors should pin to compatible Hippo
 versions using <code>hippo&gt;=0.x,&lt;0.(x+1)</code> until v1.0 is reached.</p>
 <p><strong>Community registry:</strong> A curated list of known community plugins will be maintained in the
-Hippo repository README. The naming conventions above (<code>hippo-adapter-&lt;name&gt;</code>,
-<code>hippo-reference-&lt;name&gt;</code>, etc.) ensure discoverability via PyPI search.</p>
+Hippo repository README. The naming conventions above (<code>mosaic-adapter-&lt;name&gt;</code>,
+<code>mosaic-reference-&lt;name&gt;</code>, etc.) ensure discoverability via PyPI search.</p>
 <h3 id="24-config-system">2.4 Config System<a class="headerlink" href="#24-config-system" title="Permanent link">&para;</a></h3>
-<p>All Hippo configuration lives in a single YAML file (<code>hippo.yaml</code> by default, overridable via
-<code>HIPPO_CONFIG</code> environment variable). The config file has three top-level sections:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># hippo.yaml</span>
+<p>All Hippo configuration lives in a single YAML file (<code>mosaic.yaml</code> by default, overridable via
+<code>MOSAIC_CONFIG</code> environment variable). The config file has three top-level sections:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># mosaic.yaml</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nt">adapter</span><span class="p">:</span><span class="w">                         </span><span class="c1"># Which storage backend to use and its settings</span>
 <a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqlite</span>
 <a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="nt">sqlite</span><span class="p">:</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./hippo.db</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./mosaic.db</span>
 <a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
 <a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="nt">schema</span><span class="p">:</span><span class="w">                          </span><span class="c1"># Path to entity schema definition (required — see Section 3)</span>
 <a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./schema.yaml</span><span class="w">            </span><span class="c1"># LinkML format; no default schema is bundled</span>
@@ -5171,55 +5171,55 @@ Hippo repository README. The naming conventions above (<code>hippo-adapter-&lt;n
 <a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="nt">validators</span><span class="p">:</span><span class="w">                      </span><span class="c1"># Path to business rule validators config (optional)</span>
 <a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./validators.yaml</span><span class="w">        </span><span class="c1"># If omitted, only schema-level validation runs</span>
 <a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>
-<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="nt">server</span><span class="p">:</span><span class="w">                          </span><span class="c1"># REST API server settings (only needed for hippo serve)</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="nt">server</span><span class="p">:</span><span class="w">                          </span><span class="c1"># REST API server settings (only needed for mosaic serve)</span>
 <a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0.0.0</span>
 <a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8000</span>
 <a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">  </span><span class="nt">workers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
 </code></pre></div>
 <p>Config is loaded once at startup, validated against a Pydantic model, and injected throughout
-the SDK via a <code>HippoConfig</code> object. Components never read config files directly — they receive
+the SDK via a <code>MosaicConfig</code> object. Components never read config files directly — they receive
 a config object at instantiation. This keeps components testable in isolation.</p>
 <h3 id="25-dependency-injection">2.5 Dependency Injection<a class="headerlink" href="#25-dependency-injection" title="Permanent link">&para;</a></h3>
-<p>The <code>HippoClient</code> is the single entry point to all SDK functionality. It is instantiated with
-a <code>HippoConfig</code> and internally constructs the appropriate adapter, query engine, and provenance
-manager. In the REST layer, a single <code>HippoClient</code> instance is created at server startup and
+<p>The <code>MosaicClient</code> is the single entry point to all SDK functionality. It is instantiated with
+a <code>MosaicConfig</code> and internally constructs the appropriate adapter, query engine, and provenance
+manager. In the REST layer, a single <code>MosaicClient</code> instance is created at server startup and
 injected into route handlers via FastAPI's dependency system:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># hippo/rest/dependencies.py</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_client</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">HippoClient</span><span class="p">:</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_client</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">MosaicClient</span><span class="p">:</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="k">return</span> <span class="n">_client</span>  <span class="c1"># module-level singleton initialized at startup</span>
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
 <a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># hippo/rest/routers/entities.py</span>
 <a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/</span><span class="si">{entity_type}</span><span class="s2">"</span><span class="p">)</span>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="k">def</span><span class="w"> </span><span class="nf">list_entities</span><span class="p">(</span><span class="n">entity_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">HippoClient</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_client</span><span class="p">)):</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="k">def</span><span class="w"> </span><span class="nf">list_entities</span><span class="p">(</span><span class="n">entity_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">MosaicClient</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_client</span><span class="p">)):</span>
 <a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>    <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">entity_type</span><span class="p">,</span> <span class="o">**</span><span class="n">filters</span><span class="p">)</span>
 </code></pre></div>
-<p>For local SDK usage, the caller instantiates <code>HippoClient</code> directly:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">hippo</span><span class="w"> </span><span class="kn">import</span> <span class="n">HippoClient</span><span class="p">,</span> <span class="n">HippoConfig</span>
+<p>For local SDK usage, the caller instantiates <code>MosaicClient</code> directly:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">mosaic</span><span class="w"> </span><span class="kn">import</span> <span class="n">MosaicClient</span><span class="p">,</span> <span class="n">MosaicConfig</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">client</span> <span class="o">=</span> <span class="n">HippoClient</span><span class="p">(</span><span class="n">HippoConfig</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">"hippo.yaml"</span><span class="p">))</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">client</span> <span class="o">=</span> <span class="n">MosaicClient</span><span class="p">(</span><span class="n">MosaicConfig</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">"mosaic.yaml"</span><span class="p">))</span>
 <a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"Item"</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="s2">"task"</span><span class="p">,</span> <span class="n">completion_state</span><span class="o">=</span><span class="s2">"pending"</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="26-transport-layer">2.6 Transport Layer<a class="headerlink" href="#26-transport-layer" title="Permanent link">&para;</a></h3>
 <h4 id="rest-api">REST API<a class="headerlink" href="#rest-api" title="Permanent link">&para;</a></h4>
-<p>The REST API is a FastAPI application defined in <code>hippo/rest/app.py</code>. The <code>app</code> object is the
-primary artifact — <code>hippo serve</code> is a thin CLI wrapper that runs it via Uvicorn:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># hippo serve is equivalent to:</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">uvicorn</span> <span class="n">hippo</span><span class="o">.</span><span class="n">rest</span><span class="o">.</span><span class="n">app</span><span class="p">:</span><span class="n">app</span> <span class="o">--</span><span class="n">host</span> <span class="mf">0.0.0.0</span> <span class="o">--</span><span class="n">port</span> <span class="mi">8000</span> <span class="o">--</span><span class="n">workers</span> <span class="mi">4</span>
+<p>The REST API is a FastAPI application built by the app factories in <code>mosaic/serve/</code> and
+<code>mosaic/api/factory.py</code>. <code>mosaic serve</code> is a thin CLI wrapper that runs it via Uvicorn:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># mosaic serve is equivalent to:</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">uvicorn</span> <span class="n">mosaic</span><span class="o">.</span><span class="n">serve</span><span class="p">:</span><span class="n">create_app_from_env</span> <span class="o">--</span><span class="n">factory</span> <span class="o">--</span><span class="n">host</span> <span class="mf">0.0.0.0</span> <span class="o">--</span><span class="n">port</span> <span class="mi">8000</span> <span class="o">--</span><span class="n">workers</span> <span class="mi">4</span>
 </code></pre></div>
 <p>Embedding in a larger application is a first-class use case:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Future workflow executor or data portal:</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">hippo.rest.app</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span> <span class="k">as</span> <span class="n">hippo_app</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">platform_app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">"/hippo"</span><span class="p">,</span> <span class="n">hippo_app</span><span class="p">)</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">mosaic.serve</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_default_app</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">platform_app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">"/mosaic"</span><span class="p">,</span> <span class="n">create_default_app</span><span class="p">())</span>
 </code></pre></div>
 <p>The REST API exposes an OpenAPI schema automatically via FastAPI at <code>/docs</code> and <code>/openapi.json</code>.</p>
 <h4 id="graphql">GraphQL<a class="headerlink" href="#graphql" title="Permanent link">&para;</a></h4>
 <p><code>hippo/graphql/</code> (reserved-empty in v0.1, implemented since — issue #45) is a Strawberry-based
 GraphQL transport adapter that wraps the SDK directly — not via REST. The GraphQL schema is
 autogenerated at startup by rendering the shared LinkML type model
-(<code>hippo.core.schema_typing</code>, issue #47), so the GraphQL and typed-client surfaces cannot
-drift; resolvers are thin <code>HippoClient</code> delegations reading the same <code>app.state.hippo_client</code>
+(<code>mosaic.core.schema_typing</code>, issue #47), so the GraphQL and typed-client surfaces cannot
+drift; resolvers are thin <code>MosaicClient</code> delegations reading the same <code>app.state.mosaic_client</code>
 the REST routers use. Strawberry ships in the optional <code>graphql</code> extra;
-<code>hippo serve --graphql</code> mounts the transport at <code>/graphql</code> on the same FastAPI app. Auth
+<code>mosaic serve --graphql</code> mounts the transport at <code>/graphql</code> on the same FastAPI app. Auth
 middleware is shared between REST and GraphQL transports (see 2.7).
 Full design: sec4 §4.7.</p>
 <h3 id="27-auth-placeholder">2.7 Auth Placeholder<a class="headerlink" href="#27-auth-placeholder" title="Permanent link">&para;</a></h3>
@@ -5241,49 +5241,49 @@ transport layer (defaulting to <code>"anonymous"</code> in v0.1).</p>
 </thead>
 <tbody>
 <tr>
-<td><code>hippo init</code></td>
-<td>Scaffold a new <code>hippo.yaml</code>, <code>schema.yaml</code>, and <code>validators.yaml</code> in the current directory</td>
+<td><code>mosaic init</code></td>
+<td>Scaffold a new <code>mosaic.yaml</code>, <code>schema.yaml</code>, and <code>validators.yaml</code> in the current directory</td>
 </tr>
 <tr>
-<td><code>hippo serve</code></td>
-<td>Start the REST API server using settings from <code>hippo.yaml</code></td>
+<td><code>mosaic serve</code></td>
+<td>Start the REST API server using settings from <code>mosaic.yaml</code></td>
 </tr>
 <tr>
-<td><code>hippo ingest &lt;source&gt; &lt;file&gt;</code></td>
+<td><code>mosaic ingest &lt;source&gt; &lt;file&gt;</code></td>
 <td>Run a batch ingestion from a flat file (CSV/JSON/JSONL)</td>
 </tr>
 <tr>
-<td><code>hippo validate [--schema &lt;path&gt;]</code></td>
+<td><code>mosaic validate [--schema &lt;path&gt;]</code></td>
 <td>Validate config, schema, and validators files without starting the server; <code>--schema</code> runs the full namespace graph validation pass (cross-namespace reference checks, duplicate entity detection, circular dependency detection) and reports all errors with file locations</td>
 </tr>
 <tr>
-<td><code>hippo migrate</code></td>
+<td><code>mosaic migrate</code></td>
 <td>Apply any pending schema migrations to the current storage backend; includes namespace graph validation pass before applying any changes</td>
 </tr>
 <tr>
-<td><code>hippo status</code></td>
+<td><code>mosaic status</code></td>
 <td>Show current config, adapter type, entity counts, schema version, and installed plugins</td>
 </tr>
 <tr>
-<td><code>hippo validate-schema</code></td>
+<td><code>mosaic validate-schema</code></td>
 <td>Validate a LinkML schema file</td>
 </tr>
 <tr>
-<td><code>hippo reference list</code></td>
+<td><code>mosaic reference list</code></td>
 <td>List all installed reference loaders and their installed versions</td>
 </tr>
 <tr>
-<td><code>hippo reference install &lt;name&gt; [--version &lt;v&gt;]</code></td>
+<td><code>mosaic reference install &lt;name&gt; [--version &lt;v&gt;]</code></td>
 <td>Install a reference dataset; merges schema fragment and runs migrate</td>
 </tr>
 <tr>
-<td><code>hippo reference update &lt;name&gt; [--version &lt;v&gt;]</code></td>
+<td><code>mosaic reference update &lt;name&gt; [--version &lt;v&gt;]</code></td>
 <td>Update an installed reference dataset to a newer release</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Namespace validation in <code>hippo validate --schema</code></strong></p>
-<p>When <code>--schema</code> is provided (or the schema path is read from <code>hippo.yaml</code>), the validator
+<p><strong>Namespace validation in <code>mosaic validate --schema</code></strong></p>
+<p>When <code>--schema</code> is provided (or the schema path is read from <code>mosaic.yaml</code>), the validator
 runs the full namespace graph validation pass:</p>
 <ol>
 <li>Discovers all schema files recursively from the schema path (file or directory)</li>
@@ -5304,8 +5304,8 @@ originates:</p>
 <a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>  first declared in: schemas/tissue.yaml
 <a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>  also declared in: schemas/tissue_legacy.yaml
 </code></pre></div>
-<p><strong>Namespace validation in <code>hippo migrate</code></strong></p>
-<p><code>hippo migrate</code> runs the namespace graph validation pass before generating the migration
+<p><strong>Namespace validation in <code>mosaic migrate</code></strong></p>
+<p><code>mosaic migrate</code> runs the namespace graph validation pass before generating the migration
 plan. If namespace validation fails, the migration is aborted and errors are reported before
 any changes are applied. This ensures no schema with broken namespace references can be
 applied to storage.</p>
@@ -5331,7 +5331,7 @@ applied to storage.</p>
 <tr>
 <td><strong>Single-host</strong></td>
 <td>SQLite or PostgreSQL</td>
-<td>REST (<code>hippo serve</code>)</td>
+<td>REST (<code>mosaic serve</code>)</td>
 <td>None (v0.1) / JWT (future)</td>
 <td>Small team, shared server</td>
 </tr>
@@ -5376,7 +5376,7 @@ writes and moderate concurrent reads from pipelines.</p>
 </table>
 <h3 id="211-error-handling">2.11 Error Handling<a class="headerlink" href="#211-error-handling" title="Permanent link">&para;</a></h3>
 <p>Errors propagate outward from adapter → SDK → transport layer in a consistent hierarchy:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>HippoError (base)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>MosaicError (base)
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>├── EntityNotFoundError       # Requested entity does not exist
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>├── ValidationError           # Entity failed validation
 <a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>│   ├── SchemaValidationError     # Failed schema-level field/type/enum check
@@ -5386,7 +5386,7 @@ writes and moderate concurrent reads from pipelines.</p>
 <a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>├── SearchCapabilityError     # Schema declares a search mode the active adapter doesn't support
 <a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>└── ConfigError               # Invalid or missing configuration
 </code></pre></div>
-<p>The SDK raises typed <code>HippoError</code> subclasses. The REST layer catches these and maps them to
+<p>The SDK raises typed <code>MosaicError</code> subclasses. The REST layer catches these and maps them to
 appropriate HTTP status codes (404, 422, 500, etc.) with a consistent JSON error body:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EntityNotFoundError"</span><span class="p">,</span>
@@ -5468,7 +5468,7 @@ surfacing — internal implementation details never leak through the SDK boundar
 </thead>
 <tbody>
 <tr>
-<td>Bundled <code>hippo-reference-*</code> loaders</td>
+<td>Bundled <code>mosaic-reference-*</code> loaders</td>
 <td>FMA, Ensembl, GO, etc. (each is a separate package)</td>
 </tr>
 </tbody>
@@ -5481,11 +5481,11 @@ surfacing — internal implementation details never leak through the SDK boundar
 <a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>pip<span class="w"> </span>install<span class="w"> </span>hippo<span class="o">[</span>all<span class="o">]</span><span class="w">              </span><span class="c1"># Everything</span>
 <a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
 <a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="c1"># Community plugins installed alongside:</span>
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>pip<span class="w"> </span>install<span class="w"> </span>hippo<span class="w"> </span>hippo-adapter-redshift<span class="w">    </span><span class="c1"># hypothetical storage adapter</span>
-<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>pip<span class="w"> </span>install<span class="w"> </span>hippo<span class="w"> </span>hippo-reference-reactome<span class="w">  </span><span class="c1"># community reference loader</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>pip<span class="w"> </span>install<span class="w"> </span>datahelix-mosaic<span class="w"> </span>mosaic-adapter-redshift<span class="w">    </span><span class="c1"># hypothetical storage adapter</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>pip<span class="w"> </span>install<span class="w"> </span>datahelix-mosaic<span class="w"> </span>mosaic-reference-reactome<span class="w">  </span><span class="c1"># community reference loader</span>
 </code></pre></div>
-<p>Plugin packages should follow the naming convention <code>hippo-adapter-&lt;name&gt;</code> for discoverability.
-The Hippo repository provides a <code>hippo-adapter-template</code> cookiecutter for bootstrapping new
+<p>Plugin packages should follow the naming convention <code>mosaic-adapter-&lt;name&gt;</code> for discoverability.
+The Hippo repository provides a <code>mosaic-adapter-template</code> cookiecutter for bootstrapping new
 adapter packages with the correct entry point declarations, ABC implementations, and test
 scaffolding pre-wired.</p>
 <hr />
@@ -5500,7 +5500,7 @@ scaffolding pre-wired.</p>
 - Relationship cardinality constraints</p>
 <p>Raises <code>SchemaValidationError</code> on failure. Cannot be disabled.</p>
 <h4 id="tier-2-config-driven-business-rule-validators-validatorsyaml">Tier 2: Config-driven business rule validators (<code>validators.yaml</code>)<a class="headerlink" href="#tier-2-config-driven-business-rule-validators-validatorsyaml" title="Permanent link">&para;</a></h4>
-<p>Optional. Loaded from the path declared in <code>hippo.yaml</code>. If the key is absent, this tier is
+<p>Optional. Loaded from the path declared in <code>mosaic.yaml</code>. If the key is absent, this tier is
 skipped entirely.</p>
 <p><strong><code>validators.yaml</code> config format:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nt">validators</span><span class="p">:</span>
@@ -5560,7 +5560,7 @@ is written.</p>
 <a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>
 <a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="nd">@abstractmethod</span>
 <a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">WriteOperation</span><span class="p">,</span>
-<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>                 <span class="n">client</span><span class="p">:</span> <span class="n">HippoClient</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationResult</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>                 <span class="n">client</span><span class="p">:</span> <span class="n">MosaicClient</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationResult</span><span class="p">:</span> <span class="o">...</span>
 <a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>
 <a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="nd">@dataclass</span>
 <a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="k">class</span><span class="w"> </span><span class="nc">WriteOperation</span><span class="p">:</span>
@@ -5615,9 +5615,9 @@ Redundant entries (child listed with parent) emit a startup warning.</p>
 <hr />
 <h3 id="214-reference-loader-system">2.14 Reference Loader System<a class="headerlink" href="#214-reference-loader-system" title="Permanent link">&para;</a></h3>
 <p>Reference loaders install community-standard ontology data as regular Hippo entities.
-Distributed as <code>hippo-reference-&lt;name&gt;</code> packages, discovered via two entry point groups:
-<code>hippo.reference_loaders</code> (the ABC subclass) and <code>hippo.reference_loader_cli</code> (an optional
-<code>typer.Typer</code> app mounted under <code>hippo reference &lt;name&gt; ...</code>).</p>
+Distributed as <code>mosaic-reference-&lt;name&gt;</code> packages, discovered via two entry point groups:
+<code>mosaic.reference_loaders</code> (the ABC subclass) and <code>mosaic.reference_loader_cli</code> (an optional
+<code>typer.Typer</code> app mounted under <code>mosaic reference &lt;name&gt; ...</code>).</p>
 <p><strong>v2 status.</strong> The contract documented in this section is the v2 ReferenceLoader contract.
 v1 (locked in <a href="/PTS/issues/PTS-215">PTS-215</a> against GitHub #6) shipped with two follow-up
 gaps that the v1 design left undecided: opt-in <code>LoadResult.entity_ids</code> as the <code>--prune-old</code>
@@ -5626,7 +5626,7 @@ substrate did not scale to production references (GitHub #15), and the
 (GitHub #16). v2 closes both. The substrate moves to a Hippo-internal write log
 (§2.14.9). The <code>LoadResult</code> shape adopts <code>EntityRef</code> and drops the v1 sibling fields
 (§2.14.8). v2 is a clean break — the migration touches in-tree fixtures only because no
-downstream <code>hippo-reference-*</code> package has shipped against v1. Decisions are recorded in
+downstream <code>mosaic-reference-*</code> package has shipped against v1. Decisions are recorded in
 <a href="../sec9_decisions/">sec9 §2.14.J, §2.14.K, §2.14.L</a>.</p>
 <p><strong><code>ReferenceLoader</code> ABC:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
@@ -5637,8 +5637,8 @@ downstream <code>hippo-reference-*</code> package has shipped against v1. Decisi
 <a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>           <span class="c1"># e.g. "fma", "ensembl", "go" — must match entry point key</span>
 <a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
 <a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>
-<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>    <span class="c1"># Optional: Typer app mounted as `hippo reference &lt;name&gt; &lt;subcmd&gt; ...`</span>
-<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>    <span class="c1"># Register via the hippo.reference_loader_cli entry point.</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>    <span class="c1"># Optional: Typer app mounted as `mosaic reference &lt;name&gt; &lt;subcmd&gt; ...`</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>    <span class="c1"># Register via the mosaic.reference_loader_cli entry point.</span>
 <a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>    <span class="n">subcommands_app</span><span class="p">:</span> <span class="n">typer</span><span class="o">.</span><span class="n">Typer</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a>
 <a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a>    <span class="c1"># Optional: Pydantic v2 model for load() parameters.</span>
@@ -5660,12 +5660,12 @@ downstream <code>hippo-reference-*</code> package has shipped against v1. Decisi
 <a id="__codelineno-20-29" name="__codelineno-20-29" href="#__codelineno-20-29"></a>    <span class="c1"># Must declare default_prefix: matching the loader name (see §2.14.5).</span>
 <a id="__codelineno-20-30" name="__codelineno-20-30" href="#__codelineno-20-30"></a>
 <a id="__codelineno-20-31" name="__codelineno-20-31" href="#__codelineno-20-31"></a>    <span class="nd">@abstractmethod</span>
-<a id="__codelineno-20-32" name="__codelineno-20-32" href="#__codelineno-20-32"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">HippoClient</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-20-32" name="__codelineno-20-32" href="#__codelineno-20-32"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">MosaicClient</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <a id="__codelineno-20-33" name="__codelineno-20-33" href="#__codelineno-20-33"></a>             <span class="n">params</span><span class="p">:</span> <span class="n">BaseModel</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LoadResult</span><span class="p">:</span> <span class="o">...</span>
 <a id="__codelineno-20-34" name="__codelineno-20-34" href="#__codelineno-20-34"></a>    <span class="c1"># Ingest the reference dataset at the given version.</span>
 <a id="__codelineno-20-35" name="__codelineno-20-35" href="#__codelineno-20-35"></a>    <span class="c1"># params is an instance of load_params_schema, or None if not declared.</span>
 <a id="__codelineno-20-36" name="__codelineno-20-36" href="#__codelineno-20-36"></a>
-<a id="__codelineno-20-37" name="__codelineno-20-37" href="#__codelineno-20-37"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">upgrade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">HippoClient</span><span class="p">,</span> <span class="n">from_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">to_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-20-37" name="__codelineno-20-37" href="#__codelineno-20-37"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">upgrade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">MosaicClient</span><span class="p">,</span> <span class="n">from_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">to_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <a id="__codelineno-20-38" name="__codelineno-20-38" href="#__codelineno-20-38"></a>                <span class="n">params</span><span class="p">:</span> <span class="n">BaseModel</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LoadResult</span><span class="p">:</span>
 <a id="__codelineno-20-39" name="__codelineno-20-39" href="#__codelineno-20-39"></a>        <span class="c1"># Default: runs load(to_version, params). Override for efficient diffs.</span>
 <a id="__codelineno-20-40" name="__codelineno-20-40" href="#__codelineno-20-40"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">to_version</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
@@ -5677,37 +5677,37 @@ downstream <code>hippo-reference-*</code> package has shipped against v1. Decisi
 <a id="__codelineno-20-46" name="__codelineno-20-46" href="#__codelineno-20-46"></a>        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not implement validate()"</span><span class="p">)</span>
 </code></pre></div>
 <p><strong>Entry points</strong> (in the loader package's <code>pyproject.toml</code>):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">[project.entry-points.</span><span class="s2">"hippo.reference_loaders"</span><span class="k">]</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">ensembl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hippo_reference_ensembl.loader:EnsemblLoader"</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">[project.entry-points.</span><span class="s2">"mosaic.reference_loaders"</span><span class="k">]</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">ensembl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"mosaic_reference_ensembl.loader:EnsemblLoader"</span>
 <a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
 <a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="c1"># Optional — only needed if the loader exposes subcommands:</span>
-<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="k">[project.entry-points.</span><span class="s2">"hippo.reference_loader_cli"</span><span class="k">]</span>
-<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="n">ensembl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hippo_reference_ensembl.cli:app"</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="k">[project.entry-points.</span><span class="s2">"mosaic.reference_loader_cli"</span><span class="k">]</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="n">ensembl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"mosaic_reference_ensembl.cli:app"</span>
 </code></pre></div>
-<p><strong>Install lifecycle (<code>hippo reference install &lt;name&gt; [--version &lt;v&gt;]</code>):</strong>
-1. Resolve loader from <code>hippo.reference_loaders</code> entry points
+<p><strong>Install lifecycle (<code>mosaic reference install &lt;name&gt; [--version &lt;v&gt;]</code>):</strong>
+1. Resolve loader from <code>mosaic.reference_loaders</code> entry points
 2. Call <code>loader.schema_fragment()</code> and merge into deployed schema (see §2.14.5)
-3. Run <code>hippo migrate</code> (additive = non-interactive; structural = prompt for confirmation)
+3. Run <code>mosaic migrate</code> (additive = non-interactive; structural = prompt for confirmation)
 4. Call <code>loader.load(client, version, params)</code> — source data fetched via <code>client.cached_fetch</code>
    (see §2.14.3)
-5. Record <code>{loader_name: version}</code> in <code>hippo_meta</code> under key <code>reference_versions</code></p>
-<p><strong>Upgrade lifecycle (<code>hippo reference upgrade &lt;name&gt; [--version &lt;v&gt;] [--prune-old]</code>):</strong>
+5. Record <code>{loader_name: version}</code> in <code>mosaic_meta</code> under key <code>reference_versions</code></p>
+<p><strong>Upgrade lifecycle (<code>mosaic reference upgrade &lt;name&gt; [--version &lt;v&gt;] [--prune-old]</code>):</strong>
 Calls <code>loader.upgrade(client, from_version, to_version, params)</code>. The new version's entities
 are ingested additively by default; pass <code>--prune-old</code> to remove the prior version's rows
 after the new install succeeds (see §2.14.4).</p>
 <p><strong>User schema dependency declaration:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># schema.yaml — exact-match pins only for v1 (range comparators are deferred)</span>
 <a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="nt">requires</span><span class="p">:</span>
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hippo-reference-fma==3.3</span>
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hippo-reference-ensembl==mus_musculus.GRCm39.115</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mosaic-reference-fma==3.3</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mosaic-reference-ensembl==mus_musculus.GRCm39.115</span>
 </code></pre></div>
-<p><code>hippo validate</code> fails fast with a clear install suggestion if a required loader is missing.
+<p><code>mosaic validate</code> fails fast with a clear install suggestion if a required loader is missing.
 Users reference loader-provided entity types by name without redeclaring them.</p>
 <p><strong>Coupling notes (D1 ↔ D4 ↔ D5):</strong></p>
 <p>These three decisions interact. Implementers of the ABC surface must understand all three:</p>
 <ul>
 <li><strong>D1 → D5</strong>: Sub-command apps declared via <code>subcommands_app</code> receive <code>client</code> via Typer
-  context injection. This means the loader CLI shares the same <code>HippoClient</code> instance (and
+  context injection. This means the loader CLI shares the same <code>MosaicClient</code> instance (and
   thus the same <code>client.cache_dir_for(...)</code> resolution) as <code>load()</code>. Any subcommand that fetches source data MUST
   use <code>client.cached_fetch</code> — not a private download path.</li>
 <li><strong>D4 → D1</strong>: <code>load_params_schema</code> is shared between <code>load()</code> and the CLI. When a subcommand
@@ -5726,12 +5726,12 @@ loader-defined. Hippo does not parse or compare them.</p>
 - <code>"mus_musculus.GRCm39.115"</code> — organism + assembly + release
 - <code>"2024-01-15"</code> — date-stamped snapshot</p>
 <p><strong>v1 constraint — exact-match <code>requires:</code> only.</strong> The <code>requires:</code> directive in <code>schema.yaml</code>
-accepts only exact-match pins (<code>hippo-reference-ensembl==mus_musculus.GRCm39.115</code>). Range
+accepts only exact-match pins (<code>mosaic-reference-ensembl==mus_musculus.GRCm39.115</code>). Range
 comparators (<code>&gt;=</code>, <code>~=</code>, <code>^=</code>) are deferred to v2, which may introduce an optional
 <code>parse_version(s) -&gt; tuple</code> ABC method letting Hippo evaluate ranges. Until then, users pin
 exact versions; the install check is string equality only.</p>
 <p>Users who need a range constraint should pin the lowest acceptable version and upgrade
-explicitly with <code>hippo reference upgrade</code>.</p>
+explicitly with <code>mosaic reference upgrade</code>.</p>
 <hr />
 <h4 id="2142-load-parameters">2.14.2 Load Parameters<a class="headerlink" href="#2142-load-parameters" title="Permanent link">&para;</a></h4>
 <p>Loaders that accept runtime parameters (e.g., organism, gene-biotype filter) declare them via:</p>
@@ -5748,17 +5748,17 @@ explicitly with <code>hippo reference upgrade</code>.</p>
 <a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>        <span class="o">...</span>
 </code></pre></div>
 <p>When <code>load_params_schema</code> is declared:
-- <code>hippo reference install ensembl --organism mus_musculus</code> renders <code>--flag</code> args from the
+- <code>mosaic reference install ensembl --organism mus_musculus</code> renders <code>--flag</code> args from the
   model and validates them before invoking <code>load()</code>.
 - <code>load()</code> always receives a validated model instance (or <code>None</code> if no schema is declared).
 - The same model is used for <code>upgrade()</code> calls.</p>
 <p>Loaders that do not declare a schema receive <code>params=None</code> in <code>load()</code> and <code>upgrade()</code>.</p>
 <hr />
 <h4 id="2143-caching-contract">2.14.3 Caching Contract<a class="headerlink" href="#2143-caching-contract" title="Permanent link">&para;</a></h4>
-<p><code>HippoClient</code> exposes two caching primitives for loaders:</p>
+<p><code>MosaicClient</code> exposes two caching primitives for loaders:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">client</span><span class="o">.</span><span class="n">cache_dir_for</span><span class="p">(</span><span class="n">loader_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="c1"># Resolves to $HIPPO_CACHE_DIR/&lt;loader_name&gt;/ if set,</span>
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="c1"># else ~/.cache/hippo/references/&lt;loader_name&gt;/. Auto-mkdir.</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="c1"># Resolves to $MOSAIC_CACHE_DIR/&lt;loader_name&gt;/ if set,</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="c1"># else ~/.cache/mosaic/references/&lt;loader_name&gt;/. Auto-mkdir.</span>
 <a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>
 <a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="n">client</span><span class="o">.</span><span class="n">cached_fetch</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">expected_sha256</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>                    <span class="n">loader_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span>
@@ -5769,12 +5769,12 @@ explicitly with <code>hippo reference upgrade</code>.</p>
 <a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="c1"># cache hit; mismatch raises CacheIntegrityError and removes the</span>
 <a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="c1"># offending file so the next call re-downloads cleanly.</span>
 </code></pre></div>
-<p><code>HippoClient</code> is loader-agnostic — per-loader scoping happens via the <code>loader_name</code>
+<p><code>MosaicClient</code> is loader-agnostic — per-loader scoping happens via the <code>loader_name</code>
 argument so a single client instance can serve many loaders without stateful
 per-loader binding.</p>
 <p><strong>MUST rule:</strong> Loaders MUST use <code>client.cached_fetch</code> for any network download larger than
 1 MB. This enables:
-- <code>hippo reference clean-cache</code> to manage disk usage via a single location
+- <code>mosaic reference clean-cache</code> to manage disk usage via a single location
 - CI mounts of the cache root for deterministic, network-free re-runs
 - Reproducible audits (content-addressed, optionally hash-verified)</p>
 <p>Loaders that access small static files (&lt;1 MB, bundled in the package) may skip
@@ -5785,7 +5785,7 @@ per-loader binding.</p>
 <p><strong>Default — additive.</strong> <code>upgrade()</code> loads the new version's entities alongside the existing
 ones. Entities from the old version remain queryable until explicitly pruned. This preserves
 existing FK references in user data.</p>
-<p><strong><code>--prune-old</code> — opt-in destructive.</strong> When passed to <code>hippo reference upgrade</code>, Hippo removes
+<p><strong><code>--prune-old</code> — opt-in destructive.</strong> When passed to <code>mosaic reference upgrade</code>, Hippo removes
 the prior version's rows <em>after</em> the new install succeeds. Destructive; gated behind an
 explicit flag. Never the default.</p>
 <p>The prune substrate is the <strong>reference write log</strong> (§2.14.9), not <code>LoadResult</code>. Loader authors
@@ -5816,7 +5816,7 @@ loader) pass through unchanged.</p>
 <p><strong>Rule 3 — Traceability annotation.</strong> On merge, Hippo injects
 <code>annotations: { provided_by: { value: "&lt;loader_name&gt;@&lt;package_version&gt;" } }</code> on every class
 and slot introduced by the fragment. This annotation survives in <code>SchemaView</code> for runtime
-introspection (e.g., <code>hippo status</code> can show which loader owns which classes).</p>
+introspection (e.g., <code>mosaic status</code> can show which loader owns which classes).</p>
 <p><strong>Collision detection</strong> (existing rule, now superseded by Rule 1): with mandatory unique
 prefixes per loader, class-name collisions across loaders can no longer occur. Two loaders
 declaring the same prefix → <code>ConfigError</code> at install.</p>
@@ -5846,7 +5846,7 @@ warrants it. This is a known v1 limitation.</p>
   <code>&lt;package&gt;/fixtures/tiny.tar.gz</code>)
 - Be usable without credentials or network access
 - Be stable across package versions (no external data fetch)</p>
-<p>CI pipelines use <code>hippo reference install &lt;name&gt; --version test</code> to install the fixture
+<p>CI pipelines use <code>mosaic reference install &lt;name&gt; --version test</code> to install the fixture
 dataset without a live network connection. This is a convention, not enforced by the ABC;
 loaders that omit <code>"test"</code> will not break Hippo, but their downstream consumers lose the
 hermetic test path.</p>
@@ -5874,7 +5874,7 @@ fields are unchanged — they answer "what happened," while <code>entities</code
 <a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a>
 <a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a>    <span class="nd">@classmethod</span>
 <a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">from_put_result</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rec</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"EntityRef"</span><span class="p">:</span>
-<a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a><span class="w">        </span><span class="sd">"""Bridge from the dict returned by ``HippoClient.put`` to an</span>
+<a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a><span class="w">        </span><span class="sd">"""Bridge from the dict returned by ``MosaicClient.put`` to an</span>
 <a id="__codelineno-28-18" name="__codelineno-28-18" href="#__codelineno-28-18"></a><span class="sd">        ``EntityRef``. Use inside ``load()`` when assembling</span>
 <a id="__codelineno-28-19" name="__codelineno-28-19" href="#__codelineno-28-19"></a><span class="sd">        ``LoadResult.entities`` for the advisory inspection list."""</span>
 <a id="__codelineno-28-20" name="__codelineno-28-20" href="#__codelineno-28-20"></a>        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">rec</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="n">rec</span><span class="p">[</span><span class="s2">"entity_type"</span><span class="p">])</span>
@@ -5899,7 +5899,7 @@ any operation. In particular:</p>
 <li><code>--prune-old</code> is driven by the reference write log (§2.14.9), not by <code>entities</code>.</li>
 <li><code>entities</code> MAY be empty (large loaders are encouraged to leave it empty to avoid in-memory
   growth) or partial (a loader may sample one EntityRef per type).</li>
-<li>The CLI breakdown shown by <code>hippo reference install</code> derives counts from <code>entities</code> when
+<li>The CLI breakdown shown by <code>mosaic reference install</code> derives counts from <code>entities</code> when
   non-empty, otherwise it queries the write log scoped to <code>(loader_name, version)</code> to render
   the same per-type counts. Loader authors do not have to choose between "ergonomic CLI" and
   "scale" — both paths produce the same display.</li>
@@ -5928,8 +5928,8 @@ in-tree fixtures (<code>FakeReferenceLoader</code>, <code>RichParamsLoader</code
 lifecycle code in <code>hippo/cli/commands/reference.py</code>. Downstream loader count at the point of
 v2 cut-over is zero (the Ensembl prototype team held off shipping per the PTS-215 thread), so
 the deprecation-window cost would be unrecovered overhead.</p>
-<p><strong><code>HippoClient.put()</code> return shape — deferred.</strong> GitHub #16 proposes bundling <code>HippoClient.put()
--&gt; EntityRef</code> with this change. v2 declines the bundle: <code>HippoClient.put()</code> retains its
+<p><strong><code>MosaicClient.put()</code> return shape — deferred.</strong> GitHub #16 proposes bundling <code>MosaicClient.put()
+-&gt; EntityRef</code> with this change. v2 declines the bundle: <code>MosaicClient.put()</code> retains its
 <code>dict[str, Any]</code> return (<code>id</code>, <code>entity_type</code>, <code>data</code>, <code>version</code>, <code>created_at</code>, <code>updated_at</code>)
 because tests, <code>TypedClient</code>, and the ingestion pipeline all index those keys today. A future
 v3 decision may revisit <code>put()</code>'s return type with its own migration story. The
@@ -5962,7 +5962,7 @@ each <code>loader.load()</code> / <code>loader.upgrade()</code> invocation in an
 <a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">load_context</span><span class="p">(</span><span class="n">loader_name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">resolved_version</span><span class="p">):</span>
 <a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>    <span class="n">load_result</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">resolved_version</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
 </code></pre></div>
-<p><code>HippoClient.load_context()</code> is the <strong>only</strong> sanctioned way to enter logging mode. Inside the
+<p><code>MosaicClient.load_context()</code> is the <strong>only</strong> sanctioned way to enter logging mode. Inside the
 block, every successful <code>client.put()</code> records a row in <code>reference_write_log</code> keyed by
 <code>(loader_name, version, entity_id, entity_type)</code>. Outside the block, <code>client.put()</code> is a
 no-op for the log (user-data writes, ingestion CLI, REST handler writes, etc., never hit the
@@ -5970,7 +5970,7 @@ log).</p>
 <p>Rationale for explicit <code>with</code> over ContextVar: lifecycle entry/exit is visible at the call
 site, the binding is one stack frame deep, and the scope of "what counts as a load" is
 auditable in code review. ContextVar would obscure the boundary; a wrapper-client would force
-<code>HippoClient</code> to be wrap-friendly for one caller's benefit.</p>
+<code>MosaicClient</code> to be wrap-friendly for one caller's benefit.</p>
 <p><strong>Failure recovery.</strong> Write-log inserts share the same SQL transaction as the entity write.
 If <code>loader.load()</code> raises midway, the in-flight transaction rolls back and no orphan log rows
 persist beyond committed entity writes. If a previously committed batch then a later batch
@@ -5980,13 +5980,13 @@ cleans only what was actually written during the failed attempt. Loader authors 
 explicitly own that recovery story; Hippo does not retry on their behalf.</p>
 <p><strong>Garbage collection.</strong></p>
 <ul>
-<li><code>hippo reference upgrade --prune-old</code> deletes the prior version's entities AND the prior
+<li><code>mosaic reference upgrade --prune-old</code> deletes the prior version's entities AND the prior
   version's log rows in the same transaction. After a successful prune, the only log rows
   remaining for <code>loader_name</code> correspond to the current installed version.</li>
-<li><code>hippo reference uninstall &lt;name&gt;</code> (existing verb) deletes all log rows where
+<li><code>mosaic reference uninstall &lt;name&gt;</code> (existing verb) deletes all log rows where
   <code>loader_name = &lt;name&gt;</code>.</li>
-<li>Log rows for a <code>loader_name</code> not currently registered in <code>hippo_meta.reference_versions</code>
-  (e.g., loader was force-removed without <code>uninstall</code>) are GC candidates. <code>hippo reference
+<li>Log rows for a <code>loader_name</code> not currently registered in <code>mosaic_meta.reference_versions</code>
+  (e.g., loader was force-removed without <code>uninstall</code>) are GC candidates. <code>mosaic reference
   doctor</code> (existing diagnostic command) reports such orphans; cleanup is manual until v3.</li>
 </ul>
 <p><strong>Upgrade overlap.</strong> When <code>upgrade()</code> re-writes a stable <code>entity_id</code> under a new version slug,
@@ -5998,14 +5998,14 @@ even though the new version still references the same id. Loaders that rely on
 stable-id upgrade overlap MUST override <code>upgrade()</code> to skip writing rows that are unchanged
 across versions, OR accept that <code>--prune-old</code> on overlap removes the entity (the new install
 will re-create it). v3 may add a <code>keep_if_unchanged</code> policy; v2 documents the constraint.</p>
-<p><strong>Replaces <code>hippo_meta.reference_entity_ids</code>.</strong> The v1 implementation persisted entity IDs
-as a JSON blob in <code>hippo_meta.reference_entity_ids</code>. v2 deletes that key and migrates to the
+<p><strong>Replaces <code>mosaic_meta.reference_entity_ids</code>.</strong> The v1 implementation persisted entity IDs
+as a JSON blob in <code>mosaic_meta.reference_entity_ids</code>. v2 deletes that key and migrates to the
 write-log table. The migration runs once on first v2 startup: existing JSON entries are
 read, written into <code>reference_write_log</code> (with <code>entity_type</code> resolved by per-entity lookup),
-and the <code>hippo_meta</code> key is deleted. Migration is idempotent; subsequent startups are no-ops.</p>
+and the <code>mosaic_meta</code> key is deleted. Migration is idempotent; subsequent startups are no-ops.</p>
 <hr />
 <h3 id="215-error-hierarchy">2.15 Error Hierarchy<a class="headerlink" href="#215-error-hierarchy" title="Permanent link">&para;</a></h3>
-<p>All Hippo exceptions inherit from <code>HippoError</code>. The full hierarchy is specified in
+<p>All Hippo exceptions inherit from <code>MosaicError</code>. The full hierarchy is specified in
 <code>appendix_b_implementation_guide.md §B.3</code>. Summary:</p>
 <p><strong>Configuration errors (startup time):</strong></p>
 <table>
@@ -6019,7 +6019,7 @@ and the <code>hippo_meta</code> key is deleted. Migration is idempotent; subsequ
 <tbody>
 <tr>
 <td><code>ConfigError</code></td>
-<td>Invalid/missing <code>hippo.yaml</code> fields; unknown config keys</td>
+<td>Invalid/missing <code>mosaic.yaml</code> fields; unknown config keys</td>
 <td>—</td>
 </tr>
 <tr>

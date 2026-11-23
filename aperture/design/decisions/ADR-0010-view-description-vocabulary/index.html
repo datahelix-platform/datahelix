@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4149,6 +4149,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#deferral-note-2026-11-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deferral note (2026-11-10)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4168,9 +4179,9 @@
 
 <h1 id="adr-0010-view-description-vocabulary-is-a-typed-noun-catalog-keystone">ADR-0010: View-description vocabulary is a typed noun-catalog (keystone)<a class="headerlink" href="#adr-0010-view-description-vocabulary-is-a-typed-noun-catalog-keystone" title="Permanent link">&para;</a></h1>
 <ul>
-<li><strong>Status:</strong> Proposed</li>
-<li><strong>Date:</strong> 2026-06-13</li>
-<li><strong>Deciders:</strong> —</li>
+<li><strong>Status:</strong> Proposed  — ⛔ <strong>Deferred from MVP</strong> (ADR-0026; decided 2026-11-10) — to be <strong>superseded by the platform View Contract ADR</strong> once <code>datahelix:platform/design/view-contract.md</code> is ratified</li>
+<li><strong>Date:</strong> 2026-06-13 (deferred 2026-11-10, decision pass)</li>
+<li><strong>Deciders:</strong> labadorf (deferral)</li>
 <li><strong>Related:</strong> handoff §9.2 (open question Q2), open-questions Q2, ADR-0004, ADR-0009; gates ADR-0011, ADR-0012, ADR-0013</li>
 </ul>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
@@ -4208,6 +4219,17 @@ The escape hatch for a missing primitive is "compose primitives," not "raw rende
   multivalued slots don't persist in the SQLite adapter — "richer query" stratification may
   be limited until Hippo's CEL-over-GraphQL and linktable support land (sec4 §4.7 limits).</li>
 </ul>
+<h2 id="deferral-note-2026-11-10">Deferral note (2026-11-10)<a class="headerlink" href="#deferral-note-2026-11-10" title="Permanent link">&para;</a></h2>
+<p>Deferred from MVP by labadorf in the 2026-11-10 decision pass, using the same pattern as
+ADR-0013's deferral under ADR-0026. The MVP shipped without a component view vocabulary. The
+table, detail, form, workflow (ADR-0033) and graph (ADR-0037) views are built-in portal views,
+not catalog primitives.</p>
+<p><strong>Forward pointer:</strong> the typed view vocabulary now belongs to the platform <strong>View Contract</strong>
+(<code>datahelix:platform/design/view-contract.md</code>), a rendering standard shared across
+components. Once that document is ratified as a platform ADR, <strong>this ADR is to be marked
+<code>Superseded by</code> that platform ADR</strong>. It is not to be ratified here. The survival-curve probe
+moved to Reel with the agentic keystone (see <code>design/INDEX.md</code>). ADR-0015's composition half
+and ADR-0037's catalog promotion are deferred with this ADR.</p>
 
 
 

@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4213,13 +4213,15 @@
 <h1 id="prefab-data-stories-over-mosaic-metadata-the-keystone-mvp">Prefab — Data Stories over Mosaic Metadata (the keystone MVP)<a class="headerlink" href="#prefab-data-stories-over-mosaic-metadata-the-keystone-mvp" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Migrated from Aperture (2026-06-22)</strong> with the data-story engine split (DataHelix platform
-<a href="https://github.com/BU-Neuromics/datahelix/blob/main/platform/design/decisions/ADR-0003-reel-data-story-engine-separate-from-portal.md">ADR-0003</a>).
+<a href="https://github.com/datahelix-platform/datahelix/blob/main/platform/design/decisions/ADR-0003-reel-data-story-engine-separate-from-portal.md">ADR-0003</a>).
 This is Reel's keystone probe — <strong>and it has run</strong>, as <strong>Exon</strong> (<code>BU-Neuromics/mosaic-demo-small</code>);
 see "Probe status" below. References to portal-era Aperture docs (<code>core-loop.md</code>,
 <code>gen3-comparison.md</code>) name docs that stay in the <strong>Aperture</strong> repo; ADR references to the
 portal's decisions are qualified <strong>"Aperture ADR-NNNN"</strong>.
 <strong>Names updated 2026-09-11:</strong> Hippo → <strong>Mosaic</strong> (Mosaic ADR-0004), BASS → <strong>DataHelix</strong>;
-<code>hippoSchema</code> keeps its spelling as a data-contract identifier.</p>
+<code>hippoSchema</code> keeps its spelling as a data-contract identifier.
+<strong>2026-11-20:</strong> platform ADR-0007 retired that carve-out. Since Mosaic v0.16.0 these identifiers are
+<code>mosaicSchema</code> / <code>mosaicEntityType</code>, <code>mosaic_core</code> and <code>mosaic_*</code>.</p>
 </blockquote>
 <p><strong>Status:</strong> 🟠 Working design (2026-06-17, migrated 2026-06-22, probe status added 2026-09-11).
 The simplest concrete realization
@@ -4245,7 +4247,7 @@ conversation builds." <strong>A data story = a sequence of core-loop states + tr
 This unifies the AI vision with the paused core-loop work: same substrate, conversational driver
 on top.</p>
 <p><strong>The cohort object is grain-agnostic and re-rootable.</strong> Per the platform
-<a href="https://github.com/BU-Neuromics/datahelix/blob/main/platform/design/domain-graph.md">domain-graph model</a>, a query returns a <em>knowledge
+<a href="https://github.com/datahelix-platform/datahelix/blob/main/platform/design/domain-graph.md">domain-graph model</a>, a query returns a <em>knowledge
 subgraph</em>, and "metadata vs. data" is a <strong>role a node plays relative to the query</strong>, not a storage
 category. Turn 3 ("how do the <em>samples</em> break down…") re-roots the focal entity from subjects to
 samples while the same diagnosis/toxicology predicates stay attached as <em>descriptors</em> — the
@@ -4297,7 +4299,7 @@ bind-measured-value · render-as-primitive (summary, histogram, bar, table, valu
 <li><strong>Schema grounding for the LLM</strong> — the introspected LinkML types/slots/enums/descriptions are
    the model's context for NL→typed-query (so "PTSD, MDD, or controls" → <code>diagnosis IN [...]</code>,
    "genotypes A and B" → the genotype slot). This is Aperture ADR-0005 ("the schema <em>is</em> the agent's
-   context") + the <code>hippoSchema</code> introspection resolver, finally exercised by a consumer.</li>
+   context") + the <code>mosaicSchema</code> (formerly <code>hippoSchema</code>) introspection resolver, finally exercised by a consumer.</li>
 <li><strong>A view-primitive set</strong> (the noun-catalog, Aperture ADR-0010): summary/stat card, histogram, bar,
    table, value-list.</li>
 <li><strong>Dry-run validation</strong> of the LLM's translated query/view-spec before it runs — the keystone
@@ -4318,7 +4320,7 @@ probe did not need it. Reel's own job is the <em>sequencing</em> — the cohort 
 <h2 id="the-boundary-decided-structured-graph-vs-bulk-payload-option-b">The boundary (decided): structured graph vs. bulk payload — Option B<a class="headerlink" href="#the-boundary-decided-structured-graph-vs-bulk-payload-option-b" title="Permanent link">&para;</a></h2>
 <p>The original example's value-histogram turn crossed a real boundary — but the boundary is <strong>not</strong>
 "metadata vs. data" (a query-relative role); it is <strong>structured relational records vs. bulk opaque
-payloads</strong> (see <a href="https://github.com/BU-Neuromics/datahelix/blob/main/platform/design/domain-graph.md">domain-graph.md</a>). The sharp reason to
+payloads</strong> (see <a href="https://github.com/datahelix-platform/datahelix/blob/main/platform/design/domain-graph.md">domain-graph.md</a>). The sharp reason to
 excise that turn: expression <em>values</em> are a <strong>bulk array payload</strong>, not a structured record.</p>
 <p><strong>Decision (2026-06-17): Option B.</strong> Mosaic tracks that the expression <em>data exists</em> (a
 relationship/existence fact — subject has a sample with an RNASeq datafile); the actual values
@@ -4366,7 +4368,7 @@ Reel's first measured backlog (<a href="../../proposals/exon-migration.md"><code
 <ul>
 <li><strong>DS-1 — RESOLVED (2026-06-17): Option B.</strong> Structured-record/bulk-payload boundary; values live
   in files via Canon/Cappella (deferred); MVP stories stay within the domain graph. See above +
-  <a href="https://github.com/BU-Neuromics/datahelix/blob/main/platform/design/domain-graph.md">domain-graph.md</a>.</li>
+  <a href="https://github.com/datahelix-platform/datahelix/blob/main/platform/design/domain-graph.md">domain-graph.md</a>.</li>
 <li><strong>DS-2 — RESOLVED (2026-08-19, Mosaic enhancement):</strong> yes, now. Mosaic ADR-0006 (typed
   per-class filter inputs with relationship predicates — <code>RelatedCondition {edge, quantifier,
   criteria}</code>) and ADR-0007 (counts, <code>facetCounts</code>, min/max, <code>order_by</code>), both Accepted and shipped

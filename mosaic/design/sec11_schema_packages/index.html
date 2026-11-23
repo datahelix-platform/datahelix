@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4679,7 +4679,7 @@
 <tbody>
 <tr>
 <td><code>provision</code></td>
-<td>No-op by default (domain data arrives via <code>hippo ingest</code>, not at schema install time)</td>
+<td>No-op by default (domain data arrives via <code>mosaic ingest</code>, not at schema install time)</td>
 </tr>
 <tr>
 <td><code>evolve</code></td>
@@ -4691,9 +4691,9 @@
 </tr>
 </tbody>
 </table>
-<p><code>DomainModule</code> is the principled home for semantic domain-data migration (previously orphaned as §5.2 / §6 of the migration design doc). DDL migration (<code>hippo migrate</code>) and <code>DomainModule.evolve</code> are complementary: <code>hippo migrate</code> handles additive DDL changes automatically; <code>DomainModule.evolve</code> handles semantic data transformations for major version changes.</p>
+<p><code>DomainModule</code> is the principled home for semantic domain-data migration (previously orphaned as §5.2 / §6 of the migration design doc). DDL migration (<code>mosaic migrate</code>) and <code>DomainModule.evolve</code> are complementary: <code>mosaic migrate</code> handles additive DDL changes automatically; <code>DomainModule.evolve</code> handles semantic data transformations for major version changes.</p>
 <h4 id="1125-entry-point-groups">11.2.5 Entry-Point Groups<a class="headerlink" href="#1125-entry-point-groups" title="Permanent link">&para;</a></h4>
-<p><strong>[PROPOSE]</strong> <code>hippo.schema_packages</code> is the new entry-point group. <code>hippo.reference_loaders</code> becomes a <strong>subset / alias</strong> — the discovery runtime queries both, deduplicates by name, and exposes <code>ReferenceLoader</code> instances from either group transparently. No existing loader needs to change its entry-point declaration.</p>
+<p><strong>[PROPOSE]</strong> <code>mosaic.schema_packages</code> is the new entry-point group. <code>mosaic.reference_loaders</code> becomes a <strong>subset / alias</strong> — the discovery runtime queries both, deduplicates by name, and exposes <code>ReferenceLoader</code> instances from either group transparently. No existing loader needs to change its entry-point declaration.</p>
 <hr />
 <h3 id="113-migration-chain">11.3 Migration Chain<a class="headerlink" href="#113-migration-chain" title="Permanent link">&para;</a></h3>
 <h4 id="1131-why-a-chain">11.3.1 Why a Chain<a class="headerlink" href="#1131-why-a-chain" title="Permanent link">&para;</a></h4>
@@ -4714,14 +4714,14 @@
 <h4 id="1133-path-resolver">11.3.3 Path Resolver<a class="headerlink" href="#1133-path-resolver" title="Permanent link">&para;</a></h4>
 <p>The resolver:</p>
 <ol>
-<li>Reads the deployment's current version for the package from <code>hippo_meta.reference_versions</code> / registry.</li>
+<li>Reads the deployment's current version for the package from <code>mosaic_meta.reference_versions</code> / registry.</li>
 <li>Builds the path through the DAG from current to target, preferring shortcut edges.</li>
 <li>Checks the floor; fails loud if the current version is below it.</li>
 <li>Runs each step's <code>evolve</code> transform in order, one hop at a time.</li>
 </ol>
 <p>Single-hop upgrades are a one-edge path through the same resolver — no special casing.</p>
 <h4 id="1134-migration-step-authorship">11.3.4 Migration Step Authorship<a class="headerlink" href="#1134-migration-step-authorship" title="Permanent link">&para;</a></h4>
-<p>Most major changes decompose into declarative moves (rename a field, set a default, widen a type) derivable from <code>hippo schema-diff &lt;old&gt; &lt;new&gt;</code>. Reserve hand-written transforms for genuinely semantic cases (splitting a field, re-rooting a value set, changing units). Each step writes supersession events, producing traceable lineage in the append-only provenance log.</p>
+<p>Most major changes decompose into declarative moves (rename a field, set a default, widen a type) derivable from <code>mosaic schema-diff &lt;old&gt; &lt;new&gt;</code>. Reserve hand-written transforms for genuinely semantic cases (splitting a field, re-rooting a value set, changing units). Each step writes supersession events, producing traceable lineage in the append-only provenance log.</p>
 <hr />
 <h3 id="114-deprovision-semantics">11.4 <code>deprovision</code> Semantics<a class="headerlink" href="#114-deprovision-semantics" title="Permanent link">&para;</a></h3>
 <p><code>deprovision</code> teardown removes the fragment and version record from the registry, then calls the package's hook to retire data.</p>
@@ -4740,7 +4740,7 @@
 <p>The orchestrator <strong>refuses to deprovision any package that other installed packages declare in their <code>depends_on()</code></strong>. The error message names the dependent packages. This applies to all species.</p>
 <hr />
 <h3 id="115-dependency-ordered-lifecycle-orchestrator">11.5 Dependency-Ordered Lifecycle Orchestrator<a class="headerlink" href="#115-dependency-ordered-lifecycle-orchestrator" title="Permanent link">&para;</a></h3>
-<p><strong>[PROPOSE]</strong> A unified lifecycle orchestrator replaces the per-loader, unordered <code>hippo reference upgrade</code> path.</p>
+<p><strong>[PROPOSE]</strong> A unified lifecycle orchestrator replaces the per-loader, unordered <code>mosaic reference upgrade</code> path.</p>
 <h4 id="1151-resolution">11.5.1 Resolution<a class="headerlink" href="#1151-resolution" title="Permanent link">&para;</a></h4>
 <p>The orchestrator resolves the full <code>depends_on</code> graph across all installed packages once at the start of an operation, produces a topological sort, and dispatches lifecycle hooks across all affected packages in dependency order (base before dependents) for each version hop.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>    resolve depends_on graph
@@ -4759,7 +4759,7 @@
 <ol>
 <li>Run all <code>evolve</code> steps across hops and packages.</li>
 <li>After each hop: validate against that hop's merged schema (error localization — catches errors early and names the offending hop).</li>
-<li>After the final hop: validate against the final merged schema including all installed extensions <strong>[CONFORM primitive; PROPOSE orchestration]</strong> using <code>hippo ingest --validate-schema &lt;merged-dir&gt; --dry-run</code>.</li>
+<li>After the final hop: validate against the final merged schema including all installed extensions <strong>[CONFORM primitive; PROPOSE orchestration]</strong> using <code>mosaic ingest --validate-schema &lt;merged-dir&gt; --dry-run</code>.</li>
 <li>Commit if all validations pass; roll back everything otherwise.</li>
 </ol>
 <p>The end-to-end gate is the real backstop. Per-hop intermediate validation is an ergonomic aid.</p>
@@ -4767,7 +4767,7 @@
 <h3 id="116-coherence-tools">11.6 Coherence Tools<a class="headerlink" href="#116-coherence-tools" title="Permanent link">&para;</a></h3>
 <h4 id="1161-exposure-report-tool">11.6.1 Exposure Report Tool<a class="headerlink" href="#1161-exposure-report-tool" title="Permanent link">&para;</a></h4>
 <p><strong>[PROPOSE]</strong> The exposure-report tool answers: <em>given a proposed base-package migration, which elements of an installed extension are in the migration's write-set?</em></p>
-<p>Inputs: the base migration's structural delta (from <code>hippo schema-diff &lt;old_schema&gt; &lt;new_schema&gt;</code>) and the extension's referenced elements (<code>is_a</code>, <code>slot_usage</code>, and added-slot dependencies).</p>
+<p>Inputs: the base migration's structural delta (from <code>mosaic schema-diff &lt;old_schema&gt; &lt;new_schema&gt;</code>) and the extension's referenced elements (<code>is_a</code>, <code>slot_usage</code>, and added-slot dependencies).</p>
 <p>Output: the intersection — elements the base migration writes that the extension references. An empty intersection means the base migration is safe to apply without an extension step. A non-empty intersection means the extension must supply a complementary <code>evolve</code> step covering those elements.</p>
 <p>Purpose: warn extension authors <em>before</em> migration about the footprint of a base upgrade, before the end-to-end gate runs.</p>
 <h4 id="1162-brainbank-bundle-illustrative-proving-case">11.6.2 <code>brainbank-bundle</code> — Illustrative Proving Case<a class="headerlink" href="#1162-brainbank-bundle-illustrative-proving-case" title="Permanent link">&para;</a></h4>
@@ -4777,20 +4777,20 @@
 <h4 id="1163-ci-merged-closure-integrity-check">11.6.3 CI Merged-Closure Integrity Check<a class="headerlink" href="#1163-ci-merged-closure-integrity-check" title="Permanent link">&para;</a></h4>
 <p><strong>[PROPOSE]</strong> A CI check that validates the <strong>fully merged schema closure</strong> — the result of merging all <code>requires:</code>-pinned packages into the user schema — against a reference snapshot.</p>
 <p>Purpose: cross-package foreign keys are not validated at runtime in v1 (only a warning; see §1 and sec2 §2.14.H). The CI check stands in for that missing runtime enforcement: if the merged closure is structurally incoherent (unresolvable FK, missing base class, duplicate slot name), CI fails before the change ships.</p>
-<p>The check runs <code>hippo validate --schema &lt;merged_dir&gt;</code> against the merged schema YAML produced by the registry. It does not require a live deployment.</p>
+<p>The check runs <code>mosaic validate --schema &lt;merged_dir&gt;</code> against the merged schema YAML produced by the registry. It does not require a live deployment.</p>
 <hr />
 <h3 id="117-conform-vs-propose-summary">11.7 [CONFORM] vs. [PROPOSE] Summary<a class="headerlink" href="#117-conform-vs-propose-summary" title="Permanent link">&para;</a></h3>
 <h4 id="1171-use-as-is-conform">11.7.1 Use As-Is — [CONFORM]<a class="headerlink" href="#1171-use-as-is-conform" title="Permanent link">&para;</a></h4>
-<p>These hippo capabilities underpin the SchemaPackage abstraction but require no new implementation:</p>
+<p>These mosaic capabilities underpin the SchemaPackage abstraction but require no new implementation:</p>
 <ul>
-<li><code>ReferenceLoader</code> ABC: <code>load()</code>, <code>upgrade()</code>, <code>validate()</code>, <code>cached_fetch()</code>, <code>--prune-old</code>, <code>"test"</code> fixture convention, <code>schema_fragment()</code> with <code>default_prefix = name</code>, <code>provided_by</code> auto-injection, entry-point discovery via <code>hippo.reference_loaders</code>.</li>
+<li><code>ReferenceLoader</code> ABC: <code>load()</code>, <code>upgrade()</code>, <code>validate()</code>, <code>cached_fetch()</code>, <code>--prune-old</code>, <code>"test"</code> fixture convention, <code>schema_fragment()</code> with <code>default_prefix = name</code>, <code>provided_by</code> auto-injection, entry-point discovery via <code>mosaic.reference_loaders</code>.</li>
 <li><code>requires:</code> version-pin gate + refuse-on-mismatch at schema load.</li>
-<li>Three-layer merge precedence (user schema &gt; reference loaders &gt; <code>hippo_core</code>/<code>hippo_ext</code>).</li>
-<li><code>hippo migrate</code> (additive DDL reconciliation).</li>
-<li><code>hippo schema-diff &lt;a&gt; &lt;b&gt;</code> (structural delta / migration footprint).</li>
-<li><code>hippo ingest --validate-schema &lt;dir&gt; --dry-run</code> and <code>hippo validate --data</code> (end-to-end validation gate primitive).</li>
+<li>Three-layer merge precedence (user schema &gt; reference loaders &gt; <code>mosaic_core</code>/<code>mosaic_ext</code>).</li>
+<li><code>mosaic migrate</code> (additive DDL reconciliation).</li>
+<li><code>mosaic schema-diff &lt;a&gt; &lt;b&gt;</code> (structural delta / migration footprint).</li>
+<li><code>mosaic ingest --validate-schema &lt;dir&gt; --dry-run</code> and <code>mosaic validate --data</code> (end-to-end validation gate primitive).</li>
 <li><code>loader_depends_on</code> annotation (documentation-only; emits a warning on missing dependency; runtime does not enforce ordering).</li>
-<li><code>hippo_meta.reference_versions</code> (installed version registry).</li>
+<li><code>mosaic_meta.reference_versions</code> (installed version registry).</li>
 <li><code>reference_write_log</code> and <code>client.load_context()</code> (write-log plumbing for <code>--prune-old</code>).</li>
 </ul>
 <h4 id="1172-build-propose">11.7.2 Build — [PROPOSE]<a class="headerlink" href="#1172-build-propose" title="Permanent link">&para;</a></h4>
@@ -4803,7 +4803,7 @@
 </thead>
 <tbody>
 <tr>
-<td><code>SchemaPackage</code> genus ABC + <code>ExternalData</code>/<code>MigratableData</code> protocols; <code>ReferenceLoader</code> re-parented as species; <code>hippo.schema_packages</code> entry-point group with <code>hippo.reference_loaders</code> as alias</td>
+<td><code>SchemaPackage</code> genus ABC + <code>ExternalData</code>/<code>MigratableData</code> protocols; <code>ReferenceLoader</code> re-parented as species; <code>mosaic.schema_packages</code> entry-point group with <code>mosaic.reference_loaders</code> as alias</td>
 <td>S0</td>
 </tr>
 <tr>
@@ -4820,7 +4820,7 @@
 </tr>
 </tbody>
 </table>
-<p><strong>S4 status (PTS-340):</strong> shipped except the CI merged-closure integrity check (§11.6.3), which is DevOps-owned workflow wiring (<code>.github/workflows/</code>) delegated as a follow-up. Implemented: <code>SQLiteAdapter.staged_transaction()</code> (§11.8.1); <code>orchestrator.topological_sort</code> / <code>migrate_to_bundle</code> / <code>run_end_to_end_gate</code> (§11.5); <code>Bundle</code> manifest + generated <code>requires:</code> (§11.6.2); <code>exposure_report</code> (§11.6.1); the <code>hippo reference migrate-bundle</code> command. <code>[VERIFY]</code> <code>loader_depends_on</code> resolved (§11.8.2).</p>
+<p><strong>S4 status (PTS-340):</strong> shipped except the CI merged-closure integrity check (§11.6.3), which is DevOps-owned workflow wiring (<code>.github/workflows/</code>) delegated as a follow-up. Implemented: <code>SQLiteAdapter.staged_transaction()</code> (§11.8.1); <code>orchestrator.topological_sort</code> / <code>migrate_to_bundle</code> / <code>run_end_to_end_gate</code> (§11.5); <code>Bundle</code> manifest + generated <code>requires:</code> (§11.6.2); <code>exposure_report</code> (§11.6.1); the <code>mosaic reference migrate-bundle</code> command. <code>[VERIFY]</code> <code>loader_depends_on</code> resolved (§11.8.2).</p>
 <hr />
 <h3 id="118-open-verify-items">11.8 Open / [VERIFY] Items<a class="headerlink" href="#118-open-verify-items" title="Permanent link">&para;</a></h3>
 <table>
@@ -4841,26 +4841,26 @@
 </tr>
 <tr>
 <td>Runtime <code>loader_depends_on</code> ordering</td>
-<td>Does any runtime path (e.g., <code>hippo reference upgrade</code>) order loader invocations by <code>loader_depends_on</code>? Or is the annotation strictly documentation today?</td>
+<td>Does any runtime path (e.g., <code>mosaic reference upgrade</code>) order loader invocations by <code>loader_depends_on</code>? Or is the annotation strictly documentation today?</td>
 <td>S3/S4</td>
 <td><strong>Resolved (§11.8.2)</strong></td>
 </tr>
 </tbody>
 </table>
 <h4 id="1181-multi-entity-transaction-atomicity-resolved-s3">11.8.1 Multi-entity transaction atomicity — RESOLVED (S3)<a class="headerlink" href="#1181-multi-entity-transaction-atomicity-resolved-s3" title="Permanent link">&para;</a></h4>
-<p><strong>Finding: there is no whole-<code>evolve</code> / whole-<code>upgrade()</code> multi-entity transaction. Verified against the hippo source.</strong></p>
+<p><strong>Finding: there is no whole-<code>evolve</code> / whole-<code>upgrade()</code> multi-entity transaction. Verified against the mosaic source.</strong></p>
 <p>The transaction boundary is <strong>per single write</strong>, not per upgrade:</p>
 <ul>
-<li><code>HippoClient.put()</code> → <code>IngestionService._put_with_sqlite()</code> → <code>SQLiteAdapter.create()</code> / <code>update_data()</code>, each of which wraps its body in exactly one <code>with self._storage._transaction() as conn:</code> and commits on exit.</li>
-<li><code>HippoClient.supersede_entity()</code> → <code>ProvenanceService.supersede_entity()</code>, likewise its own single <code>_storage._transaction()</code>.</li>
+<li><code>MosaicClient.put()</code> → <code>IngestionService._put_with_sqlite()</code> → <code>SQLiteAdapter.create()</code> / <code>update_data()</code>, each of which wraps its body in exactly one <code>with self._storage._transaction() as conn:</code> and commits on exit.</li>
+<li><code>MosaicClient.supersede_entity()</code> → <code>ProvenanceService.supersede_entity()</code>, likewise its own single <code>_storage._transaction()</code>.</li>
 <li><code>client.load_context()</code> only threads the <code>(loader_name, version)</code> write-log tag so the <code>reference_write_log</code> row insert shares <strong>that one</strong> entity write's transaction (so a committed entity row always has a matching log row, and a mid-write fault rolls back <em>that</em> write). It does <strong>not</strong> open an enclosing transaction across the whole load/upgrade.</li>
 </ul>
 <p>Consequence: a fault <em>between</em> committed writes — e.g. <code>evolve</code> raises on the 3rd <code>put</code>, or <code>supersede_entity</code> fails after some <code>put</code>s committed, or any hop of a multi-hop chain fails after earlier hops committed — leaves <strong>partial state with no automatic rollback</strong> across the operation. <code>--prune-old</code> does not corrupt the prior version on failure (it is gated behind a clean <code>LoadResult</code>, so the prune is simply skipped), but the <em>new</em>-version partial writes persist.</p>
 <p>Mitigation already shipped (S2/S3): <code>DomainModule.evolve</code> runs a <strong>pre-commit staged dry-run gate</strong> (<code>_run_gate</code>) that validates the transform output against the merged schema <em>before any write</em>, so the most common failure mode — schema-invalid output — never reaches the commit loop and nothing is written. The gate cannot, however, undo a runtime fault that occurs <em>during</em> the commit loop.</p>
 <p>Designed home for true atomicity: the <strong>S4 orchestrator's staged commit-or-rollback</strong> (§11.5.2). <strong>Shipped (S4):</strong> <code>SQLiteAdapter.staged_transaction()</code> is a re-entrant outer scope within which every inner <code>_transaction()</code> defers its commit, so a whole multi-package / multi-hop chain commits or rolls back as one unit. Because all writes (entity rows, provenance, relationships, FTS) ride the one thread-local connection, the rollback is total; because same-connection reads see the staged (uncommitted) write-set, later hops read earlier hops' output and the end-to-end gate validates the staged base writes alongside the lab's existing extension rows. <code>migrate_to_bundle()</code> wraps the chain in this scope and rolls everything back if the end-to-end gate (or any step) raises.</p>
 <h4 id="1182-runtime-loader_depends_on-ordering-resolved-s4">11.8.2 Runtime <code>loader_depends_on</code> ordering — RESOLVED (S4)<a class="headerlink" href="#1182-runtime-loader_depends_on-ordering-resolved-s4" title="Permanent link">&para;</a></h4>
-<p><strong>Finding: no runtime path orders loaders by <code>loader_depends_on</code>; the annotation is documentation-only. Verified against the hippo source.</strong> <code>loader_depends_on</code> appears solely in <code>src/hippo/linkml_bridge.py</code> (<code>LOADER_DEPENDS_ON_ANNOTATION</code>, <code>_emit_loader_depends_on_warnings</code>), where merging a fragment only <strong>warns</strong> when a declared dependency is absent from the installed set (sec2 §2.14.6). It never sorts or sequences loader invocations. Separately, <code>SchemaPackage.depends_on()</code> has exactly two runtime consumers: the S3 <code>deprovision</code> <em>dependents guard</em> (§11.4.4, refuses teardown of a depended-on package) and — new in S4 — the orchestrator's <strong>explicit</strong> topological sort.</p>
-<p>Consequence (the design's standing assumption confirmed): the S4 orchestrator must — and does — sequence base→dependents itself. <code>orchestrator.topological_sort()</code> (Kahn, deterministic) resolves the <code>depends_on</code> graph across the participating packages and <code>migrate_to_bundle()</code> dispatches <code>evolve</code> in that order per hop. It relies on <strong>no</strong> implicit loader ordering; the old <code>hippo reference upgrade</code> operated per-package without a topological sort, and <code>hippo reference migrate-bundle</code> now subsumes that path with explicit dependency ordering.</p>
+<p><strong>Finding: no runtime path orders loaders by <code>loader_depends_on</code>; the annotation is documentation-only. Verified against the mosaic source.</strong> <code>loader_depends_on</code> appears solely in <code>src/mosaic/linkml_bridge.py</code> (<code>LOADER_DEPENDS_ON_ANNOTATION</code>, <code>_emit_loader_depends_on_warnings</code>), where merging a fragment only <strong>warns</strong> when a declared dependency is absent from the installed set (sec2 §2.14.6). It never sorts or sequences loader invocations. Separately, <code>SchemaPackage.depends_on()</code> has exactly two runtime consumers: the S3 <code>deprovision</code> <em>dependents guard</em> (§11.4.4, refuses teardown of a depended-on package) and — new in S4 — the orchestrator's <strong>explicit</strong> topological sort.</p>
+<p>Consequence (the design's standing assumption confirmed): the S4 orchestrator must — and does — sequence base→dependents itself. <code>orchestrator.topological_sort()</code> (Kahn, deterministic) resolves the <code>depends_on</code> graph across the participating packages and <code>migrate_to_bundle()</code> dispatches <code>evolve</code> in that order per hop. It relies on <strong>no</strong> implicit loader ordering; the old <code>mosaic reference upgrade</code> operated per-package without a topological sort, and <code>mosaic reference migrate-bundle</code> now subsumes that path with explicit dependency ordering.</p>
 
 
 

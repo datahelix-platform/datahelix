@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4256,6 +4256,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ratification-2026-11-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ratification (2026-11-10)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#notes-open-sub-questions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4285,10 +4296,10 @@
 
 <h1 id="adr-0002-multivalued-reference-slots-persist-as-relationships">ADR-0002: Multivalued reference slots persist as relationships<a class="headerlink" href="#adr-0002-multivalued-reference-slots-persist-as-relationships" title="Permanent link">&para;</a></h1>
 <ul>
-<li><strong>Status:</strong> Proposed</li>
-<li><strong>Date:</strong> 2026-06-26</li>
-<li><strong>Deciders:</strong> labadorf, design session (pending)</li>
-<li><strong>Related:</strong> sec3 (Data Model — config-driven relational storage with graph-shaped API), sec3b (storage), ADR-0001 (as-of reconstruction — relationship edges reconstructed from <code>relationship_add</code>/<code>relationship_remove</code> provenance), <a href="https://github.com/BU-Neuromics/hippo/issues/79">issue #79</a></li>
+<li><strong>Status:</strong> Accepted</li>
+<li><strong>Date:</strong> 2026-11-10 (ratified as built; proposed 2026-06-26)</li>
+<li><strong>Deciders:</strong> labadorf</li>
+<li><strong>Related:</strong> sec3 (Data Model — config-driven relational storage with graph-shaped API), sec3b (storage), ADR-0001 (as-of reconstruction — relationship edges reconstructed from <code>relationship_add</code>/<code>relationship_remove</code> provenance), <a href="https://github.com/BU-Neuromics/hippo/issues/79">issue #79</a>, ADR-0011 (inverse slots — carve-out below)</li>
 </ul>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
 <p><code>HippoClient.put</code> — and therefore <code>hippo ingest</code>, which calls <code>put</code> per instance —
@@ -4494,10 +4505,40 @@ per-class table scan. <code>PostgresDDLGenerator</code> (<code>src/mosaic/core/s
 — a separate per-class-table migration generator not currently wired into the CRUD path) was
 also updated to exclude multivalued reference slots from generated tables and collapse
 multivalued non-reference slots to a single TEXT column, for consistency with <code>DDLGenerator</code>.
-Tests ported to <code>tests/integration/test_postgres_multivalued_refs.py</code>. Status stays
-<strong>Proposed</strong> per the original decision — this update documents implementation, not
-ratification.</p>
+Tests ported to <code>tests/integration/test_postgres_multivalued_refs.py</code>. (At the time, status
+stayed Proposed — that update documented implementation, not ratification; see below.)</p>
+<h2 id="ratification-2026-11-10">Ratification (2026-11-10)<a class="headerlink" href="#ratification-2026-11-10" title="Permanent link">&para;</a></h2>
+<p><strong>Accepted as built</strong> by labadorf in the 2026-11-10 decision pass over stale Proposed ADRs.
+The decision above is binding as implemented on both backends; the open sub-questions below
+are closed with the as-built answers, verified against <code>src/mosaic/core/storage/adapters/
+sqlite_adapter.py</code> (and the mirrored <code>postgres_adapter.py</code>) at mosaic <code>v0.15.0</code>:</p>
+<ul>
+<li><strong>Reconciliation granularity → replace-all.</strong> On <code>update_data</code>/<code>replace</code>,
+  <code>_materialize_multivalued_refs(..., reconcile=True)</code> soft-deletes every live edge of each
+  multivalued-reference slot for the source (recording one <code>relationship_remove</code> each), then
+  re-adds from the submitted data (one <code>relationship_add</code> each); an omitted slot clears its
+  edges, just as <code>_update_per_class</code> nulls an omitted column. A diff-based reconcile is not
+  built; the coarser provenance trail is accepted — as-of replay is correct either way.</li>
+<li><strong>Edges to unavailable targets surface.</strong> <code>_hydrate_multivalued_refs_batch</code> filters only
+  the relationship row's own <code>is_available</code>; it does not join the target entity. Soft-deleting
+  a target leaves the asserted edge live and its id still hydrates into <code>data[slot]</code>.</li>
+<li><strong>No id coercion needed on read.</strong> Hydrated values are the <code>relationships.target_id</code> TEXT
+  column, returned as-is; no <code>boolean_slot_names</code>-style decoding applies. (On <em>write</em>,
+  <code>_normalize_ref_list</code> already tolerates a bare scalar, drops <code>None</code>, and <code>str()</code>s non-string
+  ids so they match the TEXT column — that is the only normalization, and it is write-side.)</li>
+</ul>
+<p><strong>Carve-out — ADR-0011.</strong> An <code>inverse</code>-declared slot is <em>excluded</em> from this rule:
+<code>SchemaRegistry.multivalued_reference_slots</code> skips any slot carrying <code>inverse</code>
+(<code>src/mosaic/linkml_bridge.py</code>), so it is never materialized as relationship rows — it is a
+virtual reverse edge resolved through the forward FK column. ADR-0002 governs <em>forward</em>
+multivalued references only. (Slots marked <code>inlined</code>/<code>inlined_as_list</code> are likewise excluded
+and round-trip as structured JSON — issue #121.)</p>
+<p><strong>Decoupled from the 1.0 parity epic.</strong> ADR-0002 and ADR-0003 were ratified separately from
+<a href="https://github.com/datahelix-platform/mosaic/issues/99">#99</a> (P2.5 Postgres feature
+parity), which listed their ratification as a scope item; #99's remaining Postgres work
+proceeds under ADR-0008.</p>
 <h2 id="notes-open-sub-questions">Notes / open sub-questions<a class="headerlink" href="#notes-open-sub-questions" title="Permanent link">&para;</a></h2>
+<p><em>Closed at ratification (2026-11-10) — see <strong>Ratification</strong> above. Kept for the record.</em></p>
 <ul>
 <li><strong>Reconciliation granularity:</strong> replace-all (soft-delete every slot-named edge from the
   source, then re-add) is simplest and matches <code>_update_per_class</code>. A diff-based reconcile

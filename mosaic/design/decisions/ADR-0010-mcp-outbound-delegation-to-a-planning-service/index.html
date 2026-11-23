@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4171,6 +4171,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#ratification-note-2026-11-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ratification note (2026-11-10)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4190,19 +4201,20 @@
 
 <h1 id="adr-0010-the-mcp-boundary-may-delegate-outbound-to-a-planning-service-as-an-untrusted-planner-behind-a-validating-relay">ADR-0010: The MCP boundary may delegate outbound to a planning service, as an untrusted planner behind a validating relay<a class="headerlink" href="#adr-0010-the-mcp-boundary-may-delegate-outbound-to-a-planning-service-as-an-untrusted-planner-behind-a-validating-relay" title="Permanent link">&para;</a></h1>
 <ul>
-<li><strong>Status:</strong> Proposed</li>
-<li><strong>Date:</strong> 2026-09-08</li>
-<li><strong>Deciders:</strong> labadorf (review of <a href="https://github.com/BU-Neuromics/mosaic/pull/199">#199</a>); clandaverde (implementation)</li>
+<li><strong>Status:</strong> Accepted</li>
+<li><strong>Date:</strong> 2026-11-10 (ratified; proposed 2026-09-08)</li>
+<li><strong>Deciders:</strong> labadorf (ratified in the <a href="https://github.com/datahelix-platform/datahelix/issues/126">datahelix#126</a> decision pass, 2026-11-10; review of <a href="https://github.com/datahelix-platform/mosaic/pull/199">#199</a>); clandaverde (implementation)</li>
 <li><strong>Related:</strong> ADR-0009 (MCP boundary, capability manifest, QuerySpec — this ADR extends its
   surface with the one tool that is not a <code>MosaicClient</code> wrapper); <strong>Aperture ADR-0032</strong>
   (rejects a dedicated control-plane service — the constraint that forces the relay here) and
   <strong>ADR-0035</strong> (<code>QuerySpec</code>); <a href="../../sec8_auth_integration/">sec8</a> (auth integration — inbound
-  only, see Consequences); issue <a href="https://github.com/BU-Neuromics/mosaic/issues/54">#54</a>
+  only, see Consequences); issue <a href="https://github.com/datahelix-platform/mosaic/issues/54">#54</a>
   Part A (authn/authz, referenced not resolved); <code>mosaic-demo-small</code>'s
   <code>openspec/changes/add-exon-conversational-contract/design.md</code> Decision 8 (the wire
   contract, owned by that repo).</li>
-<li><strong>Tracking issue:</strong> <a href="https://github.com/BU-Neuromics/mosaic/issues/186">#186</a>
-  (<code>converse_query_spec</code>), implemented in <a href="https://github.com/BU-Neuromics/mosaic/pull/199">#199</a>.</li>
+<li><strong>Tracking issue:</strong> <a href="https://github.com/datahelix-platform/mosaic/issues/243">#243</a> (decision);
+  implementation <a href="https://github.com/datahelix-platform/mosaic/issues/186">#186</a>
+  (<code>converse_query_spec</code>), merged in <a href="https://github.com/datahelix-platform/mosaic/pull/199">#199</a>.</li>
 </ul>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
 <p>Aperture's chat interface needs to build a <code>QuerySpec</code> collaboratively across conversational
@@ -4260,7 +4272,7 @@ currently only instance.</p>
    than of another repo's release cycle.</p>
 </li>
 </ol>
-<p>"Every" is load-bearing, and was widened by <a href="https://github.com/BU-Neuromics/mosaic/pull/200">#200</a>
+<p>"Every" is load-bearing, and was widened by <a href="https://github.com/datahelix-platform/mosaic/pull/200">#200</a>
    rather than assumed here: editing an earlier turn makes the planner <em>recompute</em> the turns that
    follow it, so a response can carry freshly generated specs this deployment has never seen.
    Validating only the turn just taken would let those reach the caller unchecked — precisely the
@@ -4462,9 +4474,9 @@ on them; each makes a Consequence above less sharp.</p>
 </table>
 <h2 id="notes-open-sub-questions">Notes / open sub-questions<a class="headerlink" href="#notes-open-sub-questions" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Status is <code>Proposed</code>.</strong> The implementation (#199) is complete and verified end to end, but
-  the terms above — particularly items 5 and 7, and the cost-amplification Consequence — were
-  settled during review of that PR and have not been ratified in a design session.</li>
+<li><strong>Ratified 2026-11-10, as written</strong> (see the ratification note below). Until then the status
+  was <code>Proposed</code> because the terms, particularly items 5 and 7 and the cost-amplification
+  Consequence, had been settled in review of #199 rather than in a design session.</li>
 <li>Whether a future outbound delegate should share one env-var/timeout/logging convention (a
   small <code>mosaic.mcp.delegate</code> helper) or keep per-tool config, once there is a second one. One
   instance is not yet a pattern worth abstracting.</li>
@@ -4476,6 +4488,22 @@ on them; each makes a Consequence above less sharp.</p>
   header rather than a payload field, <code>X-DataHelix-Actor</code> is the name sec8 §8.3 already uses,
   and reusing it would make the relay slot into Bridge's model without a second convention.</li>
 </ul>
+<h2 id="ratification-note-2026-11-10">Ratification note (2026-11-10)<a class="headerlink" href="#ratification-note-2026-11-10" title="Permanent link">&para;</a></h2>
+<p>Ratified by labadorf in the <a href="https://github.com/datahelix-platform/datahelix/issues/126">datahelix#126</a>
+decision pass (<a href="https://github.com/datahelix-platform/mosaic/issues/243">#243</a>). <strong>Accepted as
+written</strong>, with no amendment:</p>
+<ul>
+<li><strong>Item 5</strong> (client-visible failures name the role, not the address) and <strong>item 7</strong> (the wire
+  contract is Decision 8's, not Mosaic's) stand as written.</li>
+<li><strong>The cost-amplification Consequence is accepted as written: accepted, not mitigated.</strong> Anyone
+  who can reach a configured Mosaic can still cause spend at the planning service, with no
+  attribution. Ratifying settles the shape of the boundary; it does not close that exposure.</li>
+<li><strong>Rate limiting stays Exon-side (E4).</strong> Mosaic will not add its own quota on the relay; the
+  bound belongs where the spend happens. E1–E3 stay on the Exon follow-up list, and per-actor
+  attribution stays tracked in <a href="https://github.com/datahelix-platform/mosaic/issues/201">#201</a>.</li>
+</ul>
+<p>This unblocks <strong>Reel ADR-0007</strong> (datahelix-platform/reel), which records the other side of this
+arrangement and was gated on this ADR being ratified first (its precondition P3).</p>
 
 
 

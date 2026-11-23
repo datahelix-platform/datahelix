@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -2166,14 +2166,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4994,11 +4994,11 @@ This provides:
 - No data loss on clean shutdown
 - Acceptable durability for research workloads (not ACID-full; <code>synchronous = FULL</code> is
   available as a config option for deployments requiring stronger durability guarantees)</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># hippo.yaml — optional stricter durability</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># mosaic.yaml — optional stricter durability</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">adapter</span><span class="p">:</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqlite</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">sqlite</span><span class="p">:</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./hippo.db</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./mosaic.db</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">synchronous</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FULL</span><span class="w">    </span><span class="c1"># default: NORMAL</span>
 </code></pre></div>
 <h4 id="provenance-immutability-enforcement">Provenance immutability enforcement<a class="headerlink" href="#provenance-immutability-enforcement" title="Permanent link">&para;</a></h4>
@@ -5037,8 +5037,8 @@ for the medium workload profile.</p>
 </tr>
 </tbody>
 </table>
-<p>Migration path: <code>hippo migrate</code> applies schema to new adapter; data migration is a one-time
-<code>hippo export / hippo import</code> operation (deferred tooling; not in v0.1).</p>
+<p>Migration path: <code>mosaic migrate</code> applies schema to new adapter; data migration is a one-time
+<code>hippo export / mosaic import</code> operation (deferred tooling; not in v0.1).</p>
 <h4 id="rest-server-scaling">REST server scaling<a class="headerlink" href="#rest-server-scaling" title="Permanent link">&para;</a></h4>
 <p>The REST server (Uvicorn + FastAPI) is <strong>fully stateless</strong> — no in-process mutable state
 spans requests. Multiple instances behind a load balancer are transparent to callers.</p>
@@ -5046,14 +5046,14 @@ spans requests. Multiple instances behind a load balancer are transparent to cal
 failover) are delegated entirely to the storage adapter. The API layer has no distributed
 logic of its own.</p>
 <p><strong>Multi-instance operational constraint (v0.1):</strong> Schema changes require a <strong>restart-on-migrate</strong>
-procedure: drain all instances, run <code>hippo migrate</code> against the storage backend, restart
+procedure: drain all instances, run <code>mosaic migrate</code> against the storage backend, restart
 all instances. This is standard operational practice (30–60s downtime window) and acceptable
 for the expected v0.1 schema change frequency (infrequent, deliberate).</p>
 <p>The schema is loaded into memory at startup and held for the lifetime of the process. There
 is no dynamic schema reload in v0.1.</p>
 <h4 id="planned-schema-sync-roadmap-post-v01">Planned schema sync roadmap (post-v0.1)<a class="headerlink" href="#planned-schema-sync-roadmap-post-v01" title="Permanent link">&para;</a></h4>
 <p>The foundation for zero-downtime schema changes is already in place (additive-only migrations,
-schema version tracked in <code>hippo_meta</code>). The roadmap to eliminate restart-on-migrate:</p>
+schema version tracked in <code>mosaic_meta</code>). The roadmap to eliminate restart-on-migrate:</p>
 <table>
 <thead>
 <tr>
@@ -5065,17 +5065,17 @@ schema version tracked in <code>hippo_meta</code>). The roadmap to eliminate res
 <tbody>
 <tr>
 <td><strong>v0.2</strong></td>
-<td>Schema version check on every write: compare instance's cached version against <code>hippo_meta</code>. Return <code>503 Service Unavailable</code> + <code>Retry-After: 5s</code> if mismatch. Eliminates silent data inconsistency risk; operators see 503s as a restart signal.</td>
+<td>Schema version check on every write: compare instance's cached version against <code>mosaic_meta</code>. Return <code>503 Service Unavailable</code> + <code>Retry-After: 5s</code> if mismatch. Eliminates silent data inconsistency risk; operators see 503s as a restart signal.</td>
 <td>Low</td>
 </tr>
 <tr>
 <td><strong>v0.3</strong></td>
-<td>Schema version polling: each instance polls <code>hippo_meta</code> on a short interval (default 10s) and reloads schema in-memory if the version changes. No new infrastructure dependencies — polling uses the existing storage adapter.</td>
+<td>Schema version polling: each instance polls <code>mosaic_meta</code> on a short interval (default 10s) and reloads schema in-memory if the version changes. No new infrastructure dependencies — polling uses the existing storage adapter.</td>
 <td>Moderate</td>
 </tr>
 <tr>
 <td><strong>v0.3+</strong></td>
-<td><code>hippo migrate</code> enforces the expand-contract convention for new required fields: required fields must be introduced as optional in one migration and made required in a subsequent one. Eliminates the remaining validation-inconsistency window during transitions.</td>
+<td><code>mosaic migrate</code> enforces the expand-contract convention for new required fields: required fields must be introduced as optional in one migration and made required in a subsequent one. Eliminates the remaining validation-inconsistency window during transitions.</td>
 <td>Moderate</td>
 </tr>
 </tbody>
@@ -5087,7 +5087,7 @@ schema version tracked in <code>hippo_meta</code>). The roadmap to eliminate res
 <p>Authentication and authorisation are <strong>explicitly out of scope for v0.1</strong>. The REST API
 accepts all requests with no credential check. The auth middleware stub passes all requests
 through.</p>
-<p><strong>Recommended deployment for v0.1</strong>: Run <code>hippo serve</code> on <code>localhost</code> or within a private
+<p><strong>Recommended deployment for v0.1</strong>: Run <code>mosaic serve</code> on <code>localhost</code> or within a private
 network only. Do not expose the REST API to the public internet without an external auth proxy.</p>
 <h4 id="actor-field">Actor field<a class="headerlink" href="#actor-field" title="Permanent link">&para;</a></h4>
 <p>All write operations require an <code>actor</code> string. In v0.1 this is advisory (not authenticated).
@@ -5120,7 +5120,7 @@ may include sensitive clinical or phenotypic data. Deployers are responsible for
 <h3 id="75-observability">7.5 Observability<a class="headerlink" href="#75-observability" title="Permanent link">&para;</a></h3>
 <h4 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h4>
 <p>Hippo uses Python's stdlib <code>logging</code> module. Structured JSON logging is configurable:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># hippo.yaml</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># mosaic.yaml</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">logging</span><span class="p">:</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INFO</span><span class="w">          </span><span class="c1"># DEBUG | INFO | WARNING | ERROR</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">json</span><span class="w">         </span><span class="c1"># json | text (default: text for local, json for server)</span>
@@ -5139,7 +5139,7 @@ provides human-readable summary statistics.</p>
 <ul>
 <li>All business logic is in <code>hippo/core/</code> with no I/O dependencies</li>
 <li><code>EntityStore</code> and other ABCs can be mocked via standard Python <code>unittest.mock</code></li>
-<li><code>IngestionPipeline</code> accepts a <code>HippoClient</code> — test against an in-memory SQLite adapter</li>
+<li><code>IngestionPipeline</code> accepts a <code>MosaicClient</code> — test against an in-memory SQLite adapter</li>
 <li><code>WriteValidator</code> implementations are pure functions (input: <code>WriteOperation</code> + mock client)</li>
 <li>CEL expressions can be tested without running the full Hippo server</li>
 </ul>

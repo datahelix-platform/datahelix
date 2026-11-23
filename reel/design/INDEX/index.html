@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1764,14 +1764,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -2921,10 +2921,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decision-queue-open-resolve-in-dependency-order" class="md-nav__link">
+  <a href="#decision-queue-open" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decision Queue (open — resolve in dependency order)
+        Decision Queue (open)
       
     </span>
   </a>
@@ -4275,10 +4275,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decision-queue-open-resolve-in-dependency-order" class="md-nav__link">
+  <a href="#decision-queue-open" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decision Queue (open — resolve in dependency order)
+        Decision Queue (open)
       
     </span>
   </a>
@@ -4320,19 +4320,22 @@ Composes typed query states (<strong>QuerySpec</strong> instances) into replayab
 produces <strong>View Contract</strong> instances; does no rendering (the Aperture portal renders) and no
 query validation/execution of its own (Mosaic's MCP boundary does).
 <strong>Name:</strong> Reel — ratified (platform ADR-0003); no longer a provisional codename.
-<strong>Version:</strong> 0.2 — design brought up to date with the platform (2026-09-11); still no code.
-<strong>Prototype:</strong> <strong>Exon</strong> in <a href="https://github.com/BU-Neuromics/mosaic-demo-small"><code>BU-Neuromics/mosaic-demo-small</code></a>
-(<code>exon/</code>) — Reel rung 1 running under another name; migrates here per ADR-0008 /
-<a href="../proposals/exon-migration.md"><code>proposals/exon-migration.md</code></a>.</p>
+<strong>Version:</strong> 0.3 — ADR-0001–0005 ratified (2026-11-10 decision pass); every ADR is now Accepted.
+<strong>Code:</strong> <code>src/reel/</code> (<code>datahelix-reel</code> v0.1.0) — the turn path carried from the <strong>Exon</strong> prototype
+(Phase B-runtime of <a href="../proposals/exon-migration.md"><code>proposals/exon-migration.md</code></a>, per ADR-0008):
+the NL → QuerySpec planner, the turn contract, rewind/edit with recompute-and-suspend, the
+relay-facing HTTP endpoint. Not yet built: the reliability harness (Phase B-harness), <code>DataStory</code>
+persistence, watermarks, source tags, op expansion (migration deltas D1–D5).</p>
 <hr />
 <p>Reel was extracted from the <code>aperture</code> component when the data-story engine was split from the
 rendering portal (DataHelix platform
-<a href="https://github.com/BU-Neuromics/datahelix/blob/main/platform/design/decisions/ADR-0003-reel-data-story-engine-separate-from-portal.md">ADR-0003</a>,
+<a href="https://github.com/datahelix-platform/datahelix/blob/main/platform/design/decisions/ADR-0003-reel-data-story-engine-separate-from-portal.md">ADR-0003</a>,
 2026-06-22; its <strong>Outcome</strong> section records the execution). ADR-0001–0005 were authored as
 Aperture ADR-0022–0026 and <strong>renumbered</strong> on extraction; the originals are <code>Superseded by</code> these
 in Aperture with forward pointers. The design set was written when the platform was <strong>BASS</strong>
 and the graph runtime <strong>Hippo</strong>; it now reads <strong>DataHelix</strong> and <strong>Mosaic</strong> (Mosaic ADR-0004),
-with data-contract identifiers (<code>hippoSchema</code>, <code>hippo_core</code>) unchanged.</p>
+with data-contract identifiers (<code>hippoSchema</code>, <code>hippo_core</code>) unchanged at the time. Those were
+renamed in Mosaic v0.16.0 (platform ADR-0007): <code>mosaicSchema</code>, <code>mosaic_core</code>.</p>
 <h2 id="document-map">Document Map<a class="headerlink" href="#document-map" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -4363,6 +4366,12 @@ with data-contract identifiers (<code>hippoSchema</code>, <code>hippo_core</code
 <td>Every claim/dependency in the older docs mapped to the current platform state: names, ADR statuses, the interfaces <code>prefab/</code> asked for (all now exist), the keystone-probe results, roadmap position, stale references in sibling repos. <strong>Read this first if you last read Reel before 2026-09.</strong></td>
 </tr>
 <tr>
+<td><code>turn-contract.md</code></td>
+<td><strong>Conversational turn contract</strong> (v1 wire form of <code>Instruction</code>)</td>
+<td>🟢 Canonical</td>
+<td>The <code>/turn</code> request/response that Mosaic's relay carries. Restates <code>mosaic-demo-small</code> <code>add-exon-conversational-contract</code> Decision 8 as shipped; amendments land here (ADR-0008 §3; Mosaic ADR-0010 item 7). Amendment 1 (2026-11-10): steps changed by an upstream edit are <strong>held for review</strong> (<code>held_for_review</code>, <code>previous_query_spec</code>, <code>held_turn_ids</code>); its open questions (later steps, restore action, field name) decided 2026-11-17. Amendment 2 (2026-11-23): an append plans from the request's <code>query_spec</code> (the reader's edited draft, aperture#89) instead of requiring it to equal the turns-derived draft (Decision 9); a request-shape guard, not query validation (ADR-0007), rejects a malformed envelope with 400.</td>
+</tr>
+<tr>
 <td><code>instruction-path-model.md</code></td>
 <td>Instruction-path model (working)</td>
 <td>🟠 Working</td>
@@ -4385,7 +4394,7 @@ with data-contract identifiers (<code>hippoSchema</code>, <code>hippo_core</code
 <h2 id="how-decisions-are-recorded">How decisions are recorded<a class="headerlink" href="#how-decisions-are-recorded" title="Permanent link">&para;</a></h2>
 <p>Every load-bearing choice is an <strong>ADR</strong> in <a href="./decisions/"><code>decisions/</code></a>, indexed by the Decision
 Log below, following the <strong>platform-wide convention</strong>
-(<a href="https://github.com/BU-Neuromics/datahelix/blob/main/platform/design/decisions/README.md"><code>datahelix:platform/design/decisions/README.md</code></a>).
+(<a href="https://github.com/datahelix-platform/datahelix/blob/main/platform/design/decisions/README.md"><code>datahelix:platform/design/decisions/README.md</code></a>).
 Open questions are <code>Proposed</code> ADRs (the decision queue); ratifying one is a status flip to
 <code>Accepted</code>, not a new document. Decisions are never deleted — reversals <code>Supersede</code> with a forward
 pointer. Cross-component references are always qualified (<strong>Aperture ADR-NNNN</strong>, <strong>Mosaic
@@ -4404,38 +4413,38 @@ ADR-NNNN</strong>, <strong>platform ADR-NNNN</strong>); see <code>decisions/READ
 <tr>
 <td><a href="../decisions/ADR-0001-data-story-is-an-instruction-path/">0001</a></td>
 <td>A data story is an instruction path → typed subgraph states + artifacts</td>
-<td>🟡 Proposed</td>
-<td>migrated from Aperture ADR-0022; was gated on the keystone probe — <strong>the probe has run</strong> (Exon); status update appended 2026-09-11 recommends ratifying with 0003/0004</td>
+<td>🟢 Accepted</td>
+<td>2026-11-10, <strong>amended</strong>: v1 forms are ADR-0006 (State = QuerySpec), ADR-0007 (validation at the Mosaic boundary — replaces "dry-run-validated (Aperture ADR-0009)"), ADR-0008 (turn contract). Not built: Artifacts, <code>DataStory</code> persistence (D1), source tags (D4), op expansion (D5). Migrated from Aperture ADR-0022</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0002-data-story-reproducibility-as-of-watermark/">0002</a></td>
 <td>Reproducibility: one as-of watermark per story-version; "pull new data" = recorded watermark-advance</td>
-<td>🟡 Proposed</td>
-<td>migrated from Aperture ADR-0023; blocker cleared — <strong>Mosaic ADR-0001 Accepted</strong> (graph-level as-of), implementation in progress; <code>asOf</code> ⟂ <code>RelatedCondition</code> until Mosaic's temporal join</td>
+<td>🟢 Accepted</td>
+<td>2026-11-10, with a <strong>v1 limit</strong>: a story with an <code>exists-related-filter</code> cannot be pinned until Mosaic supports <code>asOf</code> + <code>RelatedCondition</code> (Mosaic <code>query_spec.py</code> <code>ASOF_RELATIONSHIP_FILTER_UNSUPPORTED</code>; <a href="https://github.com/datahelix-platform/mosaic/issues/269">mosaic#269</a>). Unbuilt in Reel (delta D2). Migrated from Aperture ADR-0023</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0003-instruction-path-linear-first-general-schema/">0003</a></td>
 <td>Topology: general <code>parents</code>-list schema now, linear-only validator in v1</td>
-<td>🟡 Proposed</td>
-<td>migrated from Aperture ADR-0024; cited reciprocally by Aperture ADR-0035 (rejects arbitrary joins); prototype is linear-only</td>
+<td>🟢 Accepted</td>
+<td>2026-11-10. Code stores an ordered <code>turns</code> list with no <code>parents</code> yet (delta D1). Cited reciprocally by Aperture ADR-0035. Migrated from Aperture ADR-0024</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0004-mid-path-edit-recompute-with-suspend/">0004</a></td>
 <td>Mid-path edits recompute downstream + suspend-on-invalid (not discard)</td>
-<td>🟡 Proposed</td>
-<td>migrated from Aperture ADR-0025; <strong>exercised end to end</strong> by the prototype's <code>edit_turn_id</code> / <code>suspended_turn_ids</code> and Mosaic ADR-0010 term 2</td>
+<td>🟢 Accepted</td>
+<td>2026-11-10, <strong>amended</strong> v1 rule: re-ask each downstream utterance; <strong>flag</strong> steps whose QuerySpec changed for review (<a href="https://github.com/datahelix-platform/reel/issues/19">reel#19</a> — unbuilt); suspend on clarification (built). <strong>2026-11-17:</strong> "flag" = held for review, specified as <code>turn-contract.md</code> Amendment 1, whose open questions are decided (later steps re-asked and held if changed; no restore action in v1; <code>held_turn_ids</code>). Typed-op replay stays the target (D4/D5). Migrated from Aperture ADR-0025</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0005-headless-core-thin-shell/">0005</a></td>
 <td>Headless interaction core + thin replaceable shell; renderer seam = the View Contract</td>
-<td>🟡 Proposed</td>
-<td>migrated from Aperture ADR-0026 (Aperture later reused 0026 — cite this one); Aperture ADR-0014/0030/0031 settled the shell; the MCP surface is Mosaic's (see 0007)</td>
+<td>🟢 Accepted</td>
+<td>2026-11-10, <strong>amended</strong>: core = instruction-path engine + planner + View Contract producer (the last unbuilt); component runtime (Aperture ADR-0011), validators and the MCP surface dropped (ADR-0007, Mosaic ADR-0009/0010); shell settled by Aperture ADR-0014/0030/0031. Migrated from Aperture ADR-0026 (cite this one, not Aperture's reused 0026)</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0006-v1-state-is-the-queryspec/">0006</a></td>
 <td>Reel's v1 <code>State</code> <strong>is</strong> the platform <strong>QuerySpec</strong>; Reel composes the query noun, never defines one; op catalog → QuerySpec fields / Mosaic boundary tools</td>
 <td>🟢 Accepted</td>
-<td>2026-09-11; Reel side of <strong>Aperture ADR-0035</strong> (Accepted) + <strong>Mosaic ADR-0009</strong> (Accepted). <strong>Corrected 2026-09-22</strong> (<a href="https://github.com/BU-Neuromics/reel/issues/2">#2</a>): <code>pivot-grain</code> is no longer blocked on mosaic#204 — the mechanism merged and Mosaic ADR-0011 is ratified; what remains is a Mosaic release + a deployment declaring the <code>inverse:</code> slot. Its <code>explode</code> half gets an artifact in <strong>Aperture ADR-0041</strong>.</td>
+<td>2026-09-11; Reel side of <strong>Aperture ADR-0035</strong> (Accepted) + <strong>Mosaic ADR-0009</strong> (Accepted). <strong>Corrected 2026-09-22</strong> (<a href="https://github.com/datahelix-platform/reel/issues/2">#2</a>): <code>pivot-grain</code> is no longer blocked on mosaic#204 — the mechanism merged and Mosaic ADR-0011 is ratified; what remains is a Mosaic release + a deployment declaring the <code>inverse:</code> slot. Its <code>explode</code> half gets an artifact in <strong>Aperture ADR-0041</strong>.</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0007-reel-delegates-to-the-mosaic-boundary/">0007</a></td>
@@ -4451,27 +4460,22 @@ ADR-NNNN</strong>, <strong>platform ADR-NNNN</strong>); see <code>decisions/READ
 </tr>
 </tbody>
 </table>
-<h2 id="decision-queue-open-resolve-in-dependency-order">Decision Queue (open — resolve in dependency order)<a class="headerlink" href="#decision-queue-open-resolve-in-dependency-order" title="Permanent link">&para;</a></h2>
+<h2 id="decision-queue-open">Decision Queue (open)<a class="headerlink" href="#decision-queue-open" title="Permanent link">&para;</a></h2>
+<p>No Reel ADR is <code>Proposed</code> after the 2026-11-10 decision pass. Open follow-on work, not decisions:</p>
 <ol>
-<li><strong>Ratify ADR-0001, 0003, 0004</strong> on the strength of the probe (<code>platform-alignment.md</code>
-   "Keystone probe"): the instruction-path model, linear-first topology, and recompute-with-suspend
-   all held in the prototype. The one open sub-question (multi-type ops) was already deferred.</li>
-<li><strong>Ratify ADR-0006</strong> (v1 State = QuerySpec) — it records the Reel side of two Accepted
-   decisions; the only Reel-local choice is <em>not</em> keeping a translation shim, argued in the ADR.</li>
-<li><strong>Ratify ADR-0002</strong> now that Mosaic ADR-0001 is Accepted — with the v1 caveat that a story
-   containing an <code>exists-related-filter</code> cannot pin a watermark until Mosaic's temporal join
-   (M5a) lands. Decide whether v1 <em>refuses</em> to pin such stories (recommended: yes, coded error)
-   or pins and marks the related step unpinned.</li>
-<li><strong>ADR-0007 follows Mosaic ADR-0010</strong> (Proposed 2026-09-08). Flip together.</li>
-<li><strong>ADR-0008</strong> (migrate Exon) — ratify once 1–4 are settled; execution waits on the
-   preconditions in <code>../proposals/exon-migration.md</code> §2 (Exon Phase 2 complete; turn endpoint
-   live behind Mosaic's relay).</li>
-<li><strong>ADR-0005</strong> can ratify independently (it never depended on the probe), noting the narrowed
-   "core" (ADR-0007): the query validator and the MCP surface are Mosaic's.</li>
+<li><strong>Implement ADR-0004's hold for review</strong>: the contract is <code>turn-contract.md</code> Amendment 1
+   (open questions decided 2026-11-17, so nothing in it is pending a ruling); the Reel side is <a href="https://github.com/datahelix-platform/reel/issues/19">reel#19</a>. The fields
+   then need a pass-through in Mosaic's relay and GraphQL <code>ConverseResult</code>, and a review surface in
+   Aperture's chat panel.</li>
+<li><strong>Lift ADR-0002's v1 limit</strong> — a Mosaic change (<code>asOf</code> combined with <code>RelatedCondition</code>, the
+   temporal join of Mosaic ADR-0001) — <a href="https://github.com/datahelix-platform/mosaic/issues/269">mosaic#269</a>. Reel cannot do this itself.</li>
+<li><strong>Migration deltas D1–D5</strong> (<code>../proposals/exon-migration.md</code>) — persisted <code>DataStory</code> with
+   <code>parents</code> (D1), watermark + node hashes (D2), edit-history log (D3), source tags (D4), op
+   expansion (D5). They turn the accepted ADR-0001–0004 from v1 forms into the full model.</li>
 <li><strong>View Contract grammar</strong> — a platform-level design pass
    (<code>datahelix:platform/design/view-contract.md</code>, still a stub). Reel's op→primitive mapping
    (<code>render-as-primitive</code>) and the <code>provenance</code> block (watermark, producing instruction, State
-   reference) feed that spec. Not blocking v1 of the story engine.</li>
+   reference) feed that spec; ADR-0005's third core item waits on it.</li>
 </ol>
 <h2 id="platform-decisions-that-bind-reel-reciprocal-references">Platform decisions that bind Reel (reciprocal references)<a class="headerlink" href="#platform-decisions-that-bind-reel-reciprocal-references" title="Permanent link">&para;</a></h2>
 <table>
@@ -4501,7 +4505,7 @@ ADR-NNNN</strong>, <strong>platform ADR-NNNN</strong>); see <code>decisions/READ
 <tr>
 <td>Mosaic ADR-0001 (graph-level as-of)</td>
 <td>Accepted; in progress</td>
-<td>ADR-0002's watermark substrate</td>
+<td>ADR-0002's watermark substrate; <code>asOf</code> ⟂ <code>RelatedCondition</code> is ADR-0002's v1 limit</td>
 </tr>
 <tr>
 <td>Mosaic ADR-0006 / 0007 (typed filters; aggregation &amp; ordering)</td>

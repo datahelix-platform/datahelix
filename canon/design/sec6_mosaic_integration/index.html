@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1764,14 +1764,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4606,7 +4606,7 @@ into Mosaic.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>1. Parse CWL output JSON (cwltool stdout)
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>2. Load .canon.yaml sidecar for the executed workflow
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>3. For each output declared in the sidecar:
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>   a. Evaluate hippo_fields expressions against CWL output + rule inputs
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>   a. Evaluate mosaic_fields expressions against CWL output + rule inputs
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>   b. Relocate output file to configured output_storage (if needed)
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>   c. POST /ingest → create Mosaic entity
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>   d. Record returned UUID for WorkflowRun linkage
@@ -4629,15 +4629,15 @@ ingesting into Mosaic, Canon relocates files to the configured <code>output_stor
 work directory is retained for <code>--keep-workdir</code> runs; otherwise it is cleaned up after
 successful ingestion.</p>
 <p><strong>Entity field assembly:</strong></p>
-<p>The sidecar's <code>hippo_fields:</code> expressions are evaluated to produce the entity data dict:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">evaluate_hippo_fields</span><span class="p">(</span>
+<p>The sidecar's <code>mosaic_fields:</code> expressions are evaluated to produce the entity data dict:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">evaluate_mosaic_fields</span><span class="p">(</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">sidecar_output</span><span class="p">:</span> <span class="n">SidecarOutput</span><span class="p">,</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">cwl_outputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>        <span class="c1"># parsed CWL output JSON</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">cwl_inputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>         <span class="c1"># inputs passed to CWL</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">run_id</span><span class="p">:</span> <span class="nb">str</span>
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">sidecar_output</span><span class="o">.</span><span class="n">hippo_fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">sidecar_output</span><span class="o">.</span><span class="n">mosaic_fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>        <span class="n">result</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">evaluate_expr</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">cwl_outputs</span><span class="p">,</span> <span class="n">cwl_inputs</span><span class="p">,</span> <span class="n">run_id</span><span class="p">)</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="k">return</span> <span class="n">result</span>
 </code></pre></div>

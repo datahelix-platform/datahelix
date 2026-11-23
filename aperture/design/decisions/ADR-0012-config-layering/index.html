@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4117,10 +4117,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decision-proposed" class="md-nav__link">
+  <a href="#decision-proposed-amended-at-ratification-see-below" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decision (proposed)
+        Decision (proposed — amended at ratification, see below)
       
     </span>
   </a>
@@ -4149,6 +4149,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#amendment-2026-11-10-ratified-as-the-shipped-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amendment (2026-11-10 — ratified as the shipped rule)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4168,9 +4179,9 @@
 
 <h1 id="adr-0012-config-layering-resolves-to-one-canonical-validated-instance">ADR-0012: Config layering resolves to one canonical validated instance<a class="headerlink" href="#adr-0012-config-layering-resolves-to-one-canonical-validated-instance" title="Permanent link">&para;</a></h1>
 <ul>
-<li><strong>Status:</strong> Proposed</li>
-<li><strong>Date:</strong> 2026-06-13</li>
-<li><strong>Deciders:</strong> —</li>
+<li><strong>Status:</strong> Accepted (as built, amended to the shipped rule — see the 2026-11-10 amendment; layer attribution + resolved-output validation deferred with the agent loop)</li>
+<li><strong>Date:</strong> 2026-06-13 (ratified 2026-11-10, decision pass)</li>
+<li><strong>Deciders:</strong> labadorf</li>
 <li><strong>Related:</strong> handoff §9.4 (open question Q4); depends on ADR-0003, ADR-0005, ADR-0007</li>
 </ul>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
@@ -4178,7 +4189,7 @@
 schema-derived → admin overrides → user-accessible subset)? Layering is more powerful but
 each layer is a place bugs hide. ADR-0003 already commits to deployment-config vs user-state
 as <em>distinct</em> LinkML classes, so single-document is effectively off the table.</p>
-<h2 id="decision-proposed">Decision (proposed)<a class="headerlink" href="#decision-proposed" title="Permanent link">&para;</a></h2>
+<h2 id="decision-proposed-amended-at-ratification-see-below">Decision (proposed — amended at ratification, see below)<a class="headerlink" href="#decision-proposed-amended-at-ratification-see-below" title="Permanent link">&para;</a></h2>
 <p><strong>Layered authoring resolving to one canonical validated instance</strong>, using the layers the
 design already implies (not a new four-tier invention):</p>
 <ol>
@@ -4207,6 +4218,37 @@ pure ACL/visibility over layers 2–3, not config precedence.</p>
 <li><strong>Four-tier layering with a user-subset precedence layer.</strong> Conflates ACL with precedence;
   rejected per ADR-0007.</li>
 </ul>
+<h2 id="amendment-2026-11-10-ratified-as-the-shipped-rule">Amendment (2026-11-10 — ratified as the shipped rule)<a class="headerlink" href="#amendment-2026-11-10-ratified-as-the-shipped-rule" title="Permanent link">&para;</a></h2>
+<p>Ratified by labadorf in the 2026-11-10 decision pass. The decision above was a proposal.
+What shipped is narrower, and that is what this ADR now records as binding.</p>
+<p><strong>The shipped rule:</strong></p>
+<ol>
+<li><strong>Per-kind whole-document override with env fallback.</strong> Each deployment config kind is one
+   control-plane document, e.g. <code>config/nav</code> and <code>config/workflows</code>. When present, it replaces
+   the env-resolved default (<code>VITE_NAV</code>, …) <strong>as a whole document</strong>. There is no field-level
+   merge across layers. If the document is absent or the store is unreachable, the env default
+   stands. If the document is invalid, Aperture falls back to env and surfaces the error, never
+   swallowing it (ADR-0029). Code: <code>web/src/nav/config.ts</code> (<code>resolveNavConfig</code>,
+   <code>parseNavConfig</code>) and <code>web/src/nav/NavConfigContext.tsx</code>; <code>workflows/WorkflowsContext.tsx</code>
+   follows the same pattern.</li>
+<li><strong>Schema-derived defaults stay derived, not stored.</strong> Derive-all is the base, and config
+   only overrides it (ADR-0005).</li>
+<li><strong>User state is owner-scoped</strong>, not a precedence layer: <code>savedView</code> / <code>workflowDraft</code>
+   documents carry <code>owner</code> + <code>visibility</code> (ADR-0032 amendment). Deployment <code>config</code> stays
+   un-namespaced.</li>
+<li><strong>Validation is a hand-written TypeScript parser per kind</strong> (<code>parseNavConfig</code> and its
+   siblings). It runs on the one document that wins, which under whole-document override <em>is</em>
+   the resolved instance. There is no LinkML-derived validator yet.</li>
+</ol>
+<p><strong>Deferred</strong>, tied to the deferred agent loop (ADR-0026; ADR-0013 is superseded by Mosaic's agent surface):</p>
+<ul>
+<li><strong>(a) layer-attributed resolution</strong> ("describe my config" → value + producing layer). With
+  whole-document override the producing layer is trivially "control plane or env", so this
+  becomes interesting only when an agent edits config.</li>
+<li><strong>(b) validate-the-resolved-output as a dry-run step</strong> before an agent-driven apply.</li>
+</ul>
+<p>The "drop the 4th layer" decision is unchanged: the user-accessible subset is ACL/visibility
+(ADR-0007, ADR-0032), not precedence.</p>
 
 
 

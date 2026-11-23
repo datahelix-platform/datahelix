@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1764,14 +1764,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -2677,15 +2677,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#76-hippo_poll-trigger-behavior-matrix-v02" class="md-nav__link">
+  <a href="#76-mosaic_poll-trigger-behavior-matrix-v02" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7.6 hippo_poll Trigger Behavior Matrix (v0.2)
+        7.6 mosaic_poll Trigger Behavior Matrix (v0.2)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="7.6 hippo_poll Trigger Behavior Matrix (v0.2)">
+    <nav class="md-nav" aria-label="7.6 mosaic_poll Trigger Behavior Matrix (v0.2)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2700,10 +2700,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#762-core-hippo_poll-scenarios" class="md-nav__link">
+  <a href="#762-core-mosaic_poll-scenarios" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7.6.2 Core hippo_poll Scenarios
+        7.6.2 Core mosaic_poll Scenarios
       
     </span>
   </a>
@@ -2711,10 +2711,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#763-polling-against-starlims-ingestion-hippo_poll" class="md-nav__link">
+  <a href="#763-polling-against-starlims-ingestion-mosaic_poll" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7.6.3 Polling Against STARLIMS Ingestion (hippo_poll)
+        7.6.3 Polling Against STARLIMS Ingestion (mosaic_poll)
       
     </span>
   </a>
@@ -4712,15 +4712,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#76-hippo_poll-trigger-behavior-matrix-v02" class="md-nav__link">
+  <a href="#76-mosaic_poll-trigger-behavior-matrix-v02" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7.6 hippo_poll Trigger Behavior Matrix (v0.2)
+        7.6 mosaic_poll Trigger Behavior Matrix (v0.2)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="7.6 hippo_poll Trigger Behavior Matrix (v0.2)">
+    <nav class="md-nav" aria-label="7.6 mosaic_poll Trigger Behavior Matrix (v0.2)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -4735,10 +4735,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#762-core-hippo_poll-scenarios" class="md-nav__link">
+  <a href="#762-core-mosaic_poll-scenarios" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7.6.2 Core hippo_poll Scenarios
+        7.6.2 Core mosaic_poll Scenarios
       
     </span>
   </a>
@@ -4746,10 +4746,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#763-polling-against-starlims-ingestion-hippo_poll" class="md-nav__link">
+  <a href="#763-polling-against-starlims-ingestion-mosaic_poll" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7.6.3 Polling Against STARLIMS Ingestion (hippo_poll)
+        7.6.3 Polling Against STARLIMS Ingestion (mosaic_poll)
       
     </span>
   </a>
@@ -4888,7 +4888,7 @@
 <td>Deferred — spec complete here</td>
 </tr>
 <tr>
-<td><code>hippo_poll</code></td>
+<td><code>mosaic_poll</code></td>
 <td>v0.2</td>
 <td>Deferred — spec complete here</td>
 </tr>
@@ -5255,12 +5255,12 @@
 </code></pre></div>
 <p>The secret is loaded from the environment variable named in <code>secret_env</code>. If the env var is unset at startup, Cappella raises <code>CappellaConfigError</code> — a webhook trigger with no secret is rejected at config validation time.</p>
 <hr />
-<h2 id="76-hippo_poll-trigger-behavior-matrix-v02">7.6 <code>hippo_poll</code> Trigger Behavior Matrix (v0.2)<a class="headerlink" href="#76-hippo_poll-trigger-behavior-matrix-v02" title="Permanent link">&para;</a></h2>
-<p><code>hippo_poll</code> triggers fire when Hippo entities matching a query change. Cappella polls Hippo periodically using the <code>updated_at</code> index.</p>
+<h2 id="76-mosaic_poll-trigger-behavior-matrix-v02">7.6 <code>mosaic_poll</code> Trigger Behavior Matrix (v0.2)<a class="headerlink" href="#76-mosaic_poll-trigger-behavior-matrix-v02" title="Permanent link">&para;</a></h2>
+<p><code>mosaic_poll</code> triggers fire when Hippo entities matching a query change. Cappella polls Hippo periodically using the <code>updated_at</code> index.</p>
 <h3 id="761-configuration">7.6.1 Configuration<a class="headerlink" href="#761-configuration" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">triggers</span><span class="p">:</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">on_new_sample</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hippo_poll</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mosaic_poll</span>
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">poll</span><span class="p">:</span>
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="nt">entity_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sample</span>
 <a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="nt">filter</span><span class="p">:</span><span class="w"> </span><span class="s">"status</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">'received'"</span><span class="w">     </span><span class="c1"># CEL filter on entity fields</span>
@@ -5274,7 +5274,7 @@
 <a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">      </span><span class="nt">parameters</span><span class="p">:</span>
 <a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">        </span><span class="nt">genome</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GRCh38</span>
 </code></pre></div>
-<h3 id="762-core-hippo_poll-scenarios">7.6.2 Core <code>hippo_poll</code> Scenarios<a class="headerlink" href="#762-core-hippo_poll-scenarios" title="Permanent link">&para;</a></h3>
+<h3 id="762-core-mosaic_poll-scenarios">7.6.2 Core <code>mosaic_poll</code> Scenarios<a class="headerlink" href="#762-core-mosaic_poll-scenarios" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -5321,11 +5321,11 @@
 </tr>
 </tbody>
 </table>
-<h3 id="763-polling-against-starlims-ingestion-hippo_poll">7.6.3 Polling Against STARLIMS Ingestion (hippo_poll)<a class="headerlink" href="#763-polling-against-starlims-ingestion-hippo_poll" title="Permanent link">&para;</a></h3>
-<p>The canonical <code>hippo_poll</code> use case is triggering alignment resolution when new samples arrive from STARLIMS.</p>
+<h3 id="763-polling-against-starlims-ingestion-mosaic_poll">7.6.3 Polling Against STARLIMS Ingestion (mosaic_poll)<a class="headerlink" href="#763-polling-against-starlims-ingestion-mosaic_poll" title="Permanent link">&para;</a></h3>
+<p>The canonical <code>mosaic_poll</code> use case is triggering alignment resolution when new samples arrive from STARLIMS.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">triggers</span><span class="p">:</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trigger_alignment_on_new_sample</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hippo_poll</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mosaic_poll</span>
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">poll</span><span class="p">:</span>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">      </span><span class="nt">entity_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sample</span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">      </span><span class="nt">filter</span><span class="p">:</span><span class="w"> </span><span class="s">"tissue</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">'DLPFC'</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">status</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">'received'"</span>
@@ -5372,7 +5372,7 @@
 </tbody>
 </table>
 <h3 id="764-change-detection-implementation-notes">7.6.4 Change Detection Implementation Notes<a class="headerlink" href="#764-change-detection-implementation-notes" title="Permanent link">&para;</a></h3>
-<p>Cappella's <code>hippo_poll</code> uses Hippo's <code>GET /entities/{type}?updated_after={cursor}&amp;limit=N</code> query (Phase 1 REST gap — cursor pagination). The poll cursor is stored as a <code>CappellaPollCursor</code> Hippo entity (keyed by trigger name). This means:</p>
+<p>Cappella's <code>mosaic_poll</code> uses Hippo's <code>GET /entities/{type}?updated_after={cursor}&amp;limit=N</code> query (Phase 1 REST gap — cursor pagination). The poll cursor is stored as a <code>CappellaPollCursor</code> Hippo entity (keyed by trigger name). This means:</p>
 <ul>
 <li>Cursor state survives Cappella restarts (it's in Hippo, not in-process memory)</li>
 <li>Multiple Cappella instances polling the same trigger must coordinate — advisory lock on cursor entity update (v0.2 design detail)</li>
@@ -5392,17 +5392,17 @@
 <tbody>
 <tr>
 <td><code>XTR-01</code></td>
-<td><code>schedule</code> trigger fires; emits event; <code>internal_event</code> trigger chains into <code>hippo_poll</code> subscription</td>
+<td><code>schedule</code> trigger fires; emits event; <code>internal_event</code> trigger chains into <code>mosaic_poll</code> subscription</td>
 <td>Chain resolves correctly; no event lost between trigger types</td>
 </tr>
 <tr>
 <td><code>XTR-02</code></td>
-<td><code>webhook</code> fires; <code>internal_event</code> subscriber starts ingest; <code>hippo_poll</code> fires before ingest completes</td>
+<td><code>webhook</code> fires; <code>internal_event</code> subscriber starts ingest; <code>mosaic_poll</code> fires before ingest completes</td>
 <td>Both run independently; no interference; both logged with distinct <code>run_id</code></td>
 </tr>
 <tr>
 <td><code>XTR-03</code></td>
-<td>Two <code>hippo_poll</code> triggers watching same entity type with different filters</td>
+<td>Two <code>mosaic_poll</code> triggers watching same entity type with different filters</td>
 <td>Both fire independently when their respective filters match; no cross-trigger dedup</td>
 </tr>
 <tr>
@@ -5500,7 +5500,7 @@
 <td>FakeExternalSource (HALO pattern)</td>
 </tr>
 <tr>
-<td><code>hippo_poll</code></td>
+<td><code>mosaic_poll</code></td>
 <td>HP-01–07</td>
 <td>HP-STAR-01–04, XTR-03–04</td>
 <td>FakeHippoClient (STARLIMS post-ingest)</td>
@@ -5512,7 +5512,7 @@
 - <code>cappella/tests/test_trigger_manual.py</code> — MAN-* scenarios
 - <code>cappella/tests/test_trigger_internal_event.py</code> — EVT-* scenarios
 - <code>cappella/tests/test_trigger_webhook.py</code> — WH-* scenarios (v0.2)
-- <code>cappella/tests/test_trigger_hippo_poll.py</code> — HP-* scenarios (v0.2)
+- <code>cappella/tests/test_trigger_mosaic_poll.py</code> — HP-* scenarios (v0.2)
 - <code>cappella/tests/test_trigger_cross.py</code> — XTR-* scenarios</p>
 
 

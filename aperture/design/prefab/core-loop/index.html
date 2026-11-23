@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4314,7 +4314,7 @@ concise implementation approach + open questions (tagged (a) supported / (b) Hip
 </ul>
 <h3 id="implementation-approach">Implementation approach<a class="headerlink" href="#implementation-approach" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Collections derive from GraphQL introspection: Hippo's <strong><code>hippoSchema</code></strong> lists exposed entity
+<li>Collections derive from GraphQL introspection: Mosaic's <strong><code>mosaicSchema</code></strong> lists exposed entity
   types (richer than standard <code>__schema</code> — it also gives slot kinds, enum values, relationship
   targets). Generic baseline can fall back to <code>__schema</code>.</li>
 <li><strong>Prefab:</strong> a hand-authored nav list <code>[{type, label, icon, order}]</code>. This is the <strong>Level-1

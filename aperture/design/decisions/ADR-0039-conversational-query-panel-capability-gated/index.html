@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4160,6 +4160,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#note-2026-11-22-the-round-trip-carries-the-readers-columns-aperture89" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Note (2026-11-22): the round trip carries the reader's columns (aperture#89)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4182,7 +4193,7 @@
 <li><strong>Status:</strong> Accepted</li>
 <li><strong>Date:</strong> 2026-09-11 (ratified 2026-09-17; see aperture#60)</li>
 <li><strong>Deciders:</strong> labadorf, design session</li>
-<li><strong>Related:</strong> ADR-0021 (defer in-app chat), ADR-0026 (portal-first MVP), ADR-0029 (capability-gated honest degradation), ADR-0031 (app-shell layout library), ADR-0035 (typed <code>QuerySpec</code>), ADR-0017 (data plane vs control plane); Mosaic <code>converse_query_spec</code> (<code>BU-Neuromics/mosaic#186</code>, shipped PR #199) and the <code>mosaic-demo-small</code> change <code>add-aperture-chat-panel</code></li>
+<li><strong>Related:</strong> ADR-0021 (defer in-app chat), ADR-0026 (portal-first MVP), ADR-0029 (capability-gated honest degradation), ADR-0031 (app-shell layout library), ADR-0035 (typed <code>QuerySpec</code>), ADR-0017 (data plane vs control plane); Mosaic <code>converse_query_spec</code> (<code>datahelix-platform/mosaic#186</code>, shipped PR #199) and the <code>mosaic-demo-small</code> change <code>add-aperture-chat-panel</code></li>
 </ul>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
 <p>Aperture ships a working cross-class query builder (ADR-0035): <code>QueryBuilderView</code> composes a
@@ -4317,6 +4328,24 @@ Aperture itself supplies.</strong></p>
   keeps the resulting <code>QuerySpec</code> and loses the conversation that produced it. Revisit if
   conversations become provenance events in practice.</li>
 </ul>
+<h2 id="note-2026-11-22-the-round-trip-carries-the-readers-columns-aperture89">Note (2026-11-22): the round trip carries the reader's columns (aperture#89)<a class="headerlink" href="#note-2026-11-22-the-round-trip-carries-the-readers-columns-aperture89" title="Permanent link">&para;</a></h2>
+<p>The builder lock above stays: criteria and anchor are still read-only while a conversation owns
+the spec. The result table's columns are not locked. ADR-0041 places them in the query, and a
+reader can still change them under a live conversation. aperture#89 sends them back so a
+refinement turn plans against what the reader chose. The wire <code>query_spec</code> is therefore the
+turn-derived spec with <code>columns</code> taken from the table. It is identical to the derived spec when
+nothing was changed.</p>
+<p>That means the planner can no longer insist on exact equality with what it derives from <code>turns</code>
+(it was the planner, Reel, that enforced it, not Mosaic as written above). Relaxing that check is
+a Reel change, recorded as Amendment 2 to Reel's turn contract (Decision 9,
+<a href="https://github.com/datahelix-platform/reel/pull/26">reel#26</a>).</p>
+<p><strong>Release pairing (corrected 2026-11-23, review of aperture#103).</strong> This note first said an
+unedited draft still matches exactly, so nothing breaks against an older Reel. That is wrong. The
+round trip sends the table's columns whenever the table has any traversal column, including
+columns restored from <code>cols</code> or added with the picker, not only a proposal's. Against a Reel
+without reel#26 (v0.2.0 and earlier), every refinement turn then answers 400. Aperture releases
+carrying aperture#89 (v0.8.0 on) must ship only alongside a Reel release that includes reel#26.
+The README's <em>Compatibility</em> section records the pairing.</p>
 
 
 

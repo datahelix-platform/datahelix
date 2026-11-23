@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -2066,14 +2066,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4698,12 +4698,12 @@
 <tbody>
 <tr>
 <td><strong>Flat-file</strong></td>
-<td><code>hippo ingest</code> CLI + <code>IngestionPipeline</code> SDK</td>
+<td><code>mosaic ingest</code> CLI + <code>IngestionPipeline</code> SDK</td>
 <td>One-off or batch loads from CSV/JSON/JSONL; config data; re-ingestion</td>
 </tr>
 <tr>
 <td><strong>Reference data</strong></td>
-<td><code>hippo reference install</code> CLI + <code>ReferenceLoader</code> plugins</td>
+<td><code>mosaic reference install</code> CLI + <code>ReferenceLoader</code> plugins</td>
 <td>Community-standard ontologies (FMA, Ensembl, GO, etc.)</td>
 </tr>
 <tr>
@@ -4742,22 +4742,22 @@ validation, and provenance recording apply uniformly regardless of ingestion sou
 </table>
 <h4 id="cli">CLI<a class="headerlink" href="#cli" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Ingest a CSV of Sample entities</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>hippo<span class="w"> </span>ingest<span class="w"> </span>Sample<span class="w"> </span>samples.csv
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>mosaic<span class="w"> </span>ingest<span class="w"> </span>Sample<span class="w"> </span>samples.csv
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Ingest from JSONL</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>hippo<span class="w"> </span>ingest<span class="w"> </span>Subject<span class="w"> </span>subjects.jsonl
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>mosaic<span class="w"> </span>ingest<span class="w"> </span>Subject<span class="w"> </span>subjects.jsonl
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Dry run — validate without writing</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>hippo<span class="w"> </span>ingest<span class="w"> </span>Sample<span class="w"> </span>samples.csv<span class="w"> </span>--dry-run
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>mosaic<span class="w"> </span>ingest<span class="w"> </span>Sample<span class="w"> </span>samples.csv<span class="w"> </span>--dry-run
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Supply provenance context</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>hippo<span class="w"> </span>ingest<span class="w"> </span>Sample<span class="w"> </span>samples.csv<span class="w"> </span>--actor<span class="w"> </span><span class="s2">"data-team"</span><span class="w"> </span>--context<span class="w"> </span><span class="s1">'{"notes": "batch load Q4 2024"}'</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>mosaic<span class="w"> </span>ingest<span class="w"> </span>Sample<span class="w"> </span>samples.csv<span class="w"> </span>--actor<span class="w"> </span><span class="s2">"data-team"</span><span class="w"> </span>--context<span class="w"> </span><span class="s1">'{"notes": "batch load Q4 2024"}'</span>
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># Fail on first error (default: continue and report all errors at end)</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>hippo<span class="w"> </span>ingest<span class="w"> </span>Sample<span class="w"> </span>samples.csv<span class="w"> </span>--fail-fast
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>mosaic<span class="w"> </span>ingest<span class="w"> </span>Sample<span class="w"> </span>samples.csv<span class="w"> </span>--fail-fast
 </code></pre></div>
 <h4 id="ingestionpipeline-sdk"><code>IngestionPipeline</code> SDK<a class="headerlink" href="#ingestionpipeline-sdk" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">hippo.core.ingestion</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionPipeline</span><span class="p">,</span> <span class="n">IngestOptions</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">mosaic.core.ingestion</span><span class="w"> </span><span class="kn">import</span> <span class="n">IngestionPipeline</span><span class="p">,</span> <span class="n">IngestOptions</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">IngestionPipeline</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">ingest_file</span><span class="p">(</span>
@@ -4799,42 +4799,42 @@ idempotent re-ingestion.</p>
 </code></pre></div>
 <hr />
 <h3 id="53-reference-data-ingestion">5.3 Reference Data Ingestion<a class="headerlink" href="#53-reference-data-ingestion" title="Permanent link">&para;</a></h3>
-<p>Reference data loaders are distributed as <code>hippo-reference-&lt;name&gt;</code> pip packages. See
+<p>Reference data loaders are distributed as <code>mosaic-reference-&lt;name&gt;</code> pip packages. See
 sec2 §2.14 for the <code>ReferenceLoader</code> ABC and plugin system.</p>
 <h4 id="install-lifecycle">Install lifecycle<a class="headerlink" href="#install-lifecycle" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Install at latest available version</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>hippo<span class="w"> </span>reference<span class="w"> </span>install<span class="w"> </span>fma
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>mosaic<span class="w"> </span>reference<span class="w"> </span>install<span class="w"> </span>fma
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Install at specific version</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>hippo<span class="w"> </span>reference<span class="w"> </span>install<span class="w"> </span>ensembl<span class="w"> </span>--version<span class="w"> </span>GRCh38.112
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>mosaic<span class="w"> </span>reference<span class="w"> </span>install<span class="w"> </span>ensembl<span class="w"> </span>--version<span class="w"> </span>GRCh38.112
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Update to latest</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>hippo<span class="w"> </span>reference<span class="w"> </span>update<span class="w"> </span>go
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>mosaic<span class="w"> </span>reference<span class="w"> </span>update<span class="w"> </span>go
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1"># List all installed loaders and their versions</span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>hippo<span class="w"> </span>reference<span class="w"> </span>list
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>mosaic<span class="w"> </span>reference<span class="w"> </span>list
 </code></pre></div>
 <p><strong>Install steps (automated):</strong>
-1. Resolve loader from <code>hippo.reference_loaders</code> entry points
+1. Resolve loader from <code>mosaic.reference_loaders</code> entry points
 2. Call <code>loader.schema_fragment()</code> — merge entity type definitions into deployed schema
-3. Run <code>hippo migrate</code> automatically (additive changes only; any structural conflict is an
+3. Run <code>mosaic migrate</code> automatically (additive changes only; any structural conflict is an
    error that requires manual resolution before proceeding)
 4. Call <code>loader.load(client, version)</code> — ingest the reference data using the standard
    <code>IngestionPipeline</code> with <code>upsert=True</code>
-5. Record <code>{loader_name: version}</code> in <code>hippo_meta</code> under key <code>reference_versions</code>
+5. Record <code>{loader_name: version}</code> in <code>mosaic_meta</code> under key <code>reference_versions</code>
 6. Write a <code>ReferenceDataInstalled</code> provenance event (see sec6 §6.3)</p>
-<p><strong>Idempotency:</strong> Re-running <code>hippo reference install</code> on an already-installed loader performs
+<p><strong>Idempotency:</strong> Re-running <code>mosaic reference install</code> on an already-installed loader performs
 an upsert — existing reference entities are updated if the ontology data changed in the new
 version, unchanged entities produce no write (and no provenance event). See §5.4.</p>
-<p><strong>Version tracking:</strong> The installed version of each reference loader is stored in <code>hippo_meta</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// hippo_meta key: "reference_versions"</span>
+<p><strong>Version tracking:</strong> The installed version of each reference loader is stored in <code>mosaic_meta</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// mosaic_meta key: "reference_versions"</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">{</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">"hippo-reference-fma"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.3"</span><span class="p">,</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">"hippo-reference-ensembl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GRCh38.109"</span><span class="p">,</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">"hippo-reference-go"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2024-01-01"</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">"mosaic-reference-fma"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.3"</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">"mosaic-reference-ensembl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GRCh38.109"</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">"mosaic-reference-go"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2024-01-01"</span>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">}</span>
 </code></pre></div>
-<p><code>hippo reference list</code> reads this and compares against available versions from each loader.</p>
+<p><code>mosaic reference list</code> reads this and compares against available versions from each loader.</p>
 <hr />
 <h3 id="54-upsert-strategy-and-idempotency">5.4 Upsert Strategy and Idempotency<a class="headerlink" href="#54-upsert-strategy-and-idempotency" title="Permanent link">&para;</a></h3>
 <p>All ingestion in Hippo defaults to <strong>upsert-by-identity</strong> — writing the same data twice
@@ -4874,8 +4874,8 @@ writes.</p>
 transaction, rolling back all writes if any record fails. Deferred from v0.1.</p>
 <blockquote>
 <p><strong>Batch unit-of-work (issue #84).</strong> The flat-file <code>--atomic</code> idea generalizes to an SDK-level
-<strong>batch unit-of-work</strong>: <code>HippoClient.validate_batch()</code> (whole-set dry-run validation, no writes)
-and <code>HippoClient.batch_put()</code> (atomic multi-entity commit via the existing
+<strong>batch unit-of-work</strong>: <code>MosaicClient.validate_batch()</code> (whole-set dry-run validation, no writes)
+and <code>MosaicClient.batch_put()</code> (atomic multi-entity commit via the existing
 <code>staged_transaction()</code>, with intra-batch reference resolution). Exposed over the transports as
 REST <code>POST /ingest/validate</code> + <code>POST /ingest/batch</code> and GraphQL <code>validateBatch</code> / <code>ingestBatch</code>.
 Driven by the Aperture write loop (<code>aperture/design/portal-requirements.md</code> X4). See

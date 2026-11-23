@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4207,6 +4207,9 @@ of names, two arrival times.</p>
 <li><strong>Server-side templating of <code>index.html</code>:</strong> rejected — same effect as <code>config.js</code> but
   mutates the HTML shell, which is harder to reason about with hashed-asset caching.</li>
 </ul>
+<blockquote>
+<p><strong>Note (2026-11-20, platform <a href="../../../platform/design/decisions/ADR-0007-retire-hippo-data-contract-identifiers.md">ADR-0007</a>):</strong> The env vars named here are renamed <code>VITE_HIPPO_GRAPHQL_URL</code> / <code>VITE_HIPPO_CONTROL_PLANE_URL</code> → <code>VITE_GRAPHQL_URL</code> / <code>VITE_CONTROL_PLANE_URL</code> (Q5; aperture#35). The old names are not read. The decision itself is unchanged.</p>
+</blockquote>
 
 
 

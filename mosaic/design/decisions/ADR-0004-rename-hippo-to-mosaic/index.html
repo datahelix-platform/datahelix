@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4179,7 +4179,7 @@
 
 <h1 id="adr-0004-rename-the-hippo-component-to-mosaic">ADR-0004: Rename the Hippo component to Mosaic<a class="headerlink" href="#adr-0004-rename-the-hippo-component-to-mosaic" title="Permanent link">&para;</a></h1>
 <ul>
-<li><strong>Status:</strong> Accepted</li>
+<li><strong>Status:</strong> Accepted (deprecation window ended by <a href="../ADR-0015-end-adr-0004-deprecation-window/">ADR-0015</a>, 2026-11-20)</li>
 <li><strong>Date:</strong> 2026-07-08</li>
 <li><strong>Deciders:</strong> labadorf, design session (packaging &amp; naming, 2026-07-08)</li>
 <li><strong>Related:</strong> <strong>platform ADR-0002</strong> (the <code>datahelix</code> metapackage + prefixed dists — removes the PyPI-saturation forcing function this rename would otherwise depend on); platform <code>sec2_components.md</code>; <strong>Canon</strong> and <strong>Cappella</strong> as consumers of the <code>hippo.*</code> entry-point namespace; this repo's <code>design/INDEX.md</code> Key Decisions Log</li>
@@ -4201,7 +4201,7 @@
 <li><strong>Distribution:</strong> publish as <code>datahelix-mosaic</code> (per ADR-0002).</li>
 <li><strong>Import package &amp; API:</strong> <code>hippo</code> → <code>mosaic</code>; <code>HippoClient</code> → <code>MosaicClient</code>; CLI <code>hippo</code> → <code>mosaic</code>.</li>
 <li><strong>Entry-point namespace (the load-bearing part):</strong> the <code>hippo.storage_adapters</code>, <code>hippo.write_validators</code>, <code>hippo.reference_loaders</code>, and <code>hippo.schema_packages</code> group names → <code>mosaic.*</code>. These are <strong>cross-package string contracts</strong> — e.g. Canon registers <code>[project.entry-points."hippo.reference_loaders"]</code> — and the <code>hippo-reference-&lt;name&gt;</code> / <code>hippo-adapter-&lt;name&gt;</code> plugin-naming conventions become <code>mosaic-reference-&lt;name&gt;</code> / <code>mosaic-adapter-&lt;name&gt;</code>.</li>
-<li><strong>Repository:</strong> <code>BU-Neuromics/hippo</code> → <code>BU-Neuromics/mosaic</code>, with the datahelix submodule pointer updated.</li>
+<li><strong>Repository:</strong> <code>BU-Neuromics/hippo</code> → <code>datahelix-platform/mosaic</code>, with the datahelix submodule pointer updated.</li>
 <li><strong>Docs/specs:</strong> the component name in prose across platform and component docs.</li>
 </ul>
 <p>A <strong>compatibility strategy</strong> (import shim, CLI alias, and dual-registered entry-point groups with a deprecation window) will be defined so consumers migrate without a flag-day break.</p>

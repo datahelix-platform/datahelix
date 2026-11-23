@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4535,12 +4535,12 @@ decisions live in each component's own <code>design/decisions/</code>.</p>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0004-ide-recipe-live-development-loop/">0004</a></td>
-<td>The <code>ide</code> recipe develops <strong>Aperture and Mosaic live behind one nginx gateway</strong> — new <code>dev-aperture</code> profile proxies <code>/</code> to a Vite dev server (HMR, websocket proxied by the gateway) alongside the existing <code>dev-mosaic</code> source profile; relative <code>VITE_HIPPO_GRAPHQL_URL=/graphql</code> keeps dev on the same same-origin seam as <code>solo</code>. <strong>Amends</strong> <a href="../../../proposals/deployment-recipes.md"><code>deployment-recipes.md</code></a> decision 1.9, which specified Aperture as a published image. Stays exempt from the ADR-0001 deploy gate.</td>
+<td>The <code>ide</code> recipe develops <strong>Aperture and Mosaic live behind one nginx gateway</strong> — new <code>dev-aperture</code> profile proxies <code>/</code> to a Vite dev server (HMR, websocket proxied by the gateway) alongside the existing <code>dev-mosaic</code> source profile; relative <code>VITE_HIPPO_GRAPHQL_URL=/graphql</code> (now <code>VITE_GRAPHQL_URL</code>, ADR-0007) keeps dev on the same same-origin seam as <code>solo</code>. <strong>Amends</strong> <a href="../../../proposals/deployment-recipes.md"><code>deployment-recipes.md</code></a> decision 1.9, which specified Aperture as a published image. Stays exempt from the ADR-0001 deploy gate.</td>
 <td>✅ Accepted</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0006-authenticating-proxy-in-recipes/">0006</a></td>
-<td><strong>Recipes authenticate at an OIDC reverse proxy</strong>, not in a component — <code>AUTH_MODE=none\|htpasswd\|oidc</code> on one digest-pinned <code>oauth2-proxy</code> in the recipe's nginx position; nginx <code>auth_request</code> gates every route, no token reaches the browser. Implements <code>sec6</code> §6.3 steps (1)+(4) only — the PDP stays Bridge's. Injects <code>X-Hippo-Actor</code> so provenance names the real user. <code>htpasswd</code> and <code>oidc</code> differ only in credential source, so PIV/CAC is a flag change and everything else is exercised before VA IAM answers.</td>
+<td><strong>Recipes authenticate at an OIDC reverse proxy</strong>, not in a component — <code>AUTH_MODE=none\|htpasswd\|oidc</code> on one digest-pinned <code>oauth2-proxy</code> in the recipe's nginx position; nginx <code>auth_request</code> gates every route, no token reaches the browser. Implements <code>sec6</code> §6.3 steps (1)+(4) only — the PDP stays Bridge's. Injects <code>X-Hippo-Actor</code> (now <code>X-DataHelix-Actor</code>, ADR-0007) so provenance names the real user. <code>htpasswd</code> and <code>oidc</code> differ only in credential source, so PIV/CAC is a flag change and everything else is exercised before VA IAM answers.</td>
 <td>✅ Accepted</td>
 </tr>
 <tr>
@@ -5026,12 +5026,12 @@ For rules requiring arbitrary Mosaic queries, multi-step logic, external API cal
 </tr>
 <tr>
 <td>Trigger sources (MVP)</td>
-<td><code>webhook</code>, <code>schedule</code>, <code>hippo_poll</code>, <code>manual</code>, <code>internal_event</code></td>
+<td><code>webhook</code>, <code>schedule</code>, <code>mosaic_poll</code>, <code>manual</code>, <code>internal_event</code></td>
 <td>Covers all real integration patterns. Internal events enable action chaining without tight coupling.</td>
 </tr>
 <tr>
 <td>Reactive Mosaic triggers (MVP)</td>
-<td>Polling (<code>hippo_poll</code>) — query <code>updated_at &gt; last_watermark</code> at configurable interval</td>
+<td>Polling (<code>mosaic_poll</code>) — query <code>updated_at &gt; last_watermark</code> at configurable interval</td>
 <td>Sufficient for MVP. Mosaic event hooks deferred. Polling works because Cappella drives most Mosaic writes in normal operation; admin changes are infrequent and the actor can trigger manually.</td>
 </tr>
 <tr>
@@ -5099,7 +5099,7 @@ For rules requiring arbitrary Mosaic queries, multi-step logic, external API cal
 <a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a><span class="w">  </span><span class="c1"># Mosaic poll: reacts to entities created/updated outside Cappella</span>
 <a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin_sample_qc</span>
 <a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a><span class="w">    </span><span class="nt">source</span><span class="p">:</span>
-<a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hippo_poll</span>
+<a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mosaic_poll</span>
 <a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a><span class="w">      </span><span class="nt">entity_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sample</span>
 <a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a><span class="w">      </span><span class="nt">on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">create</span>
 <a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60s</span>
@@ -5184,7 +5184,7 @@ For rules requiring arbitrary Mosaic queries, multi-step logic, external API cal
 </tr>
 <tr>
 <td>Trigger sources</td>
-<td><code>webhook</code>, <code>schedule</code>, <code>hippo_poll</code>, <code>manual</code>, <code>internal_event</code></td>
+<td><code>webhook</code>, <code>schedule</code>, <code>mosaic_poll</code>, <code>manual</code>, <code>internal_event</code></td>
 <td>Covers all integration patterns from MVP batch syncs through to future live integrations.</td>
 </tr>
 <tr>
@@ -5261,7 +5261,7 @@ For rules requiring arbitrary Mosaic queries, multi-step logic, external API cal
 <a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="w">  </span><span class="c1"># Mosaic poll (edge case: reacting to non-Cappella writes)</span>
 <a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin_sample_qc</span>
 <a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="w">    </span><span class="nt">source</span><span class="p">:</span>
-<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hippo_poll</span>
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mosaic_poll</span>
 <a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="w">      </span><span class="nt">entity_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sample</span>
 <a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a><span class="w">      </span><span class="nt">on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">create</span>
 <a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60s</span>
@@ -5405,7 +5405,7 @@ For rules requiring arbitrary Mosaic queries, multi-step logic, external API cal
 <tr>
 <td>Reference data versioning</td>
 <td>Low</td>
-<td>Resolved at the loader level — each loader version pins a reference ontology release. <code>mosaic reference update</code> diffs schema and data. Internal tracking of installed loader name + version in <code>hippo_meta</code> table (sec3b). Detail TBD in Mosaic sec5 (Ingestion).</td>
+<td>Resolved at the loader level — each loader version pins a reference ontology release. <code>mosaic reference update</code> diffs schema and data. Internal tracking of installed loader name + version in <code>mosaic_meta</code> table (sec3b). Detail TBD in Mosaic sec5 (Ingestion).</td>
 </tr>
 <tr>
 <td>Cappella trigger model</td>
@@ -5511,7 +5511,7 @@ For rules requiring arbitrary Mosaic queries, multi-step logic, external API cal
 </tr>
 <tr>
 <td><code>mosaic/design/sec5_ingestion.md</code></td>
-<td><em>(not started)</em> Include <code>mosaic reference install/update/list</code> CLI commands; <code>ReferenceLoader</code> lifecycle; reference loader version tracking in <code>hippo_meta</code></td>
+<td><em>(not started)</em> Include <code>mosaic reference install/update/list</code> CLI commands; <code>ReferenceLoader</code> lifecycle; reference loader version tracking in <code>mosaic_meta</code></td>
 <td>Reference loader plugin system decision</td>
 </tr>
 <tr>
@@ -5541,7 +5541,7 @@ For rules requiring arbitrary Mosaic queries, multi-step logic, external API cal
 </tr>
 <tr>
 <td><code>cappella/design/sec2_architecture.md</code></td>
-<td><em>(not started)</em> Trigger engine architecture: webhook server, cron scheduler, hippo_poll loop, internal event bus, action dispatcher</td>
+<td><em>(not started)</em> Trigger engine architecture: webhook server, cron scheduler, mosaic_poll loop, internal event bus, action dispatcher</td>
 <td>Trigger model decisions</td>
 </tr>
 <tr>
@@ -5559,7 +5559,7 @@ For rules requiring arbitrary Mosaic queries, multi-step logic, external API cal
 <hr />
 <h2 id="design-session-notes">Design Session Notes<a class="headerlink" href="#design-session-notes" title="Permanent link">&para;</a></h2>
 <p><strong>2026-03-13</strong> — Initial platform architecture session (Adam + Stanley).<br />
-Topics covered: Cappella scope and conductor metaphor, adapter boundary between Mosaic and Cappella, field mapping ownership, reference/config/operational data category distinction, data loading tiers, reference loader plugin system (MVP scope), fuzzy search abstraction, gene/anatomy canonical identifiers, Cappella-independence principle, unified validation architecture (3-layer: schema field validators / config-driven CEL validators with expand paths / Python plugin validators), CEL expression language (over DSL), expand path syntax with <code>[]</code> list traversal, entity graph expansion design (explicit paths over lazy evaluation), built-in validator presets as ergonomic shortcuts, polymorphic schema inheritance (<code>base:</code> = is-a), subtype-aware <code>entity_types</code> matching in validators, Cappella trigger model (unified source+action format, internal events for chaining, query-fresh-at-invocation, hippo_poll as edge case), idempotency MVP (ExternalID upsert, live integration deferred), Cappella operational audit (structured logs MVP, SyncRun entities future).</p>
+Topics covered: Cappella scope and conductor metaphor, adapter boundary between Mosaic and Cappella, field mapping ownership, reference/config/operational data category distinction, data loading tiers, reference loader plugin system (MVP scope), fuzzy search abstraction, gene/anatomy canonical identifiers, Cappella-independence principle, unified validation architecture (3-layer: schema field validators / config-driven CEL validators with expand paths / Python plugin validators), CEL expression language (over DSL), expand path syntax with <code>[]</code> list traversal, entity graph expansion design (explicit paths over lazy evaluation), built-in validator presets as ergonomic shortcuts, polymorphic schema inheritance (<code>base:</code> = is-a), subtype-aware <code>entity_types</code> matching in validators, Cappella trigger model (unified source+action format, internal events for chaining, query-fresh-at-invocation, mosaic_poll as edge case), idempotency MVP (ExternalID upsert, live integration deferred), Cappella operational audit (structured logs MVP, SyncRun entities future).</p>
 
 
 

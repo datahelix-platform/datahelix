@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1764,14 +1764,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -2686,10 +2686,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decision-queue-open-resolve-in-dependency-order" class="md-nav__link">
+  <a href="#decision-queue" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decision Queue (open — resolve in dependency order)
+        Decision Queue
       
     </span>
   </a>
@@ -4308,10 +4308,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decision-queue-open-resolve-in-dependency-order" class="md-nav__link">
+  <a href="#decision-queue" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decision Queue (open — resolve in dependency order)
+        Decision Queue
       
     </span>
   </a>
@@ -4490,19 +4490,19 @@ point: status, how to run <code>web/</code>, the roadmap (as GitHub issues), and
 <td><code>portal-vision-handoff.md</code></td>
 <td>Portal vision</td>
 <td>🟢 Historical vision / context</td>
-<td>The original config-driven portal brainstorm: problem statement, settled decisions (§2), open questions (§9), invariants checklist (§10). Read for narrative context; <strong>cite ADRs for decisions</strong> — §2 is backfilled as ADR-0002–0009, §9 as Proposed ADR-0010–0013.</td>
+<td>The original config-driven portal brainstorm: problem statement, settled decisions (§2), open questions (§9), invariants checklist (§10). Read for narrative context; <strong>cite ADRs for decisions</strong> — §2 is backfilled as ADR-0002–0009, §9 as ADR-0010–0013 (decided 2026-11-10: 0010/0011 deferred from MVP, 0012 accepted as built and amended, 0013 superseded).</td>
 </tr>
 <tr>
 <td><code>portal-open-questions.md</code></td>
 <td>Portal §9 working notes</td>
 <td>🟡 Working notes</td>
-<td>Proposed resolutions to the §9 open questions, carried into the corresponding Proposed ADRs as their recommended Decision + rationale.</td>
+<td>Proposed resolutions to the §9 open questions, carried into ADR-0010–0013 as their recommended Decision + rationale. <strong>Historical:</strong> all four were decided 2026-11-10 (see the Decision Queue), so this is no longer an open queue.</td>
 </tr>
 <tr>
 <td><code>cross-class-query.md</code></td>
 <td>Cross-class query &amp; heterogeneous results exploration</td>
 <td>🟠 Working</td>
-<td>Research + candidate design for criteria queries spanning classes, joined anchor-grain table/CSV, and graph exploration; co-designed with the Mosaic query surface (Mosaic ADR-0006/0007). Distilled into ADR-0035 (Accepted) and Proposed ADR-0036/0037.</td>
+<td>Research + candidate design for criteria queries spanning classes, joined anchor-grain table/CSV, and graph exploration; co-designed with the Mosaic query surface (Mosaic ADR-0006/0007). Distilled into ADR-0035, ADR-0036 (forward plan) and ADR-0037 (as built), all Accepted.</td>
 </tr>
 </tbody>
 </table>
@@ -4582,25 +4582,25 @@ a status flip to <code>Accepted</code>, not a new document. Decisions are never 
 <tr>
 <td><a href="../decisions/ADR-0010-view-description-vocabulary/">0010</a></td>
 <td>View vocabulary is a typed noun-catalog <strong>(keystone)</strong></td>
-<td>🟡 Proposed</td>
+<td>⛔ Deferred (MVP) — to be superseded by the platform View Contract ADR (2026-11-10)</td>
 <td>handoff §9.2 (Q2)</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0011-component-execution-runtime/">0011</a></td>
 <td>Component runtime/language: client-side Web Worker + Pyodide escape hatch</td>
-<td>🟡 Proposed</td>
+<td>⛔ Deferred (MVP) (2026-11-10)</td>
 <td>handoff §9.1 (Q1) + tech</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0012-config-layering/">0012</a></td>
-<td>Layered config → one validated instance; layer-attributed resolution</td>
-<td>🟡 Proposed</td>
+<td>Config layering. <strong>Amended at ratification to the shipped rule:</strong> per-kind whole-document control-plane override with env fallback; owner-scoped user state (ADR-0032); hand-written TS parser validation. Layer attribution + resolved-output validation deferred with the agent loop</td>
+<td>✅ Accepted (as built, amended — 2026-11-10)</td>
 <td>handoff §9.4 (Q4)</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0013-agent-loop-local-vs-remote/">0013</a></td>
-<td>One API-based agent loop; component source is the only file artifact</td>
-<td>⛔ Deferred (MVP)</td>
+<td>One API-based agent loop; component source is the only file artifact. Surviving principle: <em>config travels by API, component code travels by version control</em></td>
+<td>⤳ Superseded by <a href="https://github.com/datahelix-platform/mosaic/blob/main/design/decisions/ADR-0009-mcp-boundary-capability-manifest-queryspec.md">Mosaic ADR-0009</a>/<a href="https://github.com/datahelix-platform/mosaic/blob/main/design/decisions/ADR-0010-mcp-outbound-delegation-to-a-planning-service.md">0010</a> + ADR-0039 (2026-11-10; Aperture hosts no agent loop and no API server)</td>
 <td>handoff §9.3 (Q3)</td>
 </tr>
 <tr>
@@ -4611,8 +4611,8 @@ a status flip to <code>Accepted</code>, not a new document. Decisions are never 
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0015-composability-and-cross-links/">0015</a></td>
-<td>Composability + cross-links (hrefs)</td>
-<td>🟡 Proposed</td>
+<td>Composability + cross-links (hrefs). <strong>Split 2026-11-10:</strong> cross-links accepted as built (<code>openIn</code> / <code>pivotTo</code> / <code>xrefUrl</code>; external tier unwired, <a href="https://github.com/datahelix-platform/aperture/issues/96">#96</a>); composition deferred with ADR-0010 (shell layout settled by ADR-0031)</td>
+<td>✅ Accepted in part / ⛔ Deferred in part (2026-11-10)</td>
 <td>raised 2026-06-13</td>
 </tr>
 <tr>
@@ -4654,43 +4654,43 @@ a status flip to <code>Accepted</code>, not a new document. Decisions are never 
 <tr>
 <td><a href="../decisions/ADR-0022-data-story-is-an-instruction-path/">0022</a></td>
 <td>A data story is an instruction path → typed subgraph states + artifacts</td>
-<td>⤳ Superseded by <a href="https://github.com/BU-Neuromics/reel/blob/main/design/decisions/ADR-0001-data-story-is-an-instruction-path.md">Reel ADR-0001</a> (2026-06-22 split)</td>
+<td>⤳ Superseded by <a href="https://github.com/datahelix-platform/reel/blob/main/design/decisions/ADR-0001-data-story-is-an-instruction-path.md">Reel ADR-0001</a> (2026-06-22 split)</td>
 <td>instruction-path-model.md (D-1)</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0023-data-story-reproducibility-as-of-watermark/">0023</a></td>
 <td>Reproducibility: one as-of watermark per story-version; "pull new data" = recorded watermark-advance</td>
-<td>⤳ Superseded by <a href="https://github.com/BU-Neuromics/reel/blob/main/design/decisions/ADR-0002-data-story-reproducibility-as-of-watermark.md">Reel ADR-0002</a> (2026-06-22 split)</td>
+<td>⤳ Superseded by <a href="https://github.com/datahelix-platform/reel/blob/main/design/decisions/ADR-0002-data-story-reproducibility-as-of-watermark.md">Reel ADR-0002</a> (2026-06-22 split)</td>
 <td>instruction-path-model.md (D-2)</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0024-instruction-path-linear-first-general-schema/">0024</a></td>
 <td>Topology: general <code>parents</code>-list schema now, linear-only validator in v1</td>
-<td>⤳ Superseded by <a href="https://github.com/BU-Neuromics/reel/blob/main/design/decisions/ADR-0003-instruction-path-linear-first-general-schema.md">Reel ADR-0003</a> (2026-06-22 split)</td>
+<td>⤳ Superseded by <a href="https://github.com/datahelix-platform/reel/blob/main/design/decisions/ADR-0003-instruction-path-linear-first-general-schema.md">Reel ADR-0003</a> (2026-06-22 split)</td>
 <td>instruction-path-model.md (D-3)</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0025-mid-path-edit-recompute-with-suspend/">0025</a></td>
 <td>Mid-path edits recompute downstream + suspend-on-invalid (not discard)</td>
-<td>⤳ Superseded by <a href="https://github.com/BU-Neuromics/reel/blob/main/design/decisions/ADR-0004-mid-path-edit-recompute-with-suspend.md">Reel ADR-0004</a> (2026-06-22 split)</td>
+<td>⤳ Superseded by <a href="https://github.com/datahelix-platform/reel/blob/main/design/decisions/ADR-0004-mid-path-edit-recompute-with-suspend.md">Reel ADR-0004</a> (2026-06-22 split)</td>
 <td>instruction-path-model.md (D-5)</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0026-headless-core-thin-shell/">0026</a></td>
 <td>Aperture is a headless interaction core + a thin, replaceable shell (<strong>number later reused</strong> by the portal-first-MVP ADR below; cite <strong>Reel ADR-0005</strong> for this decision)</td>
-<td>⤳ Superseded by <a href="https://github.com/BU-Neuromics/reel/blob/main/design/decisions/ADR-0005-headless-core-thin-shell.md">Reel ADR-0005</a> (2026-06-22 split)</td>
+<td>⤳ Superseded by <a href="https://github.com/datahelix-platform/reel/blob/main/design/decisions/ADR-0005-headless-core-thin-shell.md">Reel ADR-0005</a> (2026-06-22 split)</td>
 <td>vision.md reframe; ADR-0014</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0026-portal-first-mvp-defer-agentic-surfaces/">0026</a></td>
-<td>Portal-first MVP; defer agentic, agent-assist &amp; schema-editing surfaces</td>
-<td>✅ Accepted (number <strong>reused</strong> — see the superseded 0026 row above)</td>
+<td>Portal-first MVP; defer agentic, agent-assist &amp; schema-editing surfaces. <strong>Amended 2026-11-10:</strong> the ADR-0010/0011 component substrate is deferred too (Tier 1 shipped without it, ADR-0033)</td>
+<td>✅ Accepted (amended — substrate deferred; number <strong>reused</strong> — see the superseded 0026 row above)</td>
 <td>portal-requirements L1/L13/L14</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0027-read-and-write-portal/">0027</a></td>
-<td>Read <em>and</em> write portal; v1 write boundary = Tier 0 forms + one Tier 1 workflow</td>
-<td>✅ Accepted</td>
+<td>Read <em>and</em> write portal; v1 write boundary = Tier 0 forms + one Tier 1 workflow. <strong>Amended 2026-11-10:</strong> Tier 1 did not need the ADR-0010/0011 substrate</td>
+<td>✅ Accepted (amended — substrate note)</td>
 <td>portal-requirements L3/L4</td>
 </tr>
 <tr>
@@ -4743,14 +4743,14 @@ a status flip to <code>Accepted</code>, not a new document. Decisions are never 
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0036-global-search-heterogeneous-fanout/">0036</a></td>
-<td>Global search is a heterogeneous fan-out surface (server <code>searchAll</code> → client fan-out degradation)</td>
-<td>🟡 Proposed</td>
+<td>Global search is a heterogeneous fan-out surface. <strong>Amended at ratification:</strong> Mosaic <code>searchAll</code> shipped in v0.13.0, so the server tier leads and capped client fan-out is the fallback</td>
+<td>✅ Accepted (forward plan — not yet built; 2026-11-10)</td>
 <td><code>cross-class-query.md</code> §6(c)/§7 M4; mosaic#158</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0037-graph-view-primitive/">0037</a></td>
 <td>Graph exploration view — Cytoscape; <code>neighbors</code>-fed with an honest client one-hop fallback; catalog promotion after ADR-0010</td>
-<td>🟡 Proposed</td>
+<td>✅ Accepted (as built — both tiers; server <code>neighbors</code> tier added by <a href="https://github.com/datahelix-platform/aperture/issues/95">#95</a>; 2026-11-12)</td>
 <td><code>cross-class-query.md</code> §8; mosaic#158</td>
 </tr>
 <tr>
@@ -4761,29 +4761,47 @@ a status flip to <code>Accepted</code>, not a new document. Decisions are never 
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0039-conversational-query-panel-capability-gated/">0039</a></td>
-<td>Conversational query panel — additive, gated on an introspected <code>converseQuerySpec</code>; Aperture hosts no agent loop, so ADR-0021/0026 stand unreversed</td>
+<td>Conversational query panel — additive, gated on an introspected <code>converseQuerySpec</code>; Aperture hosts no agent loop, so ADR-0021/0026 stand unreversed. <strong>Note 2026-11-22 (#89):</strong> the round trip carries the table's columns, which needs Reel to accept an edited draft (reel#26, turn contract Amendment 2). <strong>Corrected 2026-11-23:</strong> v0.8.0 must ship only with a Reel release that includes reel#26, because any traversal column in the table makes every refinement turn 400 against an older Reel</td>
 <td>✅ Accepted</td>
 <td>2026-09-11 (ratified 2026-09-17, aperture#60); Mosaic <code>converse_query_spec</code> (mosaic#186, PR #199); <code>mosaic-demo-small</code> <code>add-aperture-chat-panel</code></td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0040-visual-system-type-colour-and-chrome/">0040</a></td>
 <td>Visual system: colour carries type identity app-wide (one palette, one hash); chrome is deep ink and distinct from light content surfaces; depth/motion systemic in tokens</td>
-<td>🟡 Proposed</td>
+<td>✅ Accepted (as built; 2026-11-10)</td>
 <td>2026-09-11; promotes ADR-0037's graph palette out of the canvas; no new deps (ADR-0030)</td>
 </tr>
 <tr>
 <td><a href="../decisions/ADR-0041-referenced-class-slots-projection-vs-presentation/">0041</a></td>
-<td>Referenced-class values in the result table are <strong>two</strong> decisions, separated by “does changing it change the row set?”: traversal + grain are query semantics (destined for <code>QuerySpec.columns</code>, server-compilable); visibility/order is view state. <strong>Corrected 2026-09-25:</strong> the split is currently semantic — one <code>PathColumn[]</code> in component state carries both; the artifacts separate when either half first needs to persist. Forward to-one/to-many ship client-side now; reverse gates on a declared <code>inverse:</code> slot</td>
-<td>🟡 Proposed</td>
-<td>2026-09-22; builds the <code>columns</code> field ADR-0035 reserved; Mosaic ADR-0011 verified merged (mosaic#204) — reverse traversal is a schema-authoring act, not a blocker; certification fixture v1.0.0 cannot test explode; issue #65, umbrella datahelix#93</td>
+<td>Referenced-class values in the result table are <strong>two</strong> decisions, separated by “does changing it change the row set?”: traversal + grain are query semantics (destined for <code>QuerySpec.columns</code>, server-compilable); visibility/order is view state. <strong>Corrected 2026-09-25:</strong> the split is currently semantic — one <code>PathColumn[]</code> in component state carries both; the artifacts separate when either half first needs to persist. Forward to-one/to-many ship client-side now; reverse gates on a declared <code>inverse:</code> slot. <strong>Note 2026-11-22 (#89):</strong> a proposal's slot-spelled <code>columns</code> seed the result table and ride the conversational round trip; execution stays client-side</td>
+<td>✅ Accepted</td>
+<td>2026-09-22 (ratified 2026-10-02, retroactively — shipped in #70 / v0.6.0 before approval); builds the <code>columns</code> field ADR-0035 reserved; Mosaic ADR-0011 now Accepted and carried by v0.14.0 — reverse traversal is a schema-authoring act, not a blocker; certification fixture <strong>v1.1.0</strong> tests explode and reverse (<code>aperture-0.6.0+mosaic-0.14.0</code> passing); sub-questions resolved at ratification except column URL persistence (#73); issue #65, umbrella datahelix#93</td>
+</tr>
+<tr>
+<td><a href="../decisions/ADR-0042-families-are-read-only-collections/">0042</a></td>
+<td>A <strong>family</strong> (abstract class → GraphQL interface, Mosaic ADR-0014) is a read-only collection derived from standard introspection (<code>possibleTypes</code>): shared fields only, kind-only fields as filters, a synthetic <strong>Kind</strong> column, rows open their <strong>concrete kind's</strong> record page (fallback: the family's own); nav lists it flat with a "family" marker, <strong>interim</strong> pending the class-browser page (<a href="https://github.com/datahelix-platform/aperture/issues/104">#104</a>). <strong>Amended 2026-11-23 (review):</strong> no lifecycle actions on a family, and lifecycle mutation names matched whole (mosaic#289); kind-only fields are filter fields; references into a <code>mosaic_anchor: false</code> family still open the kind's page; kind-only facets/sorting are a follow-up (<a href="https://github.com/datahelix-platform/aperture/issues/106">#106</a>)</td>
+<td>✅ Accepted</td>
+<td>2026-11-23 (labadorf); verified on live mosaic v0.16.0; fixes aperture#103's family-range path drop; v0.8.0</td>
 </tr>
 </tbody>
 </table>
-<h2 id="decision-queue-open-resolve-in-dependency-order">Decision Queue (open — resolve in dependency order)<a class="headerlink" href="#decision-queue-open-resolve-in-dependency-order" title="Permanent link">&para;</a></h2>
-<p>Per <code>portal-open-questions.md</code>, resolve <strong>ADR-0010 → 0011 → 0012 → 0013</strong>; ADR-0014 follows
-0011 (the runtime/Pyodide weight changes the SSR-vs-SPA tradeoff), and ADR-0015 follows
-0010/0014. ADR-0010 (the typed view vocabulary) is what the platform <strong>View Contract</strong>
-(<code>datahelix:platform/design/view-contract.md</code>) now absorbs as a shared rendering standard.</p>
+<h2 id="decision-queue">Decision Queue<a class="headerlink" href="#decision-queue" title="Permanent link">&para;</a></h2>
+<p><strong>Empty as of the 2026-11-10 decision pass.</strong> The old chain (<em>resolve ADR-0010 → 0011 → 0012 →
+0013</em>, with 0014 after 0011 and 0015 after 0010/0014) has been resolved as follows:</p>
+<ul>
+<li><strong>ADR-0010 / 0011</strong> are ⛔ Deferred from MVP (ADR-0026). The MVP shipped without the component
+  substrate (Tier 1 runs on ADR-0033's reducer engine). ADR-0010 is to be <strong>superseded by the
+  platform View Contract ADR</strong> once <code>datahelix:platform/design/view-contract.md</code> is ratified, and
+  ADR-0011 waits on that successor.</li>
+<li><strong>ADR-0012</strong> is ✅ Accepted as built, amended to the shipped per-kind whole-document override.
+  Its layer attribution and resolved-output validation are deferred with the agent loop.</li>
+<li><strong>ADR-0013</strong> is ⤳ Superseded by Mosaic ADR-0009/0010 + ADR-0039 (no Aperture agent loop and no
+  Aperture API server).</li>
+<li><strong>ADR-0014</strong> was ratified 2026-06-30 (SPA).</li>
+<li><strong>ADR-0015</strong> is split: cross-links ✅ accepted as built, composition ⛔ deferred with ADR-0010.</li>
+</ul>
+<p>The re-entry point for the deferred view-substrate work is the platform <strong>View Contract</strong>, not
+this queue.</p>
 <blockquote>
 <p><strong>Relocated to Reel (2026-06-22 split).</strong> The agentic <strong>keystone probe</strong> — <em>"can an LLM drive a
 typed declarative artifact through a validator to a correct change?"</em> — and its survival-curve
@@ -4798,7 +4816,7 @@ documented limits: offset-only pagination, equality filters only (no CEL over Gr
 multivalued slots don't persist in the v0.1 SQLite adapter (resolved lists return <code>[]</code>),
 <code>isAvailable</code> always <code>true</code> on reads, and no schema-versioning of the GraphQL surface
 (additive-only tolerance). Internal cross-links come from resolved relationship fields;
-external hrefs from <code>ExternalReference</code> + <code>hippo_external_xref</code> reverse lookup (issue #48).</p>
+external hrefs from <code>ExternalReference</code> + <code>mosaic_external_xref</code> reverse lookup (issue #48).</p>
 <p>The kept <code>src/aperture/backends/</code> protocol has <code>MosaicSdkBackend</code> (in-process) and
 <code>MosaicRestBackend</code> (REST); a <strong>GraphQL backend is not yet implemented</strong> and is the natural
 next code artifact once the runtime/architecture ADRs settle.</p>

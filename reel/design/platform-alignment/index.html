@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1764,14 +1764,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4331,13 +4331,13 @@ Log in <a href="../INDEX/"><code>INDEX.md</code></a>.</p>
 <tbody>
 <tr>
 <td><strong>BASS</strong> platform; <code>drylims</code> integration repo</td>
-<td><strong>DataHelix</strong>; <code>BU-Neuromics/datahelix</code></td>
+<td><strong>DataHelix</strong>; <code>datahelix-platform/datahelix</code></td>
 <td>DataHelix rebrand 2026-07-07 (datahelix PR #43)</td>
 </tr>
 <tr>
 <td><strong>Hippo</strong> (graph runtime)</td>
-<td><strong>Mosaic</strong> — distributed as <code>datahelix-mosaic</code>, imported as <code>mosaic</code>. Data-contract identifiers (<code>hippoSchema</code>, <code>hippo_core</code>, <code>hippo_*</code> annotations, <code>X-Hippo-Actor</code>) deliberately unchanged.</td>
-<td>Mosaic ADR-0004</td>
+<td><strong>Mosaic</strong> — distributed as <code>datahelix-mosaic</code>, imported as <code>mosaic</code>. Data-contract identifiers were kept as <code>hippo*</code> until Mosaic v0.16.0, which renamed them: <code>mosaicSchema</code>, <code>mosaic_core</code>, <code>mosaic_*</code> annotations, and the platform-owned <code>X-DataHelix-Actor</code> header.</td>
+<td>Mosaic ADR-0004; platform ADR-0007</td>
 </tr>
 <tr>
 <td>"Reel" is a <strong>provisional codename</strong> (Strand, Loom, Lumen, Cadence)</td>
@@ -4449,7 +4449,7 @@ Log in <a href="../INDEX/"><code>INDEX.md</code></a>.</p>
 <tr>
 <td>3</td>
 <td>Schema grounding for the LLM</td>
-<td><code>hippoSchema</code> introspection resolver</td>
+<td><code>hippoSchema</code> introspection resolver (now <code>mosaicSchema</code>, platform ADR-0007)</td>
 <td><code>mosaic://schema</code> + <strong><code>mosaic://capabilities</code></strong> (server-derived manifest: per-field legal ops, <code>enum_values</code>, predicate flags, aggregatable/orderable/searchable) + the <code>construct-query-spec</code> prompt</td>
 </tr>
 <tr>
@@ -4502,7 +4502,9 @@ one-off demo:</p>
 </tbody>
 </table>
 <p>Consequence for Reel: ADR-0001–0004 were gated on this probe; the model held. Ratification is a
-status flip the deciders make (see INDEX Decision Queue). The probe's faithfulness gap is Reel's
+status flip the deciders make (see INDEX Decision Queue).
+<strong>Ratified 2026-11-10:</strong> ADR-0001–0005 are <code>Accepted</code> — 0001, 0004 and 0005 amended to their v1
+forms, 0002 with the <code>asOf</code> ⟂ <code>RelatedCondition</code> v1 limit; see each ADR's ratification section. The probe's faithfulness gap is Reel's
 first measured backlog (<code>proposals/exon-migration.md</code> §4).</p>
 <h2 id="where-reel-sits-on-the-platform-roadmap">Where Reel sits on the platform roadmap<a class="headerlink" href="#where-reel-sits-on-the-platform-roadmap" title="Permanent link">&para;</a></h2>
 <p><code>datahelix:platform/design/roadmap-1.0.md</code> (2026-07-07): "Data stories (Aperture ADR-0022–0025)

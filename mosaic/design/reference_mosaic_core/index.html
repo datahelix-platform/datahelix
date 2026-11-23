@@ -17,11 +17,11 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
-        <title>Reference hippo core - DataHelix Documentation</title>
+        <title>Reference mosaic core - DataHelix Documentation</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#reference-hippo_core-hippos-built-in-classes-and-enums" class="md-skip">
+        <a href="#reference-mosaic_core-hippos-built-in-classes-and-enums" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Reference hippo core
+              Reference mosaic core
             
           </span>
         </div>
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4104,15 +4104,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#reference-hippo_core-hippos-built-in-classes-and-enums" class="md-nav__link">
+  <a href="#reference-mosaic_core-hippos-built-in-classes-and-enums" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reference: hippo_core — Hippo's Built-In Classes and Enums
+        Reference: mosaic_core — Hippo's Built-In Classes and Enums
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Reference: hippo_core — Hippo&#39;s Built-In Classes and Enums">
+    <nav class="md-nav" aria-label="Reference: mosaic_core — Hippo&#39;s Built-In Classes and Enums">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -4293,10 +4293,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#what-hippo_core-deliberately-excludes" class="md-nav__link">
+  <a href="#what-mosaic_core-deliberately-excludes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What hippo_core deliberately excludes
+        What mosaic_core deliberately excludes
       
     </span>
   </a>
@@ -4325,18 +4325,18 @@
 
 
 
-  <h1>Reference hippo core</h1>
+  <h1>Reference mosaic core</h1>
 
-<h2 id="reference-hippo_core-hippos-built-in-classes-and-enums">Reference: <code>hippo_core</code> — Hippo's Built-In Classes and Enums<a class="headerlink" href="#reference-hippo_core-hippos-built-in-classes-and-enums" title="Permanent link">&para;</a></h2>
+<h2 id="reference-mosaic_core-hippos-built-in-classes-and-enums">Reference: <code>mosaic_core</code> — Hippo's Built-In Classes and Enums<a class="headerlink" href="#reference-mosaic_core-hippos-built-in-classes-and-enums" title="Permanent link">&para;</a></h2>
 <p><strong>Document status:</strong> Draft v0.1
-<strong>Depends on:</strong> sec9_linkml_redesign.md §9.5, <code>src/hippo/schemas/hippo_core.yaml</code></p>
-<p>This document is the authoritative reference for <code>hippo_core.yaml</code> — Hippo's
+<strong>Depends on:</strong> sec9_linkml_redesign.md §9.5, <code>src/mosaic/schemas/mosaic_core.yaml</code></p>
+<p>This document is the authoritative reference for <code>mosaic_core.yaml</code> — Hippo's
 built-in primitives shipped as a LinkML schema. Every user schema imports
-<code>hippo_core</code> and every domain class uses <code>is_a: Entity</code>. See sec9 §9.5 for
+<code>mosaic_core</code> and every domain class uses <code>is_a: Entity</code>. See sec9 §9.5 for
 the design rationale.</p>
-<p>The live schema ships at <code>src/hippo/schemas/hippo_core.yaml</code> and is loaded
+<p>The live schema ships at <code>src/mosaic/schemas/mosaic_core.yaml</code> and is loaded
 by <code>SchemaRegistry</code> via a bundled importmap: callers declare
-<code>imports: [hippo_core]</code> in their own schemas and LinkML resolves the
+<code>imports: [mosaic_core]</code> in their own schemas and LinkML resolves the
 reference to the shipped file.</p>
 <hr />
 <h3 id="class-and-enum-inventory">Class and enum inventory<a class="headerlink" href="#class-and-enum-inventory" title="Permanent link">&para;</a></h3>
@@ -4357,7 +4357,7 @@ reference to the shipped file.</p>
 <tr>
 <td><code>ProvenanceRecord</code></td>
 <td>class</td>
-<td>Atomic audit record of an operation on an entity. Annotated <code>hippo_append_only: true</code>; PROV-O-aligned. <code>is_a: Entity</code>.</td>
+<td>Atomic audit record of an operation on an entity. Annotated <code>mosaic_append_only: true</code>; PROV-O-aligned. <code>is_a: Entity</code>.</td>
 </tr>
 <tr>
 <td><code>Process</code></td>
@@ -4382,7 +4382,7 @@ reference to the shipped file.</p>
 <tr>
 <td><code>ExternalID</code></td>
 <td>class — <strong>DEPRECATED</strong></td>
-<td>Legacy entity-shaped cross-system identifier. Superseded by <code>ExternalReference</code> + <code>hippo_external_xref</code>; removal scoped to a future major.</td>
+<td>Legacy entity-shaped cross-system identifier. Superseded by <code>ExternalReference</code> + <code>mosaic_external_xref</code>; removal scoped to a future major.</td>
 </tr>
 <tr>
 <td><code>Status</code></td>
@@ -4434,7 +4434,7 @@ deliberately NOT declared here — computed at read time from
 <p><strong>Example.</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># user_schema.yaml</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">imports</span><span class="p">:</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hippo_core</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mosaic_core</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nt">classes</span><span class="p">:</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">Sample</span><span class="p">:</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Entity</span>
@@ -4442,13 +4442,13 @@ deliberately NOT declared here — computed at read time from
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">barcode</span><span class="p">:</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="nt">annotations</span><span class="p">:</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">          </span><span class="nt">hippo_unique</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">          </span><span class="nt">mosaic_unique</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div></p>
 <hr />
 <h3 id="provenancerecord"><code>ProvenanceRecord</code><a class="headerlink" href="#provenancerecord" title="Permanent link">&para;</a></h3>
 <p>Atomic audit record of an operation on an entity. <code>is_a: Entity</code>
 (participates in the normal identity model — UUID id, lifecycle) but
-annotated <code>hippo_append_only: true</code> — adapters MUST reject <code>UPDATE</code> and
+annotated <code>mosaic_append_only: true</code> — adapters MUST reject <code>UPDATE</code> and
 <code>DELETE</code> against the backing table. Only <code>INSERT</code> is permitted.</p>
 <p><code>class_uri: prov:Activity</code> at the atomic scale. <code>Process</code> shares the
 same class URI at the composite scale; PROV-O treats activities at
@@ -4550,13 +4550,13 @@ multiple granularities uniformly.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Indexes</strong> (via <code>hippo_index: true</code> annotations): <code>entity_id</code>,
+<p><strong>Indexes</strong> (via <code>mosaic_index: true</code> annotations): <code>entity_id</code>,
 <code>operation</code>, <code>timestamp</code>, <code>process_id</code>. Wave 2 <code>computed-temporal-fields</code>
 adds composite indexes as needed for the read-time aggregation paths.</p>
 <p><strong>Status.</strong> Active. Wave 2's <code>provenance-migration</code> landed the storage
 migration: the <code>ProvenanceRecord</code> table replaces the legacy <code>provenance</code>
 table, <code>ProvenanceStore</code> writes the sec9 §9.6 shape, and the SQLite /
-Postgres adapters enforce <code>hippo_append_only</code> via BEFORE UPDATE /
+Postgres adapters enforce <code>mosaic_append_only</code> via BEFORE UPDATE /
 BEFORE DELETE triggers (Decision 9.6.C). Two known transition gaps
 remain — the <code>actor_id = "unknown"</code> fallback for unmigrated callers,
 and <code>schema_version = ""</code> until <code>SchemaRegistry</code> is plumbed through
@@ -4602,13 +4602,13 @@ attributes (pipeline parameters, input/output manifests, runtime metadata).</p>
 <td><code>operation_kind</code></td>
 <td>string</td>
 <td>yes</td>
-<td>Caller-defined category (<code>reference_data_installed</code>, <code>pipeline_run</code>, <code>schema_migration</code>, <code>manual_edit</code>, …). Not a closed enum. Annotated <code>hippo_index: true</code>.</td>
+<td>Caller-defined category (<code>reference_data_installed</code>, <code>pipeline_run</code>, <code>schema_migration</code>, <code>manual_edit</code>, …). Not a closed enum. Annotated <code>mosaic_index: true</code>.</td>
 </tr>
 <tr>
 <td><code>started_at</code></td>
 <td>datetime</td>
 <td>yes</td>
-<td>UTC wall-clock time at process start. Annotated <code>hippo_index: true</code>.</td>
+<td>UTC wall-clock time at process start. Annotated <code>mosaic_index: true</code>.</td>
 </tr>
 <tr>
 <td><code>ended_at</code></td>
@@ -4620,7 +4620,7 @@ attributes (pipeline parameters, input/output manifests, runtime metadata).</p>
 <td><code>actor_id</code></td>
 <td>string (UUID)</td>
 <td>yes</td>
-<td>UUID of the entity responsible for initiating this process. Resolvable via <code>HippoClient.resolve_type(uuid)</code> per sec9 §9.5.</td>
+<td>UUID of the entity responsible for initiating this process. Resolvable via <code>MosaicClient.resolve_type(uuid)</code> per sec9 §9.5.</td>
 </tr>
 </tbody>
 </table>
@@ -4632,7 +4632,7 @@ Recursion bottoms out at root processes whose creation record has
 <p><strong>Example.</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Cappella schema fragment</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">imports</span><span class="p">:</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hippo_core</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mosaic_core</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nt">classes</span><span class="p">:</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">PipelineRun</span><span class="p">:</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Process</span>
@@ -4683,7 +4683,7 @@ Recursion bottoms out at root processes whose creation record has
 </tr>
 </tbody>
 </table>
-<p>Adding a value is a minor bump on <code>hippo_core</code>. Removing a value is breaking.</p>
+<p>Adding a value is a minor bump on <code>mosaic_core</code>. Removing a value is breaking.</p>
 <hr />
 <h3 id="operation-enum"><code>Operation</code> enum<a class="headerlink" href="#operation-enum" title="Permanent link">&para;</a></h3>
 <p>Kind of operation recorded on a <code>ProvenanceRecord</code>. See sec9 §9.6 for the
@@ -4765,7 +4765,7 @@ user-schema extensions become possible as soon as the shape firms up.</p>
 <hr />
 <h3 id="referenceloader"><code>ReferenceLoader</code><a class="headerlink" href="#referenceloader" title="Permanent link">&para;</a></h3>
 <p>Metadata for a reference-data loader plugin. Instances are contributed by
-plugins registered under the <code>hippo.reference_loaders</code> entry point. The full
+plugins registered under the <code>mosaic.reference_loaders</code> entry point. The full
 slot inventory was finalized by the <code>reference-loader-shape</code> OpenSpec change
 (Wave 3 per sec9 §9.12), resolving Decisions 9.5.E and 9.5.F.</p>
 <table>
@@ -4884,22 +4884,22 @@ ordinary entity update captured by normal provenance.</p>
 </tbody>
 </table>
 <p>Slots ranged against <code>ExternalReference</code> may carry the
-<code>hippo_external_xref</code> annotation to become reverse-lookup keys — global
+<code>mosaic_external_xref</code> annotation to become reverse-lookup keys — global
 <code>(system, value)</code> uniqueness among available entities plus
-<code>HippoClient.find_by_xref</code> / <code>GET /xref/{system}/{value}</code> / GraphQL
-<code>findByXref</code>, served by the <code>hippo_xref_index</code> side table. See
-<code>reference_hippo_ext.md</code> for the annotation contract.</p>
+<code>MosaicClient.find_by_xref</code> / <code>GET /xref/{system}/{value}</code> / GraphQL
+<code>findByXref</code>, served by the <code>mosaic_xref_index</code> side table. See
+<code>reference_mosaic_ext.md</code> for the annotation contract.</p>
 <p><code>ExternalReference</code> is excluded from every entity surface: no table, no
 typed-client accessor, no tree-root bundle slot, no GraphQL object type,
-no TUI listing (<code>VALUE_TYPE_CLASSES</code> in <code>hippo.linkml_bridge</code>).</p>
+no TUI listing (<code>VALUE_TYPE_CLASSES</code> in <code>mosaic.linkml_bridge</code>).</p>
 <h4 id="externalid-deprecation"><code>ExternalID</code> deprecation<a class="headerlink" href="#externalid-deprecation" title="Permanent link">&para;</a></h4>
 <p><code>ExternalID</code> (entity-shaped cross-system identifier with its own
 <code>is_active</code> mapping lifecycle, dedicated client methods, REST router, and
 <code>external_id_add</code>/<code>external_id_remove</code> provenance ops) is <strong>deprecated</strong> in
 favor of the value-type + annotation pattern above:</p>
 <ul>
-<li>The class stays in <code>hippo_core</code> and remains fully functional.</li>
-<li><code>HippoClient.register_external_id</code> / <code>get_by_external_id</code> /
+<li>The class stays in <code>mosaic_core</code> and remains fully functional.</li>
+<li><code>MosaicClient.register_external_id</code> / <code>get_by_external_id</code> /
   <code>list_external_ids</code> / mapping-level <code>supersede</code> emit
   <code>DeprecationWarning</code> (entity-level <code>supersede_entity</code> is unaffected).</li>
 <li>The <code>/external-ids</code> REST endpoints are marked <code>deprecated</code> in OpenAPI.</li>
@@ -4908,7 +4908,7 @@ favor of the value-type + annotation pattern above:</p>
 </ul>
 <hr />
 <h3 id="version-and-compatibility">Version and compatibility<a class="headerlink" href="#version-and-compatibility" title="Permanent link">&para;</a></h3>
-<p><code>hippo_core.version</code> is <code>0.6.0</code> (0.1.0 initial → 0.2.0 added <code>Process</code> → 0.3.0 added <code>ProvenanceRecord</code> → 0.4.0 finalized <code>ReferenceLoader</code> slot inventory → 0.5.0 added <code>ExternalID</code> → 0.6.0 added <code>ExternalReference</code> and deprecated <code>ExternalID</code>, issue #48). Bump rules (per sec9 §9.3):</p>
+<p><code>mosaic_core.version</code> is <code>0.6.0</code> (0.1.0 initial → 0.2.0 added <code>Process</code> → 0.3.0 added <code>ProvenanceRecord</code> → 0.4.0 finalized <code>ReferenceLoader</code> slot inventory → 0.5.0 added <code>ExternalID</code> → 0.6.0 added <code>ExternalReference</code> and deprecated <code>ExternalID</code>, issue #48). Bump rules (per sec9 §9.3):</p>
 <table>
 <thead>
 <tr>
@@ -4927,29 +4927,29 @@ favor of the value-type + annotation pattern above:</p>
 </tr>
 </tbody>
 </table>
-<p>Deployments pin a specific <code>(hippo_ext, hippo_core)</code> pair. User schemas
-declare which <code>hippo_core</code> major they target; <code>SchemaRegistry</code> refuses to
+<p>Deployments pin a specific <code>(mosaic_ext, mosaic_core)</code> pair. User schemas
+declare which <code>mosaic_core</code> major they target; <code>SchemaRegistry</code> refuses to
 merge against an incompatible major.</p>
 <hr />
 <h3 id="design-invariants">Design invariants<a class="headerlink" href="#design-invariants" title="Permanent link">&para;</a></h3>
-<p>Three invariants a coding agent must preserve when touching <code>hippo_core</code>:</p>
+<p>Three invariants a coding agent must preserve when touching <code>mosaic_core</code>:</p>
 <ol>
 <li><strong><code>Entity</code> stays sparse.</strong> Only <code>id</code> and <code>is_available</code>. Resist adding
    slots; everything else belongs either in a user-schema subclass or
    derives from provenance.</li>
-<li><strong>No cross-layer references.</strong> <code>hippo_core</code> MUST NOT reference any
+<li><strong>No cross-layer references.</strong> <code>mosaic_core</code> MUST NOT reference any
    domain class. Any relationship from a domain entity to its provenance
    is expressed via <code>entity_id</code> on <code>ProvenanceRecord</code> (Wave 2), never by
    a slot on <code>Entity</code> pointing into system-level data.</li>
-<li><strong><code>hippo_core</code> validates against itself.</strong> Its own shape satisfies the
-   LinkML metamodel. A malformed <code>hippo_core</code> is a startup failure, not a
+<li><strong><code>mosaic_core</code> validates against itself.</strong> Its own shape satisfies the
+   LinkML metamodel. A malformed <code>mosaic_core</code> is a startup failure, not a
    silent degradation.</li>
 </ol>
 <hr />
-<h3 id="what-hippo_core-deliberately-excludes">What <code>hippo_core</code> deliberately excludes<a class="headerlink" href="#what-hippo_core-deliberately-excludes" title="Permanent link">&para;</a></h3>
+<h3 id="what-mosaic_core-deliberately-excludes">What <code>mosaic_core</code> deliberately excludes<a class="headerlink" href="#what-mosaic_core-deliberately-excludes" title="Permanent link">&para;</a></h3>
 <p>Some concepts sec9 specifies but does not land in this change. An agent
 encountering a gap should consult the owning change below rather than
-adding the concept to <code>hippo_core</code> ad-hoc.</p>
+adding the concept to <code>mosaic_core</code> ad-hoc.</p>
 <table>
 <thead>
 <tr>

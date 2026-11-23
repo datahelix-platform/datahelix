@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -2170,14 +2170,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4964,7 +4964,7 @@ in schema config and cannot be overridden by users.</p>
 </tr>
 </tbody>
 </table>
-<p><code>superseded_by</code> is a system column present on all entity types (applied generically by <code>hippo migrate</code>, not declared per-schema). It is set atomically alongside the availability change when <code>client.supersede_entity()</code> is called. <code>client.get()</code> returns the <code>superseded_by</code> field on all entities; it is <code>None</code> when not superseded. The authoritative record of the supersession is the <code>EntitySuperseded</code> provenance event — the column is a fast-read cache.</p>
+<p><code>superseded_by</code> is a system column present on all entity types (applied generically by <code>mosaic migrate</code>, not declared per-schema). It is set atomically alongside the availability change when <code>client.supersede_entity()</code> is called. <code>client.get()</code> returns the <code>superseded_by</code> field on all entities; it is <code>None</code> when not superseded. The authoritative record of the supersession is the <code>EntitySuperseded</code> provenance event — the column is a fast-read cache.</p>
 <p><strong>On computed fields:</strong> <code>created_at</code> is the timestamp of the first provenance event for an
 entity. <code>updated_at</code> is the timestamp of the most recent provenance event. <code>schema_version</code>
 is the schema config version recorded on the most recent provenance event. All three are
@@ -5103,7 +5103,7 @@ returns <code>list[ScoredMatch]</code> — see sec2 §2.3 for the type definitio
 <p><strong><code>ref</code> type validation:</strong> The <code>ref</code> format encodes the target entity type and UUID
 (e.g. <code>"sample:abc-123"</code>). The SDK validates at write time that (a) the referenced entity
 type exists in the current schema config, and (b) the referenced entity UUID exists and is
-available. If a schema migration renames an entity type, <code>hippo migrate</code> rewrites all <code>ref</code>
+available. If a schema migration renames an entity type, <code>mosaic migrate</code> rewrites all <code>ref</code>
 values in affected fields as part of the migration plan — this is a data migration step
 that requires explicit confirmation.</p>
 <hr />
@@ -5112,7 +5112,7 @@ that requires explicit confirmation.</p>
 <p>Hippo schema config is authored directly in <strong>LinkML</strong> — a YAML or JSON format that drives
 code generation (Pydantic models, storage adapter models, JSON Schema for API validation)
 and provides interoperability with other data systems.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># hippo.yaml</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># mosaic.yaml</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">schema</span><span class="p">:</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./schema.yaml</span><span class="w">           </span><span class="c1"># LinkML format</span>
 </code></pre></div>
@@ -5216,21 +5216,21 @@ complete set of relationship declarations.</p>
 <a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a><span class="w">    </span><span class="nt">cardinality</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">many-to-many</span>
 </code></pre></div>
 <h4 id="schema-requires-block">Schema <code>requires:</code> block<a class="headerlink" href="#schema-requires-block" title="Permanent link">&para;</a></h4>
-<p>A schema may declare dependencies on reference loader packages. <code>hippo validate</code> fails fast
+<p>A schema may declare dependencies on reference loader packages. <code>mosaic validate</code> fails fast
 with a clear install suggestion if any required loader is absent.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"1.0"</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">requires</span><span class="p">:</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hippo-reference-fma&gt;=3.3</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hippo-reference-ensembl&gt;=GRCh38.109</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hippo-reference-go&gt;=2024-01-01</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mosaic-reference-fma&gt;=3.3</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mosaic-reference-ensembl&gt;=GRCh38.109</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mosaic-reference-go&gt;=2024-01-01</span>
 <a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
 <a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nt">entities</span><span class="p">:</span>
 <a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="nt">Sample</span><span class="p">:</span>
 <a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="nt">fields</span><span class="p">:</span>
 <a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">      </span><span class="nt">tissue_region</span><span class="p">:</span>
 <a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ref</span>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">        </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AnatomyTerm</span><span class="w">    </span><span class="c1"># provided by hippo-reference-fma</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">        </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AnatomyTerm</span><span class="w">    </span><span class="c1"># provided by mosaic-reference-fma</span>
 <a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">        </span><span class="nt">search</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fts</span>
 </code></pre></div>
 <h4 id="schema-inheritance-polymorphic">Schema inheritance (polymorphic)<a class="headerlink" href="#schema-inheritance-polymorphic" title="Permanent link">&para;</a></h4>
@@ -5283,8 +5283,8 @@ entity types regardless of schema config. See §3.3 for supersession semantics.<
 <hr />
 <h3 id="38-schema-versioning-and-migration">3.8 Schema Versioning and Migration<a class="headerlink" href="#38-schema-versioning-and-migration" title="Permanent link">&para;</a></h3>
 <p>Every schema config carries a <code>version</code> string. Hippo tracks the deployed version in internal
-metadata. When versions differ, <code>hippo migrate</code> must run before the server starts.</p>
-<p><code>hippo migrate</code> steps:
+metadata. When versions differ, <code>mosaic migrate</code> must run before the server starts.</p>
+<p><code>mosaic migrate</code> steps:
 1. Load and validate the LinkML schema
 2. Diff schema against deployed version
 3. Generate and print migration plan for human review
@@ -5342,7 +5342,7 @@ returned them. The SDK exposes a <code>schema.deprecated_fields(entity_type)</co
 programmatic discovery. Callers can explicitly request deprecated fields via an
 <code>include_deprecated=True</code> flag, which returns them with a <code>_deprecated</code> suffix to prevent
 silent breakage.</p>
-<p>See sec3b_relational_storage.md §3b.5 for the <code>hippo_meta</code> table schema and §3b.6 for
+<p>See sec3b_relational_storage.md §3b.5 for the <code>mosaic_meta</code> table schema and §3b.6 for
 migration DDL mechanics.</p>
 <hr />
 <h3 id="39-validation-rules">3.9 Validation Rules<a class="headerlink" href="#39-validation-rules" title="Permanent link">&para;</a></h3>
@@ -5377,7 +5377,7 @@ from the example omics schema in Appendix A.</p>
 <code>min_length</code>, <code>max_length</code>. These are field-level structural constraints only.</p>
 <p>For cross-field and cross-entity business rule validation, see sec2 §2.13 (Validation
 Infrastructure) — config-driven <code>validators.yaml</code> rules (CEL-based) and Python plugin
-validators (<code>hippo.write_validators</code> entry points) are a separate, complementary system
+validators (<code>mosaic.write_validators</code> entry points) are a separate, complementary system
 that runs in the write path after field validators.</p>
 <hr />
 <h3 id="310-extending-or-replacing-the-schema">3.10 Extending or Replacing the Schema<a class="headerlink" href="#310-extending-or-replacing-the-schema" title="Permanent link">&para;</a></h3>
@@ -5407,7 +5407,7 @@ with a new entity type for cell lines.</p>
 <a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">    </span><span class="nt">to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sample</span>
 <a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">    </span><span class="nt">cardinality</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">many-to-one</span>
 </code></pre></div>
-<p>Run <code>hippo migrate</code> to apply. The new entity type is immediately queryable and ingestable
+<p>Run <code>mosaic migrate</code> to apply. The new entity type is immediately queryable and ingestable
 with no further changes.</p>
 <hr />
 <h3 id="311-entity-type-namespacing">3.11 Entity Type Namespacing<a class="headerlink" href="#311-entity-type-namespacing" title="Permanent link">&para;</a></h3>
@@ -5562,7 +5562,7 @@ where it originates:</p>
 </code></pre></div>
 <h4 id="backwards-compatibility_1">Backwards compatibility<a class="headerlink" href="#backwards-compatibility_1" title="Permanent link">&para;</a></h4>
 <p>Existing single-file <code>schema.yaml</code> deployments require no changes. The <code>namespace:</code> key is
-optional. <code>HippoClient</code> method signatures are unchanged — callers pass FQNs as strings to the
+optional. <code>MosaicClient</code> method signatures are unchanged — callers pass FQNs as strings to the
 same <code>entity_type</code> parameter they already use. No data migration is required for any existing
 deployment.</p>
 <hr />

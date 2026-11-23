@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4253,7 +4253,7 @@
 <p><strong>Status:</strong> 🟠 Working — research + candidate design, feeding a Proposed ADR slate (0035+)
 <strong>Date:</strong> 2026-08-18 · <strong>Rev 2</strong> (same day): Mosaic is now in scope for changes — the execution
 design is co-designed with the Mosaic query surface, priced against Mosaic source
-(<code>BU-Neuromics/mosaic</code> @ <code>502991c</code>, v0.12.1) rather than treating the server as fixed.
+(<code>datahelix-platform/mosaic</code> @ <code>502991c</code>, v0.12.1) rather than treating the server as fixed.
 <strong>Rev 3 note (2026-08-19, status only — exploration text below unchanged):</strong> the Mosaic side of
 §10 has landed as design artifacts (mosaic PR #159: doc-drift fixes, <strong>Mosaic ADR-0006/0007</strong>
 Proposed — mosaic#153/#154 — and OpenSpec changes <code>typed-filter-inputs</code>/<code>aggregation-and-
@@ -4368,7 +4368,7 @@ sides.</strong></p>
 <p><strong>Available and UNUSED by Aperture — free capability:</strong></p>
 <ul>
 <li><code>FilterMode { AND, OR }</code> — derived (<code>schemaModel.ts:682-685</code>) but the client hardcodes <code>'AND'</code>
-  (<code>hippoSource.ts:170</code>).</li>
+  (<code>mosaicSource.ts:170</code>).</li>
 <li><code>asOf: String</code> on every list field — zero hits in <code>web/src</code>. (Server-side it is list-only:
   not on singular gets, search twins, or nested traversal fields, and the DataLoader cache key
   omits it — Mosaic ADR-0001's §6.8.5 remainder.)</li>
@@ -4391,7 +4391,7 @@ typed columns; Postgres: one JSONB table — every range/sort feature costs a pe
 PG side, and the repo has a strict parity discipline).</p>
 <p>Also load-bearing for the client: Mosaic filters key on LinkML <strong>slot names</strong>, not camelCase
 renames (<code>schemaModel.ts:280-287</code>) — any query IR must store slot names; and ref selections
-currently fetch only the target id (<code>hippoSource.ts:83-92</code>), so column traversal needs widened
+currently fetch only the target id (<code>mosaicSource.ts:83-92</code>), so column traversal needs widened
 selection sets regardless of server work.</p>
 <h2 id="4-prior-art-external-survey-2026-08-18">4. Prior art (external survey, 2026-08-18)<a class="headerlink" href="#4-prior-art-external-survey-2026-08-18" title="Permanent link">&para;</a></h2>
 <p>Full trail in the survey run for this doc; the distilled findings:</p>

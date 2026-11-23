@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4200,12 +4200,12 @@
   that surfaced the gap); <strong>Aperture ADR-0035</strong> (<code>QuerySpec</code>); <code>mosaic-demo-small</code>'s
   <code>APERTURE_EXON_CONTRACT.md</code> Decision 8 (the planner re-validates through Mosaic's validator,
   so a reverse edge the validator rejects can never reach a <code>proposal</code> turn).</li>
-<li><strong>Tracking issue:</strong> <a href="https://github.com/BU-Neuromics/mosaic/issues/204">#204</a> (implemented,
-  <code>7fc300c</code>); ratification <a href="https://github.com/BU-Neuromics/mosaic/issues/217">#217</a>. Also
+<li><strong>Tracking issue:</strong> <a href="https://github.com/datahelix-platform/mosaic/issues/204">#204</a> (implemented,
+  <code>7fc300c</code>); ratification <a href="https://github.com/datahelix-platform/mosaic/issues/217">#217</a>. Also
   <strong>Aperture ADR-0041</strong> (referenced-class slot values in the result table — reverse-traversal
   display columns gate on a deployment declaring an <code>inverse:</code> slot, which is this ADR's
   mechanism), and its cross-component umbrella
-  <a href="https://github.com/BU-Neuromics/datahelix/issues/93">datahelix#93</a>.</li>
+  <a href="https://github.com/datahelix-platform/datahelix/issues/93">datahelix#93</a>.</li>
 </ul>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
 <p>A <code>QuerySpec</code> <code>RelatedCondition.edge</code> can only name a reference slot the <strong>anchor</strong> class
@@ -4381,10 +4381,30 @@ code change — which is the decision behaving as written.</p>
 </ul>
 <p><strong>Two things ratification does not do, worth naming so nobody plans around them.</strong> No tag contains
 <code>7fc300c</code> — the latest is <code>v0.13.0</code>, which <code>datahelix</code>'s <code>composition.lock.json</code> pins — so this is
-unreachable from a certifiable server until a release is cut (<a href="https://github.com/BU-Neuromics/mosaic/issues/218">#218</a>).
+unreachable from a certifiable server until a release is cut (<a href="https://github.com/datahelix-platform/mosaic/issues/218">#218</a>).</p>
+<blockquote>
+<p><strong>Update (2026-09-25): both are closed.</strong> <code>v0.14.0</code> tags this work (<a href="https://github.com/datahelix-platform/mosaic/issues/218">#218</a>),
+<code>datahelix</code> pins it, and the pair <code>aperture0.5.0+mosaic0.14.0</code> is certified against fixture
+<strong>1.1.0</strong> — which the fixture was grown to carry precisely so an <code>inverse:</code>-declared reverse edge
+is exercised by the golden path rather than only by this repo's tests.</p>
+<p>A deployment schema declares four in
+<a href="https://github.com/BU-Neuromics/mosaic-demo-small/pull/3">mosaic-demo-small#3</a> — <strong>open, not yet
+merged</strong>, so the second caveat is closed in evidence rather than in <code>main</code>. That evidence is the
+part worth keeping: serving the declared schema against an untouched copy of that deployment's
+existing database resolved every edge with <strong>no migration and no re-ingest</strong>, which is this ADR's
+central storage claim observed outside this repo's tests for the first time.
 And no deployment LinkML on the platform declares an <code>inverse:</code> slot yet, so nothing exercises it
 outside tests. The blocker consumers were recording (Reel ADR-0006's "<code>pivot-grain</code> blocked on
 mosaic#204") moves from <em>engineering</em> to <em>release + schema authoring</em>; it does not vanish.</p>
+<p><strong>Amended (2026-10-27).</strong> Two follow-ups are ratified. <strong>ADR-0012</strong> honours <code>inverse</code> on the
+single-valued <em>forward</em> slot — reopening, and reversing for import-layered schemas, the first
+sub-question above. <strong>ADR-0013</strong> lifts the multivalued-forward deferral, so Decision item 2's
+load-time rejection goes. Everything else here stands.</p>
+<p><strong>Implemented (#231).</strong> Decision item 2's rejection is removed. Which side of an <code>inverse</code> pair is
+virtual now follows ADR-0013's 2026-11-10 pair rule (<code>linkml_bridge.is_virtual_inverse</code>) instead of
+"multivalued + <code>inverse</code>", so the Consequences' carve-out of ADR-0002 reads "the <em>virtual</em> side of
+an <code>inverse</code> pair", not "a multivalued reference slot with <code>inverse</code>".</p>
+</blockquote>
 
 
 

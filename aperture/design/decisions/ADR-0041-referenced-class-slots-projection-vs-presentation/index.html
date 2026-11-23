@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4150,6 +4150,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ratification-note-2026-10-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ratification note (2026-10-02)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#note-2026-11-22-a-proposals-columns-reach-the-result-table-aperture89" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Note (2026-11-22): a proposal's columns reach the result table (aperture#89)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#alternatives-considered" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4190,9 +4212,9 @@
 
 <h1 id="adr-0041-a-result-tables-referenced-class-values-are-two-decisions-not-one-traversalgrain-is-query-visibilityorder-is-view">ADR-0041: A result table's referenced-class values are two decisions, not one — traversal/grain is query, visibility/order is view<a class="headerlink" href="#adr-0041-a-result-tables-referenced-class-values-are-two-decisions-not-one-traversalgrain-is-query-visibilityorder-is-view" title="Permanent link">&para;</a></h1>
 <ul>
-<li><strong>Status:</strong> Proposed</li>
-<li><strong>Date:</strong> 2026-09-22</li>
-<li><strong>Deciders:</strong> labadorf (pending); clandaverde (investigation)</li>
+<li><strong>Status:</strong> Accepted</li>
+<li><strong>Date:</strong> 2026-09-22 (ratified 2026-10-02; see aperture#65)</li>
+<li><strong>Deciders:</strong> labadorf; clandaverde (investigation, implementation)</li>
 <li><strong>Related:</strong> <strong>ADR-0035</strong> (cross-class queries are a typed <code>QuerySpec</code>; this ADR resolves the
   <code>columns</code> field ADR-0035 reserved and never built, and is the amendment vehicle Reel ADR-0006 §3
   requires for a change to the noun) · ADR-0002 (derived, never enumerated) · ADR-0004 (no middle
@@ -4208,8 +4230,8 @@
   listed blocked on mosaic#204) · <code>datahelix:platform/design/view-contract.md</code> (stub; the eventual
   home of the presentation half) · <code>design/cross-class-query.md</code> §5, §8 · <code>mosaic-demo-small</code>
   <code>APERTURE_EXON_CONTRACT.md</code> "Open questions" (explode-vs-<code>RelatedCondition</code> scoping)</li>
-<li><strong>Tracking issue:</strong> <a href="https://github.com/BU-Neuromics/aperture/issues/65">#65</a>; cross-component
-  umbrella <a href="https://github.com/BU-Neuromics/datahelix/issues/93">datahelix#93</a> (sequence across
+<li><strong>Tracking issue:</strong> <a href="https://github.com/datahelix-platform/aperture/issues/65">#65</a>; cross-component
+  umbrella <a href="https://github.com/datahelix-platform/datahelix/issues/93">datahelix#93</a> (sequence across
   aperture/mosaic/reel/certification), with mosaic#217 (ratify ADR-0011), mosaic#218 (cut the
   release carrying it), datahelix#92 (certification fixture v1.1.0), reel#2 and
   mosaic-demo-small#1</li>
@@ -4440,6 +4462,118 @@ belongs</em>, not as a description of types that exist today.</p>
 designed: the same derivation code offers reverse columns where a schema declares the
 inverting slot and gates them off where it does not, deciding from introspection and never
 from a version number.</p>
+<h2 id="ratification-note-2026-10-02">Ratification note (2026-10-02)<a class="headerlink" href="#ratification-note-2026-10-02" title="Permanent link">&para;</a></h2>
+<p>Ratified by labadorf. <strong>Retroactively</strong>, which is itself worth recording: the decision shipped
+before it was approved. PR <a href="https://github.com/BU-Neuromics/aperture/pull/70">#70</a> merged
+2026-09-29 with no reviews, went out as <strong>v0.6.0</strong>, and was certified as
+<code>aperture-0.6.0+mosaic-0.14.0</code> against fixture 1.1.0 — all while this file read <code>Proposed</code> and
+named a pending decider. The triage notes on #65 (2026-09-23, 2026-09-28) flagged it twice and
+correctly declined to act. That sequence is a workflow exception tracked on its own; it is not a
+precedent, and it is not an argument for or against the decision, which stands on its merits.</p>
+<p><strong>The four open sub-questions resolved three different ways.</strong> Recorded here rather than edited
+into the section below, per this repo's supersede-don't-edit convention.</p>
+<table>
+<thead>
+<tr>
+<th>Sub-question</th>
+<th>Resolution at ratification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Does an <code>explode</code> show all members, or only those matching a <code>RelatedCondition</code> on the same edge?</td>
+<td><strong>All members</strong>, as recommended — criteria select anchors, not members. The per-explode <em>"only the ones matching my criteria"</em> toggle was <strong>not</strong> built. It stays open as a defaults refinement, not a capability gap: both readings remain cheap on either side of the wire.</td>
+</tr>
+<tr>
+<td>Cap <code>explode</code> to one path per query in v1?</td>
+<td><strong>Capped</strong>, as recommended — enforced in <code>QueryBuilderView.tsx</code> when a second path asks for <code>explode</code>, and again in <code>flattenRows</code> (<code>data/selection.ts</code>), which documents the cap where it would otherwise produce a cartesian product.</td>
+</tr>
+<tr>
+<td>The hidden-last-visible-column wart on an exploded path</td>
+<td><strong>Dissolved rather than resolved</strong>, by the shape the implementation took. Traversal columns are an include set with no visibility flag (see the 2026-09-25 correction), so a path can only be <em>unchosen</em> — a query edit that takes its <code>explode</code> with it. There is no state in which a hidden column leaves unexplained duplicate rows. <strong>This wart returns the moment a <code>ColumnView</code> with a visibility flag is reified</strong>; the recommended resolution above (keep them separate, keep the grain note visible) is the answer to apply then.</td>
+</tr>
+<tr>
+<td>Does the <code>ColumnView</code> ride the URL?</td>
+<td><strong>Confirmed yes — and still open, wider than stated.</strong> Neither half persists today: <code>hiddenFields</code> and <code>pathColumns</code> are both <code>useState</code>. <code>qs</code> rides the URL and columns do not, so a shared link reproduces the row set but neither the chosen traversals nor the visibility — and on an exploded path the recipient gets a different <em>grain</em>. The query half not persisting is the more serious of the two by this ADR's own test. Tracked in <a href="https://github.com/BU-Neuromics/aperture/issues/73">#73</a>, which is also the trigger the 2026-09-25 correction names for reifying the split structurally.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What the ratification does not decide.</strong> The depth cap of 2 hops and the <code>ColumnView</code> → View
+Contract <code>encoding</code> landing both stand exactly as written, untested by anything that has shipped;
+<code>platform/design/view-contract.md</code> is still a stub.</p>
+<p><strong>Mosaic's two obligations are now both resolved, the second on the same day as this
+ratification.</strong> ADR-0011 is <strong>Accepted</strong> with v0.14.0 carrying it, so reverse traversal is a
+schema-authoring act. And the server-side <code>columns</code> compiler is no longer open-ended: Mosaic
+<a href="https://github.com/BU-Neuromics/mosaic/issues/215">#215</a> reported the gap from the <em>planner's</em>
+side — a question about <strong>which field</strong> (<em>"how long did each processing run take?"</em>) is not
+sayable in an artifact offering only criteria and sort, so a planner reaches for the nearest date
+slot — and Mosaic <a href="https://github.com/BU-Neuromics/mosaic/pull/222">#222</a> amends ADR-0009 to scope
+and approve the first increment: <strong>anchor-owned, single-hop paths only</strong>, manifest-validated and
+compiled to server-side projection, with <code>COLUMNS_NOT_SUPPORTED</code> <strong>narrowing to multi-hop rather
+than lifting</strong>.</p>
+<p>That boundary is this ADR's split test applied on the server: an anchor-owned projection cannot
+change the row set, so it ships without a grain decision riding along, while traversal and its
+<code>aggregate</code>/<code>explode</code> choice stay deferred to a second increment. It also sharpens what Aperture's
+client-side projection is and is not — it gave the <strong>user</strong> field selection, and never could give
+it to the <strong>planner</strong>, which is the gap #215 is about. When that compiler lands, Aperture sends
+<code>columns</code> on the wire and deletes its client projection, and <strong>the artifact does not change</strong> —
+the server-independence payoff this ADR inherits from ADR-0035.</p>
+<p><strong>One Consequences item landed better than written.</strong> <em>"Adjacent — and it should ship in the same
+pass"</em> (the typed <code>where:</code> surface) did ship in the same pass, in PR #70, exactly as argued —
+<code>buildListQuery</code>'s filter and selection paths were rewritten once, not twice.</p>
+<h2 id="note-2026-11-22-a-proposals-columns-reach-the-result-table-aperture89">Note (2026-11-22): a proposal's <code>columns</code> reach the result table (aperture#89)<a class="headerlink" href="#note-2026-11-22-a-proposals-columns-reach-the-result-table-aperture89" title="Permanent link">&para;</a></h2>
+<p>Recorded as a note, per the supersede-don't-edit convention. It changes no decision above; it
+records how decisions 1 and 4 land now that their gate has cleared.</p>
+<p><strong>The gate cleared.</strong> Mosaic <a href="https://github.com/datahelix-platform/mosaic/issues/236">#236</a>
+shipped in <strong>mosaic v0.16.0</strong> (2026-11-20): <code>columns</code> paths of 1–2 reference hops (forward, or a
+declared <code>inverse:</code> reverse), <code>count | joinIds | explode</code> on a to-many hop, spelled as LinkML slot
+names. Decision 4's condition ("nothing is added to the wire artifact until Mosaic's validator
+accepts it") is met, so <code>QuerySpec.columns</code> now exists in Aperture's type and on the
+conversational wire.</p>
+<p><strong>What <a href="https://github.com/datahelix-platform/aperture/issues/89">#89</a> built</strong>, with the two
+placement choices decided by labadorf on 2026-11-22:</p>
+<ul>
+<li><strong>Type and shape guard.</strong> <code>ColumnSpec = { path: string[]; mode?: ManyMode }</code>, schema-free like
+  the rest of <code>readQuerySpec</code>. Mosaic's shipped parser (<code>core/query_spec.py</code>,
+  <code>_parse_column_spec</code>) is the reference. Where it is stricter than #89's wording, the guard
+  follows it: it also refuses a <code>mode</code> on a one-segment (anchor-slot) path, a key other than
+  <code>path</code>/<code>mode</code>, and one path asked for in two modes.</li>
+<li><strong>Spelling: <code>pathColumns</code> owns the columns.</strong> <code>canonicalizeQuerySpec</code> carries <code>columns</code> in slot
+  spelling on both branches. It drops exact repeats and translates nothing. <code>translateColumns</code>
+  converts between slot and GraphQL spelling by walking the schema hop by hop (it does no case
+  conversion). When a proposal lands, its columns seed <code>pathColumns</code>, and one-segment paths clear
+  those fields from <code>hiddenFields</code>. The columns are then <strong>stripped from the draft</strong>, so <code>cols</code>
+  stays the one view source and <code>qs</code> never carries a stale copy. A proposal with no <code>columns</code> key
+  leaves the reader's columns alone; an explicit list, even an empty one, replaces them. A column
+  that does not resolve is listed under the builder with its reason (ADR-0029).</li>
+<li><strong>Round trip.</strong> The panel sends the turn-derived spec with <code>columns</code> rebuilt from the table,
+  slot-spelled. If the table agrees with the spec, the spec goes out unchanged. This depends on
+  Reel accepting a <code>query_spec</code> that differs from the one it derives from <code>turns</code>; see ADR-0039's
+  note of the same date. <strong>Release pairing:</strong> any traversal column in the table counts as an edit
+  against a proposal without <code>columns</code>, so this needs a Reel release that includes reel#26. Ship
+  v0.8.0 only with one (ADR-0039 note, corrected 2026-11-23).</li>
+<li><strong>Review fixes (2026-11-23, aperture#103).</strong></li>
+<li><em>Mixed modes on one link are kept.</em> Mosaic accepts <code>explode</code> beside <code>joinIds</code>/<code>count</code> on the
+    same link, and Mosaic's rules win. A proposal's columns (and <code>cols</code> restored from a link) go
+    through <code>capExplode</code>, which only demotes an explode through a second link. It no longer
+    promotes every sibling on the exploded link to <code>explode</code>, as <code>normalizeExplode</code> does for a
+    choice made in the builder. In the table, an exploded column reads per member. A
+    <code>count</code>/<code>joinIds</code> sibling on that link shows the anchor's summary on each of its rows. This
+    narrows the 2026-09 rule that every column through the exploded link explodes with it: that
+    rule now holds for the builder's own explode action, not for columns that arrive with modes.</li>
+<li><em>Order is not an edit.</em> The round trip compares the table's columns and the spec's as sets.</li>
+<li><em><code>qs</code> drops <code>columns</code> on load</em>, before the shape check, so a malformed list costs only the
+    columns.</li>
+<li><em>An anchor change drops path columns that no longer resolve</em>, so none disappears silently
+    from the round trip.</li>
+<li><strong>Execution is unchanged:</strong> full envelopes plus a merged nested selection, projected in the
+  client. Sending <code>columns</code> to Mosaic for execution, and deleting the client projection, is the
+  next step. The artifact does not change for it.</li>
+</ul>
+<p><strong>What a planner emitting <code>columns</code> must match</strong> (reel#12/#13): slot names on every segment, as in
+<code>criteria</code>; at most 2 hops; a <code>mode</code> on every path with a to-many hop and none on any other; at
+most one exploded link. A to-many path that arrives with no <code>mode</code> reads as <code>count</code> in the builder,
+but goes back on the wire with its mode stated.</p>
 <h2 id="alternatives-considered">Alternatives considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Put everything in <code>QuerySpec.columns</code>, visibility included</strong> (ADR-0035's literal sketch). Makes
@@ -4463,6 +4597,11 @@ from a version number.</p>
   Rejected.</li>
 </ul>
 <h2 id="notes-open-sub-questions">Notes / open sub-questions<a class="headerlink" href="#notes-open-sub-questions" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>Resolved 2026-10-02 at ratification</strong> — read the Ratification note above alongside this
+section. The first four items below are closed (three decided, one carried to
+<a href="https://github.com/BU-Neuromics/aperture/issues/73">#73</a>); the last two remain open.</p>
+</blockquote>
 <ul>
 <li><strong>Does an <code>explode</code> show all members, or only those matching a <code>RelatedCondition</code> on the same
   edge?</strong> Recorded as unresolved in <code>APERTURE_EXON_CONTRACT.md</code> and in ADR-0035 itself.

@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -2131,14 +2131,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4904,7 +4904,7 @@ log is:</p>
 </tbody>
 </table>
 <p><strong>Immutability:</strong> Provenance records are written once and never modified. The <code>ProvenanceRecord</code>
-class carries the <code>hippo_append_only</code> LinkML annotation; the storage adapter enforces this via
+class carries the <code>mosaic_append_only</code> LinkML annotation; the storage adapter enforces this via
 SQL triggers (see §6.6 and sec9 Decision 9.6.C).</p>
 <p><strong>Actor:</strong> <code>actor_id</code> is resolved in priority order: (1) explicit <code>actor_id</code> kwarg to
 <code>ProvenanceStore.record()</code>; (2) legacy <code>user_context</code> shim (Decision 9.6.B); (3) the
@@ -4916,7 +4916,7 @@ require a real actor identity (sec9 §9.5 identity model).</p>
 <h3 id="63-event-types">6.3 Event Types<a class="headerlink" href="#63-event-types" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p><strong>Post-migration note:</strong> The <code>event_type</code> string taxonomy below predates the
-<code>provenance-migration</code> change. The production <code>Operation</code> enum in <code>hippo_core</code> uses
+<code>provenance-migration</code> change. The production <code>Operation</code> enum in <code>mosaic_core</code> uses
 lowercase values: <code>create</code>, <code>update</code>, <code>supersede</code>, <code>availability_change</code>,
 <code>relationship_add</code>, <code>relationship_remove</code>, <code>external_id_add</code>, <code>external_id_remove</code>.
 See sec9 §9.6 and Decision 9.6.B for the per-site mapping from legacy strings to
@@ -5037,7 +5037,7 @@ added).</p>
 <a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="p">}</span>
 </code></pre></div>
 <h4 id="migrationapplied">MigrationApplied<a class="headerlink" href="#migrationapplied" title="Permanent link">&para;</a></h4>
-<p>Fired once per <code>hippo migrate</code> run. Recorded at the instance level (not entity-specific).
+<p>Fired once per <code>mosaic migrate</code> run. Recorded at the instance level (not entity-specific).
 <code>entity_id</code> and <code>entity_type</code> are <code>null</code> for this event type.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MigrationApplied"</span><span class="p">,</span>
@@ -5054,7 +5054,7 @@ added).</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ReferenceDataInstalled"</span><span class="p">,</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">"payload"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="nt">"loader"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hippo-reference-fma"</span><span class="p">,</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="nt">"loader"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mosaic-reference-fma"</span><span class="p">,</span>
 <a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.3"</span><span class="p">,</span>
 <a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">    </span><span class="nt">"entities_created"</span><span class="p">:</span><span class="w"> </span><span class="mi">15234</span><span class="p">,</span>
 <a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="nt">"entities_updated"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
@@ -5128,9 +5128,9 @@ documented as conventions, not enforced constraints.</p>
 <hr />
 <h3 id="66-relational-storage-for-provenance">6.6 Relational Storage for Provenance<a class="headerlink" href="#66-relational-storage-for-provenance" title="Permanent link">&para;</a></h3>
 <p>Provenance records are stored in the <code>ProvenanceRecord</code> table. The DDL is <strong>LinkML-generated</strong>
-via the <code>hippo_core</code> schema (Decision 9.6.D) — there is no hand-coded <code>CREATE TABLE</code> block
+via the <code>mosaic_core</code> schema (Decision 9.6.D) — there is no hand-coded <code>CREATE TABLE</code> block
 for this table in the adapter. The representative shape is:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1">-- Representative shape only; authoritative DDL is LinkML-generated from hippo_core.ProvenanceRecord</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1">-- Representative shape only; authoritative DDL is LinkML-generated from mosaic_core.ProvenanceRecord</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="ss">"ProvenanceRecord"</span><span class="w"> </span><span class="p">(</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="n">id</span><span class="w">              </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
 <a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="k">operation</span><span class="w">       </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">       </span><span class="c1">-- Operation enum value (e.g. 'create', 'update')</span>
@@ -5157,28 +5157,28 @@ for this table in the adapter. The representative shape is:</p>
 <a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_provenance_operation</span>
 <a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="k">ON</span><span class="w"> </span><span class="ss">"ProvenanceRecord"</span><span class="w"> </span><span class="p">(</span><span class="k">operation</span><span class="p">,</span><span class="w"> </span><span class="k">timestamp</span><span class="p">);</span>
 </code></pre></div>
-<p><strong>No <code>UPDATE</code> or <code>DELETE</code> permitted</strong> on <code>ProvenanceRecord</code>. The <code>hippo_append_only</code>
+<p><strong>No <code>UPDATE</code> or <code>DELETE</code> permitted</strong> on <code>ProvenanceRecord</code>. The <code>mosaic_append_only</code>
 annotation drives SQL trigger generation (Decision 9.6.C). The triggers are generic —
 any update to any column is rejected:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1">-- Block any UPDATE on any column</span>
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">prevent_ProvenanceRecord_update</span>
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">BEFORE</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="ss">"ProvenanceRecord"</span>
 <a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="k">BEGIN</span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">RAISE</span><span class="p">(</span><span class="k">ABORT</span><span class="p">,</span><span class="w"> </span><span class="s1">'Cannot update ProvenanceRecord: hippo_append_only class'</span><span class="p">);</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">RAISE</span><span class="p">(</span><span class="k">ABORT</span><span class="p">,</span><span class="w"> </span><span class="s1">'Cannot update ProvenanceRecord: mosaic_append_only class'</span><span class="p">);</span>
 <a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="k">END</span><span class="p">;</span>
 <a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
 <a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="c1">-- Block DELETE operations</span>
 <a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">prevent_ProvenanceRecord_delete</span>
 <a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="k">BEFORE</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="ss">"ProvenanceRecord"</span>
 <a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="k">BEGIN</span>
-<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">RAISE</span><span class="p">(</span><span class="k">ABORT</span><span class="p">,</span><span class="w"> </span><span class="s1">'Cannot delete ProvenanceRecord: hippo_append_only class'</span><span class="p">);</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">RAISE</span><span class="p">(</span><span class="k">ABORT</span><span class="p">,</span><span class="w"> </span><span class="s1">'Cannot delete ProvenanceRecord: mosaic_append_only class'</span><span class="p">);</span>
 <a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="k">END</span><span class="p">;</span>
 </code></pre></div>
 <p>Triggers fire at statement level (BEFORE), providing database-level enforcement that applies
 even to direct SQL access outside the SDK.</p>
 <p><strong>Provenance summary view</strong> (REQUIRED — not optional):</p>
 <p>The <code>entity_provenance_summary</code> view is <strong>required</strong> for correct operation of <code>client.query()</code>
-with provenance-derived <code>created_at</code> and <code>updated_at</code> fields. <code>hippo migrate</code> creates this
+with provenance-derived <code>created_at</code> and <code>updated_at</code> fields. <code>mosaic migrate</code> creates this
 view before any entity table migrations so it is always available.</p>
 <p>Expected columns and derivation logic:</p>
 <table>
@@ -5345,7 +5345,7 @@ states under the new model; such cases are flagged rather than silently mis-deco
 <h4 id="685-sdk-transport-surface">6.8.5 SDK &amp; transport surface<a class="headerlink" href="#685-sdk-transport-surface" title="Permanent link">&para;</a></h4>
 <p><strong>SDK.</strong> <code>as_of</code> is threaded through the read surface; the storage contract (<code>EntityStore</code> ABC)
 formalizes methods the SQLite/Postgres adapters already implement de facto:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># HippoClient / QueryService</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># MosaicClient / QueryService</span>
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"Sample"</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="o">...</span><span class="p">],</span> <span class="n">as_of</span><span class="o">=</span><span class="s2">"2026-06-01T00:00:00Z"</span><span class="p">)</span>          <span class="c1"># set + state at T</span>
 <a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="n">client</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">traverse</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">as_of</span><span class="o">=</span><span class="s2">"2026-06-01T00:00:00Z"</span><span class="p">)</span>  <span class="c1"># edges live at T</span>
 <a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
@@ -5388,7 +5388,7 @@ sub-question 5 — sequence via OpenSpec, after the current surface; not a v0.1 
    <code>state_version_at</code>, provenance-driven relationship <code>traverse(as_of=)</code>, and the
    <code>idx_ProvenanceRecord_type_timestamp</code> index, all mirrored from the SQLite path. Verified by
    compile + the gated <code>tests/integration/test_postgres_asof.py</code> (runs only with a live
-   PostgreSQL / <code>HIPPO_DATABASE_URL</code>). The §6.8.4 snapshot/cache <strong>performance tier</strong> remains
+   PostgreSQL / <code>MOSAIC_DATABASE_URL</code>). The §6.8.4 snapshot/cache <strong>performance tier</strong> remains
    deliberately deferred ("only if profiling demands"); both adapters carry the type-scoped index.</li>
 </ol>
 <h4 id="687-deferred">6.8.7 Deferred<a class="headerlink" href="#687-deferred" title="Permanent link">&para;</a></h4>

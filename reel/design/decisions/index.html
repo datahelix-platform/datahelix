@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4158,7 +4158,7 @@
 <h1 id="reel-design-decisions-adrs">Reel Design Decisions (ADRs)<a class="headerlink" href="#reel-design-decisions-adrs" title="Permanent link">&para;</a></h1>
 <p>Reel records design decisions as <strong>ADRs</strong> following the <strong>platform-wide convention</strong> — the
 canonical process, lifecycle/statuses, and template live in the DataHelix platform repo at
-<a href="https://github.com/BU-Neuromics/datahelix/blob/main/platform/design/decisions/README.md"><code>platform/design/decisions/README.md</code></a>
+<a href="https://github.com/datahelix-platform/datahelix/blob/main/platform/design/decisions/README.md"><code>platform/design/decisions/README.md</code></a>
 (see also that repo's root <code>CLAUDE.md</code>). <a href="_template/"><code>_template.md</code></a> is the local copy of
 the canonical template.</p>
 <blockquote>
@@ -4173,7 +4173,7 @@ reversals <code>Supersede</code> with a forward pointer.</p>
 <p>ADR-0001–0005 were authored inside the <code>aperture</code> component as <strong>Aperture ADR-0022–0026</strong> and
 <strong>renumbered</strong> when the data-story engine was split into Reel (2026-06-22; boundary decision
 DataHelix platform
-<a href="https://github.com/BU-Neuromics/datahelix/blob/main/platform/design/decisions/ADR-0003-reel-data-story-engine-separate-from-portal.md">ADR-0003</a>,
+<a href="https://github.com/datahelix-platform/datahelix/blob/main/platform/design/decisions/ADR-0003-reel-data-story-engine-separate-from-portal.md">ADR-0003</a>,
 whose <strong>Outcome</strong> section records the execution — no separate runbook landed). The originals are
 <code>Superseded by</code> these in Aperture with forward pointers. The renumbering map:</p>
 <table>
@@ -4216,8 +4216,10 @@ whose <strong>Outcome</strong> section records the execution — no separate run
 and the graph runtime was Hippo. On 2026-09-11 their prose was updated to <strong>DataHelix</strong> and
 <strong>Mosaic</strong> (Mosaic ADR-0004) and their cross-references re-pointed (the platform's split ADR is
 <strong>0003</strong>, not 0001 — platform ADR-0001 is now the certified-frontier ledger). Data-contract
-identifiers (<code>hippoSchema</code>, <code>hippo_core</code>, <code>hippo_*</code> annotation keys) deliberately keep their
-spelling, matching Mosaic's own carve-out. Each migrated ADR carries a dated <strong>Status update</strong>
+identifiers (<code>hippoSchema</code>, <code>hippo_core</code>, <code>hippo_*</code> annotation keys) deliberately kept their
+spelling, matching Mosaic's own carve-out at the time. Platform ADR-0007 later retired that
+carve-out: Mosaic v0.16.0 renamed them to <code>mosaicSchema</code>, <code>mosaic_core</code> and <code>mosaic_*</code>. The
+ADRs' old spellings are left as written, with a dated note. Each migrated ADR carries a dated <strong>Status update</strong>
 section noting what the platform has since decided or shipped; their Decision sections are
 unchanged.</p>
 <h2 id="adr-0006-onward-authored-in-reel">ADR-0006 onward: authored in Reel<a class="headerlink" href="#adr-0006-onward-authored-in-reel" title="Permanent link">&para;</a></h2>
@@ -4239,17 +4241,17 @@ always qualified:</p>
 <tbody>
 <tr>
 <td><strong>Aperture ADR-NNNN</strong></td>
-<td><code>BU-Neuromics/aperture</code></td>
+<td><code>datahelix-platform/aperture</code></td>
 <td>Low numbers overlap Reel's (Reel ADR-0003 <em>topology</em> vs. Aperture ADR-0003 <em>config-as-LinkML-in-Mosaic</em>). Aperture reused <strong>0026</strong> after the split, so "Aperture ADR-0026" is ambiguous — cite Reel ADR-0005 for the headless-core decision.</td>
 </tr>
 <tr>
 <td><strong>Mosaic ADR-NNNN</strong></td>
-<td><code>BU-Neuromics/mosaic</code></td>
+<td><code>datahelix-platform/mosaic</code></td>
 <td>Mosaic (formerly Hippo, Mosaic ADR-0004). Older docs say "Hippo ADR-0001" for graph-level as-of; it is <strong>Mosaic ADR-0001</strong>.</td>
 </tr>
 <tr>
 <td><strong>platform ADR-NNNN</strong></td>
-<td><code>BU-Neuromics/datahelix</code> <code>platform/design/decisions/</code></td>
+<td><code>datahelix-platform/datahelix</code> <code>platform/design/decisions/</code></td>
 <td>Cross-component decisions. <code>datahelix:</code> prefixes a path in that repo (e.g. <code>datahelix:platform/design/view-contract.md</code>).</td>
 </tr>
 </tbody>

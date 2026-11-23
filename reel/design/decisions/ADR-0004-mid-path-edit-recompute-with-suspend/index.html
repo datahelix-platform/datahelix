@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4172,6 +4172,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#amendment-and-ratification-2026-11-10-the-v1-rule-is-re-ask-flag-suspend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amendment and ratification (2026-11-10) — the v1 rule is re-ask + flag + suspend
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4196,9 +4207,10 @@
 
 <h1 id="adr-0004-mid-path-edits-recompute-downstream-and-suspend-on-invalid-not-discard">ADR-0004: Mid-path edits recompute downstream and suspend-on-invalid (not discard)<a class="headerlink" href="#adr-0004-mid-path-edits-recompute-downstream-and-suspend-on-invalid-not-discard" title="Permanent link">&para;</a></h1>
 <ul>
-<li><strong>Status:</strong> Proposed</li>
-<li><strong>Date:</strong> 2026-06-17 (migrated to Reel 2026-06-22)</li>
-<li><strong>Deciders:</strong> labadorf, design session</li>
+<li><strong>Status:</strong> Accepted (amended at ratification — see <em>Amendment and ratification (2026-11-10)</em>)</li>
+<li><strong>Date:</strong> 2026-11-10 (proposed 2026-06-17; migrated to Reel 2026-06-22)</li>
+<li><strong>Deciders:</strong> labadorf (decision pass 2026-11-10); originally labadorf, design session</li>
+<li><strong>Tracking issue:</strong> <a href="https://github.com/datahelix-platform/reel/issues/19">reel#19</a> (implement the hold; contract: <code>../turn-contract.md</code> Amendment 1)</li>
 <li><strong>Related:</strong> ADR-0001 (instruction-path model), ADR-0002 (as-of watermark), Aperture ADR-0009 (dry-run validation), Aperture ADR-0020 (provenance events); <code>instruction-path-model.md</code> §6</li>
 </ul>
 <blockquote>
@@ -4207,7 +4219,9 @@
 records the execution). Renumbered 0025 → Reel 0004. Portal-decision references
 are qualified <strong>"Aperture ADR-NNNN"</strong>; bare <code>ADR-NNNN</code> refers to Reel's own ADRs.
 <strong>Names updated 2026-09-11:</strong> Hippo → <strong>Mosaic</strong> (Mosaic ADR-0004), BASS/drylims → <strong>DataHelix</strong>;
-data-contract identifiers (e.g. <code>hippoSchema</code>, <code>hippo_core</code>) deliberately keep their spelling.</p>
+data-contract identifiers (e.g. <code>hippoSchema</code>, <code>hippo_core</code>) deliberately keep their spelling.
+<strong>2026-11-20:</strong> platform ADR-0007 retired that carve-out. Since Mosaic v0.16.0 these identifiers are
+<code>mosaicSchema</code> / <code>mosaicEntityType</code>, <code>mosaic_core</code> and <code>mosaic_*</code>.</p>
 </blockquote>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
 <p>A data story is "rewindable like CAD": the user scrolls back to instruction <em>k</em>, changes it, and
@@ -4275,6 +4289,69 @@ State (e.g. it references a slot the new filter removed) is marked <strong>suspe
   migration delta (<code>../../proposals/exon-migration.md</code> delta D3), pending Aperture ADR-0020's
   provenance-event model (still <code>Deferred (MVP)</code> in Aperture).</li>
 </ul>
+<h3 id="amendment-and-ratification-2026-11-10-the-v1-rule-is-re-ask-flag-suspend">Amendment and ratification (2026-11-10) — the v1 rule is re-ask + flag + suspend<a class="headerlink" href="#amendment-and-ratification-2026-11-10-the-v1-rule-is-re-ask-flag-suspend" title="Permanent link">&para;</a></h3>
+<p>Amended, then accepted, by labadorf in the 2026-11-10 decision pass. The Decision above assumes
+something v1 does not have: <strong>deterministic replay of typed ops against a fixed watermark</strong>. A v1
+turn carries no op expansion (migration deltas D4/D5) and no watermark (ADR-0002, delta D2) —
+only its utterance and the resulting full QuerySpec. So recompute in v1 cannot replay ops; it can
+only ask the planner again. The v1 rule:</p>
+<ol>
+<li><strong>Re-ask.</strong> On an upstream edit, each downstream step's <strong>original utterance is re-asked</strong>
+   against the new state (the edited draft plus the recomputed turns before it) — as
+   <code>src/reel/story/conversation.py</code> <code>edit_turn</code> does today.</li>
+<li><strong>Flag changed specs.</strong> Any downstream step whose resulting QuerySpec <strong>differs from its
+   QuerySpec before the edit</strong> is <strong>flagged for the user to review</strong>, not silently applied. A
+   step that re-plans to the same QuerySpec is carried without a flag.</li>
+<li><strong>Suspend on clarification.</strong> A downstream step whose re-ask comes back as a blocking
+   clarification is <strong>suspended</strong> (existing behaviour: <code>status: "suspended"</code>, the model's
+   question as the re-prompt, every later step cascades to suspended without further model
+   calls). A clarification that <em>answered</em> a schema-discovery question (<code>resolution:
+   "answered"</code>) does not suspend — also existing behaviour.</li>
+</ol>
+<p><strong>Target, unchanged:</strong> deterministic typed-op replay against the as-of watermark, per the
+Decision above, once the op deltas (D4/D5) and the watermark (D2) exist. At that point recompute
+stops being a model call and flagging narrows to genuine validity changes.</p>
+<p><strong>The trust trade-off.</strong> This ADR originally rejected "recompute and silently auto-repair broken
+downstream steps (re-elaborate their NL)" because it hides correctness changes. Re-asking the
+original utterance <em>is</em> re-elaboration — the planner may read the same words differently against
+the new state, and an LLM may not answer identically even when the edit should not have affected
+a step. v1 accepts re-elaboration because there is nothing else to replay, and buys back the
+trust property with the flag: <strong>no downstream QuerySpec changes without the user seeing it.</strong>
+The costs: (a) review noise — a nondeterministic re-plan can flag a step whose meaning did not
+change (spurious differences in an equivalent spec, or genuine drift); (b) the user carries the
+burden of judging each flagged step; (c) a re-plan that is <em>wrong but identical</em> to the old spec
+is, correctly, not flagged — the flag detects change, not correctness. Suspend-on-clarification
+still catches the steps the planner itself cannot resolve.</p>
+<p><strong>As built</strong> (verified against <code>src/reel/story/conversation.py</code> and <code>src/reel/serve/http.py</code> at
+commit <code>1b050e6</code>): points 1 and 3 are implemented; the HTTP response returns <code>turn</code>,
+<code>suspended_turn_ids</code> and the full recomputed <code>turns</code>. <strong>Point 2 is not</strong>: a recomputed proposal
+replaces the old turn with no comparison and no flag. Tracked in <a href="https://github.com/datahelix-platform/reel/issues/19">reel#19</a>. The append-only
+edit-history log (Decision, second layer) remains unbuilt (delta D3).</p>
+<p><strong>What "flagged" means (2026-11-10, labadorf): held for review.</strong> A downstream step whose
+QuerySpec changed comes back as a proposal <strong>awaiting the user's confirmation</strong>. It is not applied
+or run, and it carries its <code>previous_query_spec</code> so a UI can show the difference. The response
+lists these steps in <code>held_turn_ids</code> (drafted as <code>changed_turn_ids</code>; named on 2026-11-17),
+beside <code>suspended_turn_ids</code>. This is a change to the turn
+contract (ADR-0008 §3; Mosaic ADR-0010 item 7), so it is recorded as <strong>Amendment 1</strong> of
+<a href="../../turn-contract/"><code>../turn-contract.md</code></a>, which also fixes how a held step affects the steps
+after it. The Reel side is <a href="https://github.com/datahelix-platform/reel/issues/19">reel#19</a>. A user
+sees a held step only after Mosaic passes the fields through its relay and GraphQL
+<code>ConverseResult</code>, and Aperture's conversational panel (Aperture ADR-0039) renders them with a
+confirm action. Both follow-ups start after the amendment merges.</p>
+<p><strong>Amendment 1's open questions decided (2026-11-17, labadorf).</strong> The contract lives in Reel at
+<a href="../../turn-contract/"><code>../turn-contract.md</code></a>. Steps after a held step are re-asked against the
+held step's new spec and are held themselves if they changed; the applied draft ends at the first
+held turn; confirmation is in order (client-side, "confirm all" allowed); a held step is rejected
+by editing it; a request whose planning base contains a held turn gets a 400. Suspending
+everything after a held step, and re-asking against the last applied spec, were considered and
+rejected. v1 has no restore-previous ("keep the old meaning") action; one can be added later as an
+additive amendment. The response field is <code>held_turn_ids</code>. The reasoning is in the contract's
+<em>Decisions of 2026-11-17</em> section.</p>
+<p><strong>As built, Reel side (reel#19):</strong> point 2 is implemented in <code>edit_turn</code>
+(<code>src/reel/story/conversation.py</code>) and <code>/turn</code> (<code>src/reel/serve/http.py</code>) per Amendment 1. Held
+turns carry <code>held_for_review</code> / <code>previous_query_spec</code>, the response carries <code>held_turn_ids</code>,
+and a request that would plan on top of a held turn answers 400. Tests:
+<code>tests/test_held_for_review.py</code> (no model calls).</p>
 
 
 

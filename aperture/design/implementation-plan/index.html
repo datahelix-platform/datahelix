@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4259,7 +4259,7 @@ not converted; self-host fonts, tokenize inline styles — see the export README
 </tr>
 <tr>
 <td>4 — Control plane</td>
-<td>Saved views, drafts, config-as-data persistence (LinkML-on-Hippo)</td>
+<td>Saved views, drafts, config-as-data persistence (LinkML-on-Mosaic)</td>
 <td>ADR-0003/0017; L10</td>
 </tr>
 </tbody>
@@ -4286,17 +4286,17 @@ possible surface.</p>
   content to slots; a slot a layout lacks degrades honestly. The registry seam exists so more
   layouts drop in later without a refactor. <em>(ADR-0031)</em></li>
 <li><strong>0.2 — Endpoint config.</strong> A single <strong>active endpoint</strong> (L2) resolved from env/config
-  (<code>VITE_HIPPO_GRAPHQL_URL</code>, mirroring the Python side's <code>DATAHELIX_*</code> convention). One config module;
+  (<code>VITE_GRAPHQL_URL</code>, mirroring the Python side's <code>DATAHELIX_*</code> convention). One config module;
   no multi-source. <em>(N5.2)</em></li>
-<li><strong>0.3 — GraphQL client + Layer-D adapter.</strong> A urql client; a <code>HippoSource</code> adapter module that:
-  (a) runs <code>__schema</code> introspection baseline + Hippo <code>hippoSchema</code>/<code>hippoEntityType</code> enrichment,
+<li><strong>0.3 — GraphQL client + Layer-D adapter.</strong> A urql client; a <code>MosaicSource</code> adapter module that:
+  (a) runs <code>__schema</code> introspection baseline + Mosaic <code>mosaicSchema</code>/<code>mosaicEntityType</code> enrichment,
   (b) exposes a typed <strong><code>Capabilities</code></strong> object (facets, FTS, pagination kind, sort, aggregation,
   relationship traversal, batch write — populated from what the endpoint advertises). <em>(ADR-0017;
   N5.1)</em></li>
 <li><strong>0.4 — Capability seam.</strong> A small <code>useCapabilities()</code> surface the UI reads; features check it
   and <strong>degrade honestly</strong> — Phase 0 only needs "offset pagination supported?" but the seam is the
   one ADR-0029 mandates, established here so later features plug in. <em>(ADR-0029)</em></li>
-<li><strong>0.5 — Schema-derived collection list (the slice).</strong> Query <code>hippoSchema</code> → list entity types
+<li><strong>0.5 — Schema-derived collection list (the slice).</strong> Query <code>mosaicSchema</code> → list entity types
   (rendered in the <code>primaryNav</code> slot) → select one → query its entities (offset page) → render a
   <strong>TanStack Table</strong> in the <code>main</code> slot whose columns derive from the type's slots (scalar/enum/ref
   renderers minimal). Loading/empty/error states. <em>(R3.1/R3.2; slots per ADR-0031)</em></li>
@@ -4312,7 +4312,7 @@ sandbox; real control-plane store (Phase 4); auth beyond the no-op seam.</p>
 <ul>
 <li>A running <strong>Hippo GraphQL</strong> endpoint (<code>hippo serve</code>, graphql extra) for dev + e2e; document the
   one-liner. Confirm CORS / introspection availability against <code>hippo serve</code> early (a known risk —
-  <code>prior-art.md</code> notes introspection is sometimes gated; Hippo's <code>hippoSchema</code> sidesteps standard
+  <code>prior-art.md</code> notes introspection is sometimes gated; Mosaic's <code>mosaicSchema</code> sidesteps standard
   <code>__schema</code> if needed).</li>
 </ul>
 <h3 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h3>

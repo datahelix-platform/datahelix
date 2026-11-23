@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4281,7 +4281,7 @@ not a foundation.</p>
   auto-derives GraphQL binding from schema.</strong> GraphQL providers <em>code</em> binding (<code>buildQuery</code>);
   DataHarmonizer derives UI from LinkML annotations but only offline. → <strong>De-risk with a Hippo
   introspection → derived-binding prototype</strong>, and <strong>do not depend on live standard <code>__schema</code>
-  in production</strong> (commonly gated); Hippo's <em>custom</em> <code>hippoSchema</code> query sidesteps this if it
+  in production</strong> (commonly gated); Mosaic's <em>custom</em> <code>mosaicSchema</code> query sidesteps this if it
   can be auth-gated rather than disabled.</li>
 <li><strong>Noun-catalog view vocabulary (ADR-0010):</strong> Vega-Lite is the <strong>design template</strong> — a closed
   set of typed primitives + a smart-defaults compiler is exactly how to grow the catalog
@@ -4317,7 +4317,7 @@ not a foundation.</p>
 </ul>
 <h2 id="recommended-follow-ups">Recommended follow-ups<a class="headerlink" href="#recommended-follow-ups" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>De-risk the novel bet:</strong> prototype Hippo <code>hippoSchema</code> introspection → <strong>derived binding</strong>
+<li><strong>De-risk the novel bet:</strong> prototype Mosaic <code>mosaicSchema</code> introspection → <strong>derived binding</strong>
    (the thing nobody has done) — directly feeds core-loop Step 2/3.</li>
 <li><strong>Prototype config validation</strong> against <strong>Gen3's <code>gitops.json</code> model</strong> (config-as-data
    validated against the backend schema), translated to LinkML-validated config.</li>

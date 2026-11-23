@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4172,6 +4172,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#ratification-2026-11-10-accepted-with-amendment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ratification (2026-11-10) — Accepted, with amendment
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4196,10 +4207,10 @@
 
 <h1 id="adr-0001-a-data-story-is-an-instruction-path-producing-typed-subgraph-states-artifacts">ADR-0001: A data story is an instruction path producing typed subgraph states + artifacts<a class="headerlink" href="#adr-0001-a-data-story-is-an-instruction-path-producing-typed-subgraph-states-artifacts" title="Permanent link">&para;</a></h1>
 <ul>
-<li><strong>Status:</strong> Proposed</li>
-<li><strong>Date:</strong> 2026-06-17 (migrated to Reel 2026-06-22)</li>
-<li><strong>Deciders:</strong> labadorf, design session</li>
-<li><strong>Related:</strong> Aperture ADR-0003 (config-as-LinkML-in-Mosaic), Aperture ADR-0009 (view-descriptions + headless validation), Aperture ADR-0010 (typed noun-catalog, keystone), Aperture ADR-0020 (conversations/actions are provenance events), Aperture ADR-0002 (generic, no domain nouns); ADR-0002 (as-of reproducibility), ADR-0005 (headless core); <code>instruction-path-model.md</code>; <code>prefab/data-stories.md</code></li>
+<li><strong>Status:</strong> Accepted (amended at ratification — see <em>Ratification (2026-11-10)</em>)</li>
+<li><strong>Date:</strong> 2026-11-10 (proposed 2026-06-17; migrated to Reel 2026-06-22)</li>
+<li><strong>Deciders:</strong> labadorf (decision pass 2026-11-10); originally labadorf, design session</li>
+<li><strong>Related:</strong> Aperture ADR-0003 (config-as-LinkML-in-Mosaic), Aperture ADR-0009 (view-descriptions + headless validation), Aperture ADR-0010 (typed noun-catalog, keystone), Aperture ADR-0020 (conversations/actions are provenance events), Aperture ADR-0002 (generic, no domain nouns); ADR-0002 (as-of reproducibility), ADR-0005 (headless core), ADR-0006 (v1 State = QuerySpec), ADR-0007 (validation at the Mosaic boundary), ADR-0008 (turn contract = v1 <code>Instruction</code>); <code>instruction-path-model.md</code>; <code>prefab/data-stories.md</code></li>
 </ul>
 <blockquote>
 <p><strong>Migrated from Aperture ADR-0022 (2026-06-22)</strong> on the data-story-engine split
@@ -4208,7 +4219,9 @@ records the execution).
 Renumbered 0022 → Reel 0001. References to the <em>portal's</em> decisions are qualified
 <strong>"Aperture ADR-NNNN"</strong>; bare <code>ADR-NNNN</code> refers to Reel's own ADRs.
 <strong>Names updated 2026-09-11:</strong> Hippo → <strong>Mosaic</strong> (Mosaic ADR-0004), BASS/drylims → <strong>DataHelix</strong>;
-data-contract identifiers (e.g. <code>hippoSchema</code>, <code>hippo_core</code>) deliberately keep their spelling.</p>
+data-contract identifiers (e.g. <code>hippoSchema</code>, <code>hippo_core</code>) deliberately keep their spelling.
+<strong>2026-11-20:</strong> platform ADR-0007 retired that carve-out. Since Mosaic v0.16.0 these identifiers are
+<code>mosaicSchema</code> / <code>mosaicEntityType</code>, <code>mosaic_core</code> and <code>mosaic_*</code>.</p>
 </blockquote>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
 <p>The AI-native explorer (<code>vision.md</code>) and the keystone MVP (<code>prefab/data-stories.md</code>) both
@@ -4229,8 +4242,9 @@ source-tagged <code>Instruction</code>s that deterministically produces a sequen
   that expands to one or more nested, sequential typed <strong>ops</strong> (think tool calls) drawn from the
   closed catalog (<code>filter · exists-related-filter · distinct-values · group-by+count ·
   pivot-grain · set-op · render-as-primitive</code>). A UI event is born as one op; a chat turn is raw
-  intent elaborated by the LLM into ops and <strong>dry-run-validated</strong> (Aperture ADR-0009) before
-  applying. The <code>Instruction</code> is the <strong>unit of rewind</strong>; its nested ops are inspectable but not
+  intent elaborated by the LLM into ops and <strong>validated at Mosaic's MCP boundary</strong> before
+  anything executes (ADR-0007 — Reel hosts no validator; <em>amended 2026-11-10</em>, was
+  "dry-run-validated (Aperture ADR-0009)"). The <code>Instruction</code> is the <strong>unit of rewind</strong>; its nested ops are inspectable but not
   independently addressable — to change a turn, edit the prompt and re-elaborate.</li>
 <li><strong><code>State</code></strong> — a typed <strong>subgraph specification</strong> (intensional): the predicates/selections that
   <em>denote</em> a subgraph of <code>Entity</code>/<code>Relationship</code> instances per the LinkML schema. A "cohort" is a
@@ -4256,7 +4270,8 @@ source-tagged <code>Instruction</code>s that deterministically produces a sequen
   free (Aperture ADR-0003) — and the "re-runnable declarative artifact" <code>vision.md</code> promises is
   literally "replay the path."</li>
 <li><strong>Obligations:</strong> the op catalog must be closed and typed (couples to Aperture ADR-0010); every
-  instruction must be dry-run-validatable before apply (Aperture ADR-0009); State must stay
+  instruction must be validated before it executes — by Mosaic's boundary, not by Reel
+  (ADR-0007; <em>amended 2026-11-10</em>, was "dry-run-validatable (Aperture ADR-0009)"); State must stay
   intensional (forces the reproducibility model — ADR-0002).</li>
 <li><strong>Deferred:</strong> ops over <em>heterogeneous</em> entity types within one subgraph (multi-type op
   semantics) are hard and out of scope for v1; the v1 op catalog stays single-focal-type.</li>
@@ -4307,6 +4322,34 @@ source-tagged <code>Instruction</code>s that deterministically produces a sequen
   and <code>set-op</code> remain unbuilt. Multi-type ops (the named open problem) are untouched.</li>
 <li><strong>Ratification recommendation:</strong> the model held up under the probe; the remaining sub-question
   is multi-type op semantics, which was already deferred. Ratify alongside ADR-0003/0004.</li>
+</ul>
+<h3 id="ratification-2026-11-10-accepted-with-amendment">Ratification (2026-11-10) — Accepted, with amendment<a class="headerlink" href="#ratification-2026-11-10-accepted-with-amendment" title="Permanent link">&para;</a></h3>
+<p>Ratified by labadorf in the 2026-11-10 decision pass. The model above stands; the amendment
+pins down the <strong>v1 forms</strong> of its abstract nouns, each already settled by a later Reel ADR:</p>
+<ul>
+<li><strong><code>State</code> (v1) is the platform QuerySpec</strong> — <a href="../ADR-0006-v1-state-is-the-queryspec/">ADR-0006</a>
+  (Aperture ADR-0035 / Mosaic ADR-0009). Reel composes QuerySpec instances; it defines no query
+  noun of its own.</li>
+<li><strong>Validation is delegated to the Mosaic boundary</strong> —
+  <a href="../ADR-0007-reel-delegates-to-the-mosaic-boundary/">ADR-0007</a>. The Decision and Consequences
+  text above originally said each instruction is "dry-run-validated (Aperture ADR-0009)"; that
+  wording is replaced in place (marked <em>amended 2026-11-10</em>). Mosaic's <code>validate_query_spec</code> /
+  the validating relay (Mosaic ADR-0009/0010) is the gate; Reel is an untrusted planner behind it.</li>
+<li><strong><code>Instruction</code> (v1 wire form) is the turn contract</strong> —
+  <a href="../ADR-0008-exon-seeds-reel/">ADR-0008</a>: request <code>{utterance, query_spec, turns,
+  edit_turn_id}</code> → response <code>{turn, suspended_turn_ids, turns}</code>. A turn is one chat
+  <code>Instruction</code>; its <code>query_spec</code> is the resulting State.</li>
+</ul>
+<p><strong>Not built yet</strong> (verified against <code>src/reel/</code> at v0.1.0+, commit <code>1b050e6</code>): the code carries
+an ordered <code>turns</code> list of <code>{id, utterance, status, message, query_spec}</code> and nothing more. Absent:</p>
+<ul>
+<li><strong><code>Artifact</code>s</strong> — no materialized/rendered artifact is produced or stamped; Reel emits
+  QuerySpecs, and execution happens in Mosaic. No migration delta names this yet.</li>
+<li><strong><code>DataStory</code> persistence</strong> — no container, no store; the transcript lives in the caller
+  (migration delta <strong>D1</strong>, <code>../../proposals/exon-migration.md</code>).</li>
+<li><strong>Source tags</strong> — no <code>Instruction.source</code>; every turn is implicitly <code>chat</code> (delta <strong>D4</strong>).</li>
+<li><strong>Op expansion</strong> — the nested typed ops a turn elaborates into are not exposed; a turn carries
+  only the resulting full QuerySpec (delta <strong>D5</strong>).</li>
 </ul>
 
 

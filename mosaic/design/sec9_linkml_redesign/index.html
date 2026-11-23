@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference_hippo_yaml/" class="md-nav__link">
+      <a href="../reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4149,10 +4149,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#94-hippo_ext-extension-vocabulary" class="md-nav__link">
+  <a href="#94-mosaic_ext-extension-vocabulary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9.4 hippo_ext Extension Vocabulary
+        9.4 mosaic_ext Extension Vocabulary
       
     </span>
   </a>
@@ -4160,10 +4160,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#95-hippo_core-schema" class="md-nav__link">
+  <a href="#95-mosaic_core-schema" class="md-nav__link">
     <span class="md-ellipsis">
       
-        9.5 hippo_core Schema
+        9.5 mosaic_core Schema
       
     </span>
   </a>
@@ -4285,7 +4285,7 @@
 <h2 id="9-linkml-centric-redesign">9. LinkML-Centric Redesign<a class="headerlink" href="#9-linkml-centric-redesign" title="Permanent link">&para;</a></h2>
 <p><strong>Document status:</strong> Draft v0.1
 <strong>Depends on:</strong> sec2_architecture.md, sec3_data_model.md, sec3b_relational_storage.md, sec6_provenance.md
-<strong>Feeds into:</strong> sec1_overview.md, sec2_architecture.md, sec3_data_model.md, sec3b_relational_storage.md, sec4_api_layer.md, sec5_ingestion.md, sec6_provenance.md, sec7_nfr.md, appendix_a_example_schema_omics.md, appendix_b_implementation_guide.md, reference_hippo_yaml.md, reference_validators_yaml.md, reference_hippo_core.md, reference_hippo_ext.md</p>
+<strong>Feeds into:</strong> sec1_overview.md, sec2_architecture.md, sec3_data_model.md, sec3b_relational_storage.md, sec4_api_layer.md, sec5_ingestion.md, sec6_provenance.md, sec7_nfr.md, appendix_a_example_schema_omics.md, appendix_b_implementation_guide.md, reference_mosaic_yaml.md, reference_validators_yaml.md, reference_mosaic_core.md, reference_mosaic_ext.md</p>
 <hr />
 <h3 id="91-motivation-goals">9.1 Motivation &amp; Goals<a class="headerlink" href="#91-motivation-goals" title="Permanent link">&para;</a></h3>
 <p>Hippo's schema system predates its adoption of LinkML. The original design shipped a bespoke trio — <code>SchemaConfig</code>, <code>SchemaParser</code>, <code>FieldDefinition</code> — that duplicated concepts LinkML had already formalized: schema loading, slot definitions, type ranges, inheritance, constraints. Direct LinkML authoring was adopted mid-course (commits <code>49a11c9</code> "rewrite all schema examples to valid LinkML format" and <code>04f1448</code> "remove Hippo DSL — rename to EntityYAML, delete compiler") — a substantial correction, applied incrementally.</p>
@@ -4294,7 +4294,7 @@
 <ul>
 <li><strong>Duplicated concepts.</strong> <code>FieldDefinition</code> and its adjacent config types shadowed LinkML's <code>SlotDefinition</code>; two representations of the same idea had to be kept in sync by hand. Most have been deleted, but analogous duplication persists for <code>ProvenanceRecord</code> and the entity base concept.</li>
 <li><strong>Hand-rolled tooling.</strong> DDL generation, schema diff, and schema-evolution plumbing are implemented from scratch where LinkML ships mature equivalents (<code>gen-sqlddl</code>, <code>linkml-diff</code>).</li>
-<li><strong>Stringly-typed annotations.</strong> <code>hippo_*</code> annotations are flat keys inside LinkML <code>annotations:</code> blocks — no formal vocabulary, no versioning, no spec. Adding a new annotation is a convention, not a contract.</li>
+<li><strong>Stringly-typed annotations.</strong> <code>mosaic_*</code> annotations are flat keys inside LinkML <code>annotations:</code> blocks — no formal vocabulary, no versioning, no spec. Adding a new annotation is a convention, not a contract.</li>
 <li><strong>Provenance outside the schema.</strong> <code>ProvenanceRecord</code> is modeled entirely outside the schema system — its shape cannot be introspected, validated, evolved, or queried through the same tooling as entity data.</li>
 <li><strong>No typed client.</strong> Callers interact with entities as generic dicts and kwargs, with no IDE, type-checker, or refactor support.</li>
 <li><strong>No formal schema validation.</strong> Schema correctness is checked by ad-hoc Python, not by LinkML's own schema-level checkers.</li>
@@ -4306,7 +4306,7 @@
 <li><strong>No shadow abstractions.</strong> Pre-LinkML abstractions that duplicate or shadow LinkML equivalents are eliminated; the LinkML representation is preferred in every case.</li>
 <li><strong>Adopt, don't rebuild.</strong> LinkML's generator and validator ecosystem is used wherever it meets Hippo's requirements; custom code is justified only by a genuine expressiveness gap.</li>
 <li><strong>Provenance in the schema system.</strong> <code>ProvenanceRecord</code> is a first-class LinkML class and benefits from the same tooling — DDL generation, introspection, validation, diff — as user data.</li>
-<li><strong>Annotations as contracts.</strong> The <code>hippo_*</code> vocabulary is formalized as a versioned LinkML extension schema; annotations become contracts rather than conventions.</li>
+<li><strong>Annotations as contracts.</strong> The <code>mosaic_*</code> vocabulary is formalized as a versioned LinkML extension schema; annotations become contracts rather than conventions.</li>
 <li><strong>Typed client surface.</strong> A typed client is generated from the merged schema, offered alongside (not in place of) the generic dynamic client.</li>
 <li><strong>Preserve what works.</strong> The existing three-layer architecture, SDK-first layering, plugin storage adapters, CEL for dynamic and cross-entity rules, and provenance-log-only temporal data all carry forward.</li>
 <li><strong>Uniform introspection.</strong> Anything describable in LinkML is discoverable through one pipeline — entity definitions, provenance structure, and validator metadata alike — including at the REST introspection surface.</li>
@@ -4323,8 +4323,8 @@
 <p><strong>Layering.</strong></p>
 <ul>
 <li><strong>One merged schema at runtime.</strong> Exactly one merged <code>SchemaView</code>, produced by the <code>SchemaRegistry</code> from the three layers. Code reads from it. Code never constructs parallel schema representations.</li>
-<li><strong>Layer independence.</strong> <code>hippo_ext</code> imports nothing. <code>hippo_core</code> imports <code>hippo_ext</code>. User schemas import <code>hippo_core</code>. Imports flow downward only — no sideways, no upward.</li>
-<li><strong>Annotations are contracts.</strong> Every <code>hippo_*</code> annotation used in a user schema MUST be declared in <code>hippo_ext</code>. Undocumented annotations are a defect, not a convention.</li>
+<li><strong>Layer independence.</strong> <code>mosaic_ext</code> imports nothing. <code>mosaic_core</code> imports <code>mosaic_ext</code>. User schemas import <code>mosaic_core</code>. Imports flow downward only — no sideways, no upward.</li>
+<li><strong>Annotations are contracts.</strong> Every <code>mosaic_*</code> annotation used in a user schema MUST be declared in <code>mosaic_ext</code>. Undocumented annotations are a defect, not a convention.</li>
 </ul>
 <p><strong>Subsystem behavior.</strong></p>
 <ul>
@@ -4332,12 +4332,12 @@
 <li><strong>Provenance is data.</strong> <code>ProvenanceRecord</code> is processed by the same DDL generation, validation, introspection, and migration code paths as user entities. No provenance-shape-aware special cases in Python — see 9.6.</li>
 <li><strong>Provenance integrity is transactional and loud.</strong> A mutation that cannot emit a valid <code>ProvenanceRecord</code> MUST fail atomically — the entity write does not complete. Missing, partial, or inconsistent provenance detected at read time raises an error rather than degrading silently. Incomplete provenance is a critical data-integrity defect, not a degraded state — see 9.6, 9.7.</li>
 <li><strong>Temporal fields are read-time.</strong> <code>created_at</code>, <code>updated_at</code>, and <code>schema_version</code> are never stored as columns on entity tables; they are always computed from the provenance log — see 9.7.</li>
-<li><strong>Typed and dynamic clients are coequal.</strong> Every SDK capability is reachable from both the Pydantic-generated typed client and the generic dynamic <code>HippoClient</code>. Neither is the "real" one — see 9.8.</li>
+<li><strong>Typed and dynamic clients are coequal.</strong> Every SDK capability is reachable from both the Pydantic-generated typed client and the generic dynamic <code>MosaicClient</code>. Neither is the "real" one — see 9.8.</li>
 <li><strong>Identifiers are globally unique UUIDs.</strong> Every entity <code>id</code> is a UUID, unique across the system by collision probability. Polymorphic references (<code>entity_id</code>, <code>process_id</code>, <code>actor_id</code>, <code>parent_process_id</code>, <code>derived_from_id</code>) carry a UUID alone — no tagged union, no prefix convention. Type resolution is adapter-specific: a lightweight registry table in relational adapters, native labels in Neo4j — see 9.5.</li>
 </ul>
 <p><strong>Evolution discipline.</strong></p>
 <ul>
-<li><strong>Additive before breaking.</strong> Schema changes are additive (new optional slot, new class, new annotation) unless a breaking change is explicitly scoped in an OpenSpec proposal. Breaking changes to <code>hippo_core</code> or <code>hippo_ext</code> are major events and carry version bumps.</li>
+<li><strong>Additive before breaking.</strong> Schema changes are additive (new optional slot, new class, new annotation) unless a breaking change is explicitly scoped in an OpenSpec proposal. Breaking changes to <code>mosaic_core</code> or <code>mosaic_ext</code> are major events and carry version bumps.</li>
 <li><strong>SDK-first layering is preserved.</strong> Transport layers (REST, future GraphQL) and storage adapters contain no schema logic; they call the Core SDK. This principle carries forward from sec2 and is not revisited by sec9.</li>
 </ul>
 <hr />
@@ -4347,22 +4347,22 @@
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│  user_schema.yaml          (per-deployment)                  │
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  · domain classes (Sample, Project, Aliquot, ...)            │
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  · is_a: Entity on every domain class                        │
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  · imports: hippo_core                                       │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  · imports: mosaic_core                                       │
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>└──────────────────────────┬───────────────────────────────────┘
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                           │  imports
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>┌──────────────────────────▼───────────────────────────────────┐
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  hippo_core.yaml           (ships with Hippo)                │
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  mosaic_core.yaml           (ships with Hippo)                │
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│  · Entity, ProvenanceRecord, Process, Validator,             │
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│    ReferenceLoader                                           │
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│  · Status, Operation enums                                   │
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│  · imports: hippo_ext                                        │
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│  · imports: mosaic_ext                                        │
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>└──────────────────────────┬───────────────────────────────────┘
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>                           │  imports
 <a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>┌──────────────────────────▼───────────────────────────────────┐
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│  hippo_ext.yaml            (ships with Hippo)                │
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│  · annotation vocabulary: hippo_unique, hippo_index,         │
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│    hippo_index_partial, hippo_search, hippo_append_only,     │
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│    hippo_accessor                                            │
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│  mosaic_ext.yaml            (ships with Hippo)                │
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│  · annotation vocabulary: mosaic_unique, mosaic_index,         │
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│    mosaic_index_partial, mosaic_search, mosaic_append_only,     │
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│    mosaic_accessor                                            │
 <a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│  · imports: nothing                                          │
 <a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>└──────────────────────────────────────────────────────────────┘
 </code></pre></div>
@@ -4378,32 +4378,32 @@
 </thead>
 <tbody>
 <tr>
-<td><code>hippo_ext</code></td>
+<td><code>mosaic_ext</code></td>
 <td>Hippo</td>
-<td>Formal vocabulary for <code>hippo_*</code> annotations used in user schemas</td>
+<td>Formal vocabulary for <code>mosaic_*</code> annotations used in user schemas</td>
 <td>none</td>
 </tr>
 <tr>
-<td><code>hippo_core</code></td>
+<td><code>mosaic_core</code></td>
 <td>Hippo</td>
 <td><code>Entity</code> base class, <code>ProvenanceRecord</code>, <code>Process</code>, <code>Validator</code> and <code>ReferenceLoader</code> classes, <code>Status</code> / <code>Operation</code> enums</td>
-<td><code>hippo_ext</code></td>
+<td><code>mosaic_ext</code></td>
 </tr>
 <tr>
 <td>user schema</td>
 <td>deployment</td>
 <td>Domain classes expressing what a deployment tracks</td>
-<td><code>hippo_core</code></td>
+<td><code>mosaic_core</code></td>
 </tr>
 </tbody>
 </table>
-<p>Deployments author only the user schema. <code>hippo_core</code> and <code>hippo_ext</code> are shipped artifacts; they change only through Hippo releases and carry their own versions (see below, 9.4, 9.5).</p>
+<p>Deployments author only the user schema. <code>mosaic_core</code> and <code>mosaic_ext</code> are shipped artifacts; they change only through Hippo releases and carry their own versions (see below, 9.4, 9.5).</p>
 <p><strong>Layering rules.</strong></p>
 <ul>
 <li>Imports are unidirectional (user → core → ext) and transitive. No schema may import a higher layer; no schema may import sideways within a layer. (See 9.2 <em>Layer independence</em>.)</li>
-<li><code>hippo_core</code> MUST NOT reference any domain class. A domain concept appearing in <code>hippo_core</code> is a layering violation.</li>
-<li>User schemas MUST NOT redefine classes, slots, enums, or annotations owned by <code>hippo_core</code> or <code>hippo_ext</code>. Extending via <code>is_a</code> or <code>slot_usage</code> is allowed; replacing is not.</li>
-<li>Every <code>hippo_*</code> annotation used in any schema MUST be declared in <code>hippo_ext</code>. An undeclared annotation is a defect. (See 9.2 <em>Annotations are contracts</em>.)</li>
+<li><code>mosaic_core</code> MUST NOT reference any domain class. A domain concept appearing in <code>mosaic_core</code> is a layering violation.</li>
+<li>User schemas MUST NOT redefine classes, slots, enums, or annotations owned by <code>mosaic_core</code> or <code>mosaic_ext</code>. Extending via <code>is_a</code> or <code>slot_usage</code> is allowed; replacing is not.</li>
+<li>Every <code>mosaic_*</code> annotation used in any schema MUST be declared in <code>mosaic_ext</code>. An undeclared annotation is a defect. (See 9.2 <em>Annotations are contracts</em>.)</li>
 </ul>
 <p><strong>Runtime merging.</strong></p>
 <p>At startup, <code>SchemaRegistry</code> loads the three layers through LinkML's <code>SchemaView</code> and produces one merged view. Every downstream subsystem — DDL generation, validation pipeline, typed-client generation, REST introspection — reads from this merged view. No subsystem loads LinkML schemas directly; no subsystem caches parallel derived state.</p>
@@ -4420,12 +4420,12 @@
 </thead>
 <tbody>
 <tr>
-<td><code>hippo_ext</code></td>
+<td><code>mosaic_ext</code></td>
 <td>New annotation; documentation refinement</td>
 <td>Renamed or removed annotation; semantic change to an existing annotation</td>
 </tr>
 <tr>
-<td><code>hippo_core</code></td>
+<td><code>mosaic_core</code></td>
 <td>New optional slot on <code>Entity</code>, new enum value, new class</td>
 <td>Change to existing class shape, newly required slot, enum value removal, class removal</td>
 </tr>
@@ -4436,14 +4436,14 @@
 </tr>
 </tbody>
 </table>
-<p><code>hippo_core</code> declares which <code>hippo_ext</code> major version it targets; a user schema declares which <code>hippo_core</code> major version it targets. <code>SchemaRegistry</code> refuses to merge against an incompatible major version and reports the mismatch at load time — a running Hippo instance therefore pins a specific <code>(hippo_ext, hippo_core)</code> pair, and user schemas are validated against that pair before any data operation.</p>
-<p>Any breaking change to <code>hippo_core</code> or <code>hippo_ext</code> is a major event and requires an OpenSpec proposal scoping the migration path (see 9.12).</p>
+<p><code>mosaic_core</code> declares which <code>mosaic_ext</code> major version it targets; a user schema declares which <code>mosaic_core</code> major version it targets. <code>SchemaRegistry</code> refuses to merge against an incompatible major version and reports the mismatch at load time — a running Hippo instance therefore pins a specific <code>(mosaic_ext, mosaic_core)</code> pair, and user schemas are validated against that pair before any data operation.</p>
+<p>Any breaking change to <code>mosaic_core</code> or <code>mosaic_ext</code> is a major event and requires an OpenSpec proposal scoping the migration path (see 9.12).</p>
 <hr />
-<h3 id="94-hippo_ext-extension-vocabulary">9.4 <code>hippo_ext</code> Extension Vocabulary<a class="headerlink" href="#94-hippo_ext-extension-vocabulary" title="Permanent link">&para;</a></h3>
-<p><code>hippo_ext</code> is a LinkML schema whose sole role is to declare the <code>hippo_*</code> annotations consumed elsewhere in the stack. It owns no classes, no slots, and no enums — it is a vocabulary schema.</p>
-<p>Before this redesign, <code>hippo_*</code> keys appeared directly inside LinkML <code>annotations:</code> blocks on user schemas with no formal declaration. <code>hippo_ext</code> replaces that convention with a contract: every annotation name, its value type, which elements it may attach to, and its semantics are declared in one place and version-controlled.</p>
+<h3 id="94-mosaic_ext-extension-vocabulary">9.4 <code>mosaic_ext</code> Extension Vocabulary<a class="headerlink" href="#94-mosaic_ext-extension-vocabulary" title="Permanent link">&para;</a></h3>
+<p><code>mosaic_ext</code> is a LinkML schema whose sole role is to declare the <code>mosaic_*</code> annotations consumed elsewhere in the stack. It owns no classes, no slots, and no enums — it is a vocabulary schema.</p>
+<p>Before this redesign, <code>mosaic_*</code> keys appeared directly inside LinkML <code>annotations:</code> blocks on user schemas with no formal declaration. <code>mosaic_ext</code> replaces that convention with a contract: every annotation name, its value type, which elements it may attach to, and its semantics are declared in one place and version-controlled.</p>
 <p><strong>Declaration pattern.</strong></p>
-<p>Each annotation in <code>hippo_ext</code> is declared with, at minimum:</p>
+<p>Each annotation in <code>mosaic_ext</code> is declared with, at minimum:</p>
 <table>
 <thead>
 <tr>
@@ -4454,7 +4454,7 @@
 <tbody>
 <tr>
 <td><code>name</code></td>
-<td>The bare annotation key (e.g., <code>hippo_index</code>). The <code>hippo_</code> prefix is literal; no implicit prefixing.</td>
+<td>The bare annotation key (e.g., <code>mosaic_index</code>). The <code>mosaic_</code> prefix is literal; no implicit prefixing.</td>
 </tr>
 <tr>
 <td><code>value_type</code></td>
@@ -4479,7 +4479,7 @@
 </tbody>
 </table>
 <p><strong>Usage pattern.</strong></p>
-<p>A user schema applies an annotation from <code>hippo_ext</code> via an <code>annotations:</code> block on the target element. At schema-load time, <code>SchemaRegistry</code> validates that every applied annotation is declared in <code>hippo_ext</code>, that its value type matches the declaration, and that its <code>applies_to</code> permits the target element. Undeclared annotations, mistyped values, and wrong-target attachments are reported as load-time errors. No annotation is silently ignored.</p>
+<p>A user schema applies an annotation from <code>mosaic_ext</code> via an <code>annotations:</code> block on the target element. At schema-load time, <code>SchemaRegistry</code> validates that every applied annotation is declared in <code>mosaic_ext</code>, that its value type matches the declaration, and that its <code>applies_to</code> permits the target element. Undeclared annotations, mistyped values, and wrong-target attachments are reported as load-time errors. No annotation is silently ignored.</p>
 <p><strong>Current vocabulary.</strong></p>
 <table>
 <thead>
@@ -4492,58 +4492,58 @@
 </thead>
 <tbody>
 <tr>
-<td><code>hippo_unique</code></td>
+<td><code>mosaic_unique</code></td>
 <td>slot</td>
 <td>boolean</td>
 <td>Emit a single-column <code>UNIQUE</code> constraint for this slot. Composite uniqueness uses LinkML-native <code>unique_keys</code>.</td>
 </tr>
 <tr>
-<td><code>hippo_index</code></td>
+<td><code>mosaic_index</code></td>
 <td>slot</td>
 <td>boolean</td>
 <td>Emit a single-column index for this slot.</td>
 </tr>
 <tr>
-<td><code>hippo_index_partial</code></td>
+<td><code>mosaic_index_partial</code></td>
 <td>slot</td>
 <td>boolean</td>
-<td>When <code>hippo_index: true</code>, emit the index as partial with <code>WHERE is_available = 1</code>. Ignored if <code>hippo_index</code> is false.</td>
+<td>When <code>mosaic_index: true</code>, emit the index as partial with <code>WHERE is_available = 1</code>. Ignored if <code>mosaic_index</code> is false.</td>
 </tr>
 <tr>
-<td><code>hippo_search</code></td>
+<td><code>mosaic_search</code></td>
 <td>slot</td>
 <td>string</td>
 <td>Include this slot in a full-text index of the declared mode. Adapter enforces which modes it supports (current canonical mode: <code>fts5</code>).</td>
 </tr>
 <tr>
-<td><code>hippo_append_only</code></td>
+<td><code>mosaic_append_only</code></td>
 <td>class</td>
 <td>boolean</td>
 <td>Storage adapter MUST reject updates and deletes on rows of this class. Used by <code>ProvenanceRecord</code> (see 9.6).</td>
 </tr>
 <tr>
-<td><code>hippo_accessor</code></td>
+<td><code>mosaic_accessor</code></td>
 <td>class</td>
 <td>string</td>
 <td>Override the derived typed-client accessor name. Optional escape hatch used only when the default derivation produces a collision or when a deployment prefers a non-default name. See 9.8.</td>
 </tr>
 </tbody>
 </table>
-<p>The authoritative reference — default values, exact enum ranges, interactions between annotations — lives in <code>reference_hippo_ext.md</code>.</p>
-<p>Some capabilities intentionally have no <code>hippo_*</code> annotation because LinkML covers them natively. Default values use LinkML's <code>ifabsent</code> (literal values or expressions like <code>uuid()</code>, <code>datetime(now)</code>, <code>int(0)</code>). Composite uniqueness uses LinkML's <code>unique_keys</code>. Required slots use LinkML's <code>required: true</code>. An agent implementing a user schema should reach for the LinkML-native attribute first and only use a <code>hippo_*</code> annotation when no LinkML equivalent exists.</p>
+<p>The authoritative reference — default values, exact enum ranges, interactions between annotations — lives in <code>reference_mosaic_ext.md</code>.</p>
+<p>Some capabilities intentionally have no <code>mosaic_*</code> annotation because LinkML covers them natively. Default values use LinkML's <code>ifabsent</code> (literal values or expressions like <code>uuid()</code>, <code>datetime(now)</code>, <code>int(0)</code>). Composite uniqueness uses LinkML's <code>unique_keys</code>. Required slots use LinkML's <code>required: true</code>. An agent implementing a user schema should reach for the LinkML-native attribute first and only use a <code>mosaic_*</code> annotation when no LinkML equivalent exists.</p>
 <p><strong>Extensibility.</strong></p>
 <p>Adding a new annotation is a four-step change, scoped in an OpenSpec proposal:</p>
 <ol>
-<li>Declare the annotation in <code>hippo_ext</code> (name, value type, <code>applies_to</code>, cardinality, default, description).</li>
+<li>Declare the annotation in <code>mosaic_ext</code> (name, value type, <code>applies_to</code>, cardinality, default, description).</li>
 <li>Implement its effect in the subsystem that consumes it (DDL generator, validator, typed-client generator, etc.).</li>
-<li>Document it in <code>reference_hippo_ext.md</code>.</li>
-<li>Bump <code>hippo_ext</code> minor version.</li>
+<li>Document it in <code>reference_mosaic_ext.md</code>.</li>
+<li>Bump <code>mosaic_ext</code> minor version.</li>
 </ol>
-<p>Removing or renaming an annotation bumps <code>hippo_ext</code> major version and requires an OpenSpec proposal that scopes the migration path for user schemas using the affected annotation.</p>
-<p>The vocabulary above is the starting set. <code>hippo_ext</code> is expected to grow as new cross-cutting concerns surface; it is not a closed list.</p>
+<p>Removing or renaming an annotation bumps <code>mosaic_ext</code> major version and requires an OpenSpec proposal that scopes the migration path for user schemas using the affected annotation.</p>
+<p>The vocabulary above is the starting set. <code>mosaic_ext</code> is expected to grow as new cross-cutting concerns surface; it is not a closed list.</p>
 <hr />
-<h3 id="95-hippo_core-schema">9.5 <code>hippo_core</code> Schema<a class="headerlink" href="#95-hippo_core-schema" title="Permanent link">&para;</a></h3>
-<p><code>hippo_core</code> is the LinkML schema that declares Hippo's built-in classes and enums. Every user schema imports <code>hippo_core</code>; every domain class uses <code>is_a: Entity</code>. <code>hippo_core</code> carries no domain knowledge — it is the minimal set of primitives the rest of the system needs to operate.</p>
+<h3 id="95-mosaic_core-schema">9.5 <code>mosaic_core</code> Schema<a class="headerlink" href="#95-mosaic_core-schema" title="Permanent link">&para;</a></h3>
+<p><code>mosaic_core</code> is the LinkML schema that declares Hippo's built-in classes and enums. Every user schema imports <code>mosaic_core</code>; every domain class uses <code>is_a: Entity</code>. <code>mosaic_core</code> carries no domain knowledge — it is the minimal set of primitives the rest of the system needs to operate.</p>
 <p><strong>Class and enum inventory.</strong></p>
 <table>
 <thead>
@@ -4577,7 +4577,7 @@
 <tr>
 <td><code>ReferenceLoader</code></td>
 <td>class</td>
-<td>Metadata for a reference-data loader plugin. Instances are contributed by plugins registered under the <code>hippo.reference_loaders</code> entry point.</td>
+<td>Metadata for a reference-data loader plugin. Instances are contributed by plugins registered under the <code>mosaic.reference_loaders</code> entry point.</td>
 </tr>
 <tr>
 <td><code>Status</code></td>
@@ -4591,7 +4591,7 @@
 </tr>
 </tbody>
 </table>
-<p>The authoritative slot-level reference lives in <code>reference_hippo_core.md</code>. The summaries below cover design-relevant slots; field-level details (types, cardinality, examples) are deferred.</p>
+<p>The authoritative slot-level reference lives in <code>reference_mosaic_core.md</code>. The summaries below cover design-relevant slots; field-level details (types, cardinality, examples) are deferred.</p>
 <p><strong>Identity model.</strong></p>
 <p>Every <code>id</code> slot across the system carries a UUID (v4 random or v7 time-ordered; SDK-assigned on create, opaque to callers). UUIDs are globally unique by collision probability; no Hippo-specific uniqueness enforcement is required beyond the per-class primary-key constraint each adapter emits.</p>
 <p>Polymorphic references — slots whose target class is not fixed at schema-definition time — are uniformly UUID-typed. <code>ProvenanceRecord.entity_id</code>, <code>ProvenanceRecord.actor_id</code>, <code>ProvenanceRecord.process_id</code>, <code>ProvenanceRecord.derived_from_id</code>, and <code>Process.parent_process_id</code> are all of this form. A caller holding a UUID can resolve it to a specific entity class without any information beyond the UUID itself.</p>
@@ -4658,9 +4658,9 @@
 </tr>
 </tbody>
 </table>
-<p>No temporal fields, no status enum, no foreign-key columns. Temporal state (<code>created_at</code>, <code>updated_at</code>, <code>schema_version</code>) is computed from <code>ProvenanceRecord</code> at read time (see 9.7); status transitions are recorded as <code>ProvenanceRecord</code> entries with an <code>availability_change</code> operation (see 9.6). Domain classes add their own slots and MAY annotate them with <code>hippo_*</code> vocabulary from <code>hippo_ext</code>.</p>
+<p>No temporal fields, no status enum, no foreign-key columns. Temporal state (<code>created_at</code>, <code>updated_at</code>, <code>schema_version</code>) is computed from <code>ProvenanceRecord</code> at read time (see 9.7); status transitions are recorded as <code>ProvenanceRecord</code> entries with an <code>availability_change</code> operation (see 9.6). Domain classes add their own slots and MAY annotate them with <code>mosaic_*</code> vocabulary from <code>mosaic_ext</code>.</p>
 <p><strong><code>ProvenanceRecord</code>.</strong></p>
-<p>Detailed in 9.6. Summary: an append-only class annotated <code>hippo_append_only: true</code>, with slots carrying the operation, the target entity, the actor, the timestamp, the schema version, and the change payload. It is DDL-generated by the same pipeline as user entities and uses formal PROV-O alignment.</p>
+<p>Detailed in 9.6. Summary: an append-only class annotated <code>mosaic_append_only: true</code>, with slots carrying the operation, the target entity, the actor, the timestamp, the schema version, and the change payload. It is DDL-generated by the same pipeline as user entities and uses formal PROV-O alignment.</p>
 <p><strong><code>Process</code>.</strong></p>
 <p><code>Process</code> represents a composite activity — a grouping of atomic operations that together constitute one logical execution. Reference-data loads, schema migrations, and caller-side activities like Cappella pipelines each emit one <code>Process</code> and associate their atomic <code>ProvenanceRecord</code> entries with it via the records' <code>process_id</code> slot (see 9.6).</p>
 <p><code>Process is_a Entity</code> and carries <code>class_uri: prov:Activity</code>. The shared PROV-O class URI across <code>Process</code> and <code>ProvenanceRecord</code> reflects PROV-O's treatment of activities at both composite and atomic scales — both are legitimately <code>prov:Activity</code>, differing only in granularity.</p>
@@ -4733,24 +4733,24 @@
 </ul>
 <p>LinkML-native type, pattern, enum, range, and required-slot checks run upstream of any <code>Validator</code>. A <code>Validator</code> exists only for logic that is dynamic or cross-entity — see 9.9.</p>
 <p><strong><code>ReferenceLoader</code>.</strong></p>
-<p><code>ReferenceLoader</code> exists in <code>hippo_core</code> so that a deployment can answer the question "what reference-data loaders are installed, and what do they populate?" through the same introspection pipeline used for every other concept — <code>SchemaRegistry</code>, REST introspection, the typed client. Plugin code continues to live in Python and to register under the <code>hippo.reference_loaders</code> entry point; <code>ReferenceLoader</code> is the introspectable metadata shape for each registered plugin.</p>
+<p><code>ReferenceLoader</code> exists in <code>mosaic_core</code> so that a deployment can answer the question "what reference-data loaders are installed, and what do they populate?" through the same introspection pipeline used for every other concept — <code>SchemaRegistry</code>, REST introspection, the typed client. Plugin code continues to live in Python and to register under the <code>mosaic.reference_loaders</code> entry point; <code>ReferenceLoader</code> is the introspectable metadata shape for each registered plugin.</p>
 <p>The exact slot inventory is deferred to a subsequent OpenSpec change (see 9.12). Two design questions must be resolved before the shape is finalized:</p>
 <ul>
 <li><strong>Multi-class loaders.</strong> A single reference-data source frequently populates several entity classes simultaneously (e.g., an ontology loader contributing <code>Organism</code>, <code>Tissue</code>, and <code>Assay</code>). The <code>entity_type</code> slot must be multivalued; the exact cardinality semantics (ordered? set?) and whether per-class metadata is carried alongside each entry remain open.</li>
 <li><strong>Referential boundary of <code>schema_fragment</code>.</strong> A <code>ReferenceLoader</code> instance may reference classes declared in its own <code>schema_fragment</code>. Those classes do not exist in the merged <code>SchemaView</code> until the plugin's fragment is installed. The load-order contract — when the fragment is merged, when the <code>ReferenceLoader</code> instance is validated, what the error surface is if validation fails — requires a deliberate design, not an implicit ordering.</li>
 </ul>
-<p>Until these are resolved, <code>ReferenceLoader</code> is treated as a placeholder entry in <code>hippo_core</code> with no committed slot inventory. User-facing plugin registration continues unchanged from sec5; it is not blocked on this design.</p>
+<p>Until these are resolved, <code>ReferenceLoader</code> is treated as a placeholder entry in <code>mosaic_core</code> with no committed slot inventory. User-facing plugin registration continues unchanged from sec5; it is not blocked on this design.</p>
 <p><strong>Enums.</strong></p>
-<p><code>Status</code> and <code>Operation</code> are closed enums in <code>hippo_core</code>. Adding a value is additive (minor bump); removing a value is breaking (major bump) per 9.3.</p>
+<p><code>Status</code> and <code>Operation</code> are closed enums in <code>mosaic_core</code>. Adding a value is additive (minor bump); removing a value is breaking (major bump) per 9.3.</p>
 <p><strong>Design notes.</strong></p>
 <ul>
 <li><code>Entity</code> is intentionally sparse. The SDK needs exactly <code>id</code> and <code>is_available</code> on every entity; everything else is either domain-specific (user schema) or derived from provenance (9.7). Resist adding slots to <code>Entity</code>.</li>
-<li><code>hippo_core</code> contains no foreign keys into user-schema classes. A relationship from a domain entity to its provenance is expressed via the <code>entity_id</code> slot on <code>ProvenanceRecord</code>, not by a reference in the opposite direction.</li>
-<li><code>hippo_core</code> MUST validate against itself. Its own shape satisfies the LinkML meta-model, and <code>SchemaRegistry</code> verifies this at load time. A malformed <code>hippo_core</code> is a startup failure, not a silent degradation.</li>
+<li><code>mosaic_core</code> contains no foreign keys into user-schema classes. A relationship from a domain entity to its provenance is expressed via the <code>entity_id</code> slot on <code>ProvenanceRecord</code>, not by a reference in the opposite direction.</li>
+<li><code>mosaic_core</code> MUST validate against itself. Its own shape satisfies the LinkML meta-model, and <code>SchemaRegistry</code> verifies this at load time. A malformed <code>mosaic_core</code> is a startup failure, not a silent degradation.</li>
 </ul>
 <hr />
 <h3 id="96-provenance-as-a-linkml-class">9.6 Provenance as a LinkML Class<a class="headerlink" href="#96-provenance-as-a-linkml-class" title="Permanent link">&para;</a></h3>
-<p><code>ProvenanceRecord</code> is declared in <code>hippo_core</code> as a first-class LinkML class. It is DDL-generated by the same pipeline as user entities, validated against the same schema machinery, and introspectable through the same <code>SchemaRegistry</code> view. There is no provenance-specific code path in the core SDK.</p>
+<p><code>ProvenanceRecord</code> is declared in <code>mosaic_core</code> as a first-class LinkML class. It is DDL-generated by the same pipeline as user entities, validated against the same schema machinery, and introspectable through the same <code>SchemaRegistry</code> view. There is no provenance-specific code path in the core SDK.</p>
 <p><strong>PROV-O alignment.</strong></p>
 <p><code>ProvenanceRecord</code> maps to the W3C PROV-O ontology via LinkML URI alignment. Each instance is a <code>prov:Activity</code>: an operation that occurred over a conceptually instantaneous period, associated with an agent, that generated, invalidated, or derived one or more <code>prov:Entity</code> instances.</p>
 <table>
@@ -4834,7 +4834,7 @@
 <td><code>actor_id</code></td>
 <td>string (UUID)</td>
 <td>yes</td>
-<td>Identifier of the entity responsible for this operation. Resolves through the identity model (9.5) to an agent entity — a user-schema <code>User</code>/<code>Service</code> class, a <code>Process</code> (for autonomous execution), or a system entity. Deployments that need rich actor modeling define agent classes in their user schema; <code>hippo_core</code> prescribes only the reference.</td>
+<td>Identifier of the entity responsible for this operation. Resolves through the identity model (9.5) to an agent entity — a user-schema <code>User</code>/<code>Service</code> class, a <code>Process</code> (for autonomous execution), or a system entity. Deployments that need rich actor modeling define agent classes in their user schema; <code>mosaic_core</code> prescribes only the reference.</td>
 </tr>
 <tr>
 <td><code>timestamp</code></td>
@@ -4971,15 +4971,15 @@
 </tbody>
 </table>
 <p>Reconstructing a logical activity's full entity trail is <code>SELECT * FROM ProvenanceRecord WHERE process_id = &lt;id&gt;</code>. Traversal in the other direction — entity → processes it participated in — is <code>SELECT DISTINCT process_id FROM ProvenanceRecord WHERE entity_id = &lt;id&gt;</code>. Process composition (a reference load that internally spawns sub-processes, a pipeline with sub-stages) is captured by <code>Process.parent_process_id</code>; the call-graph DAG lives on <code>Process</code>, not on <code>ProvenanceRecord</code>, keeping atomic records flat and cheap to query.</p>
-<p>Activity chains across Processes (<code>prov:wasInformedBy</code> between distinct Processes) are caller-modeled relationships on user-schema subclasses of <code>Process</code>; <code>hippo_core</code> does not prescribe the predicate.</p>
+<p>Activity chains across Processes (<code>prov:wasInformedBy</code> between distinct Processes) are caller-modeled relationships on user-schema subclasses of <code>Process</code>; <code>mosaic_core</code> does not prescribe the predicate.</p>
 <p>The current shape is additive-compatible with future extensions — <code>derived_from_ids</code> as multivalued, a dedicated generation/use join class, richer Process lifecycle state slots. None are needed as long as the 1:1 atomic record model holds.</p>
 <p><strong>Storage semantics.</strong></p>
-<p><code>ProvenanceRecord</code> is a normal entity table from the adapter's perspective, generated by the same DDL pipeline used for user entities. It is distinguished by the class-level annotation <code>hippo_append_only: true</code> (declared in <code>hippo_ext</code>; see 9.4), which imposes two rules the storage adapter MUST enforce:</p>
+<p><code>ProvenanceRecord</code> is a normal entity table from the adapter's perspective, generated by the same DDL pipeline used for user entities. It is distinguished by the class-level annotation <code>mosaic_append_only: true</code> (declared in <code>mosaic_ext</code>; see 9.4), which imposes two rules the storage adapter MUST enforce:</p>
 <ol>
 <li><code>INSERT</code> is permitted. <code>UPDATE</code> and <code>DELETE</code> are rejected at the adapter layer.</li>
 <li>Partial-index and summary-view annotations do not apply to <code>ProvenanceRecord</code>; rows are read linearly by entity, by time window, or by operation kind.</li>
 </ol>
-<p>Append-only enforcement is a runtime check in the adapter, not a DDL constraint — LinkML annotations declare intent; the adapter honors them. A violation is a defect in the adapter, not in <code>hippo_core</code>.</p>
+<p>Append-only enforcement is a runtime check in the adapter, not a DDL constraint — LinkML annotations declare intent; the adapter honors them. A violation is a defect in the adapter, not in <code>mosaic_core</code>.</p>
 <p><strong>Write atomicity.</strong></p>
 <p>Every entity mutation and its accompanying <code>ProvenanceRecord</code> write are one transactional unit. Either both land or neither does. If the adapter cannot append the provenance record, the entity write MUST roll back and the caller MUST receive a failure — the caller's operation does not complete. This applies to every operation that emits provenance: <code>create</code>, <code>update</code>, <code>supersede</code>, <code>availability_change</code>, <code>relationship_add</code>, <code>relationship_remove</code>, <code>external_id_add</code>, <code>external_id_remove</code>.</p>
 <p>Storage adapters that cannot provide transactional semantics spanning the entity table and the <code>ProvenanceRecord</code> table are unacceptable. For relational adapters this is a standard transaction. For Neo4j it is a single Cypher transaction spanning the entity node and the provenance node. For any future adapter, this is a conformance requirement.</p>
@@ -4996,7 +4996,7 @@
 <p><code>ProvenanceRecord.entity_id</code> points from provenance to entity, not the other way. An <code>Entity</code> has no slot referencing its provenance records. This is deliberate:</p>
 <ul>
 <li>It preserves the "<code>Entity</code> is sparse" invariant from 9.5.</li>
-<li>It keeps <code>hippo_core</code> free of cross-layer references (no slot on <code>Entity</code> points into system-level data).</li>
+<li>It keeps <code>mosaic_core</code> free of cross-layer references (no slot on <code>Entity</code> points into system-level data).</li>
 <li>It matches the PROV-O pattern: entities are entities; activities point at the entities they affect.</li>
 </ul>
 <p>Provenance for a given entity is retrieved by querying <code>ProvenanceRecord</code> filtered by <code>entity_id</code> — a cheap, indexed read pattern. See 9.7 for how this supports computed temporal fields.</p>
@@ -5009,7 +5009,7 @@
 <li>Events by <code>operation</code> kind within a time window (audit/reporting).</li>
 <li>System events (<code>entity_id = null</code>) filtered by <code>operation</code> (migration/reference-data history).</li>
 </ul>
-<p>Indexes supporting these queries are declared on <code>ProvenanceRecord</code> slots via <code>hippo_index</code> from <code>hippo_ext</code>. The specific index set is implementation detail, deferred to the OpenSpec change that introduces the class.</p>
+<p>Indexes supporting these queries are declared on <code>ProvenanceRecord</code> slots via <code>mosaic_index</code> from <code>mosaic_ext</code>. The specific index set is implementation detail, deferred to the OpenSpec change that introduces the class.</p>
 <hr />
 <h3 id="97-computed-temporal-fields">9.7 Computed Temporal Fields<a class="headerlink" href="#97-computed-temporal-fields" title="Permanent link">&para;</a></h3>
 <p>Temporal state — <code>created_at</code>, <code>updated_at</code>, <code>schema_version</code>, <code>created_by</code>, <code>updated_by</code> — is never stored as columns on entity tables. It is computed at read time by aggregating over <code>ProvenanceRecord</code> entries for the target entity. This is a direct consequence of 9.2 <em>Temporal fields are read-time</em> and 9.6's append-only provenance log.</p>
@@ -5081,9 +5081,9 @@
 <p>Because <code>schema_version</code> is recorded on every <code>ProvenanceRecord</code>, a single entity can carry provenance from multiple schema versions. The computed <code>schema_version</code> always reflects the latest write. Migration queries that need to partition records by schema version filter <code>ProvenanceRecord.schema_version</code> directly — no traversal needed.</p>
 <hr />
 <h3 id="98-typed-client">9.8 Typed Client<a class="headerlink" href="#98-typed-client" title="Permanent link">&para;</a></h3>
-<p>The typed client is a Pydantic-generated surface that gives callers class-specific accessors over the SDK — <code>client.samples.create(Sample(name="S001"))</code> — alongside the generic <code>HippoClient.create("sample", {...})</code> that already exists. Per 9.2 <em>Typed and dynamic clients are coequal</em>, both surfaces have identical capabilities; neither is deprecated in favor of the other.</p>
+<p>The typed client is a Pydantic-generated surface that gives callers class-specific accessors over the SDK — <code>client.samples.create(Sample(name="S001"))</code> — alongside the generic <code>MosaicClient.create("sample", {...})</code> that already exists. Per 9.2 <em>Typed and dynamic clients are coequal</em>, both surfaces have identical capabilities; neither is deprecated in favor of the other.</p>
 <p><strong>Generation trigger.</strong></p>
-<p>Pydantic classes are generated at <code>SchemaRegistry</code> load time via LinkML's <code>PythonGenerator</code> (the same tool that produces <code>gen-pydantic</code> artifacts). Generation is in-memory — no file artifacts are written for user code. The generated namespace is exposed through a stable SDK entry point (e.g., <code>hippo.models</code>) and regenerates when the schema reloads. Static file generation for IDE autocomplete is a possible future supplement; it is not part of the base contract.</p>
+<p>Pydantic classes are generated at <code>SchemaRegistry</code> load time via LinkML's <code>PythonGenerator</code> (the same tool that produces <code>gen-pydantic</code> artifacts). Generation is in-memory — no file artifacts are written for user code. The generated namespace is exposed through a stable SDK entry point (e.g., <code>mosaic.models</code>) and regenerates when the schema reloads. Static file generation for IDE autocomplete is a possible future supplement; it is not part of the base contract.</p>
 <p><strong>Accessor shape.</strong></p>
 <p>The typed client mirrors the schema's namespace structure. Root-namespace classes are reachable both directly on <code>client</code> (flat) and via an explicit <code>client.root.*</code> path (dual access). Non-root-namespace classes are reached through a namespace path that matches their declared <code>namespace:</code> string.</p>
 <table>
@@ -5123,7 +5123,7 @@
 </tbody>
 </table>
 <p><code>client.samples</code> and <code>client.root.samples</code> resolve to the same underlying method — <code>client.root</code> is an alias for the flat root attributes. <code>root</code> is a reserved namespace name; a user schema MUST NOT declare <code>namespace: root</code>.</p>
-<p>The generated Pydantic classes mirror the same layout — each namespace becomes a submodule under <code>hippo.models</code>:</p>
+<p>The generated Pydantic classes mirror the same layout — each namespace becomes a submodule under <code>mosaic.models</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">hippo.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sample</span>                   <span class="c1"># root.Sample</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">hippo.models.root</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sample</span>              <span class="c1"># equivalent</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">hippo.models.tissue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sample</span> <span class="k">as</span> <span class="n">TissueSample</span>
@@ -5167,13 +5167,13 @@
 </tbody>
 </table>
 <p>The rule is intentionally simple (no dependency on an inflection library) and predictable (an agent can compute the accessor for any class). It does not attempt to produce linguistically correct plurals for irregular cases — deployments that want <code>data</code> instead of <code>datums</code>, or need to resolve a genuine collision, use the override annotation.</p>
-<p>Override: <code>hippo_accessor</code> (declared in <code>hippo_ext</code>; see 9.4). Class-level string annotation. Optional and rare — a typical deployment, including one with many namespaces, adds zero <code>hippo_accessor</code> annotations.</p>
+<p>Override: <code>mosaic_accessor</code> (declared in <code>mosaic_ext</code>; see 9.4). Class-level string annotation. Optional and rare — a typical deployment, including one with many namespaces, adds zero <code>mosaic_accessor</code> annotations.</p>
 <p><strong>Collision detection at schema load.</strong></p>
 <p><code>SchemaRegistry</code> validates the combined attribute space on <code>client</code> and on every namespace level at schema load and fails loudly on any collision. A collision is a load-time error; there is no first-wins resolution and no silent override. Four cases, each with a distinct error template:</p>
 <ol>
-<li><strong>Same-namespace accessor duplication.</strong> Two classes in the same namespace whose names (or <code>hippo_accessor</code> overrides) resolve to the same accessor.</li>
+<li><strong>Same-namespace accessor duplication.</strong> Two classes in the same namespace whose names (or <code>mosaic_accessor</code> overrides) resolve to the same accessor.</li>
 <li><strong>Class accessor vs. sub-namespace segment.</strong> At some attribute level, a class accessor conflicts with a sub-namespace name at the same level.</li>
-<li><strong>Namespace name vs. SDK-reserved attribute.</strong> A namespace (or sub-namespace segment) uses a reserved name: <code>root</code>, <code>query</code>, <code>create</code>, <code>get</code>, <code>update</code>, <code>supersede</code>, <code>schemas</code>, <code>metadata</code>, or any other existing attribute on <code>HippoClient</code>.</li>
+<li><strong>Namespace name vs. SDK-reserved attribute.</strong> A namespace (or sub-namespace segment) uses a reserved name: <code>root</code>, <code>query</code>, <code>create</code>, <code>get</code>, <code>update</code>, <code>supersede</code>, <code>schemas</code>, <code>metadata</code>, or any other existing attribute on <code>MosaicClient</code>.</li>
 <li><strong>Accessor vs. SDK-reserved name.</strong> A class's derived or override accessor conflicts with an existing client attribute.</li>
 </ol>
 <p>Error templates:</p>
@@ -5181,12 +5181,12 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>SchemaRegistry load error: typed-client accessor collision.
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  Classes `tissue.DNASample` and `tissue.DnaSample` both resolve to
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  accessor `dna_samples` in namespace `tissue`.
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  Add `hippo_accessor` to at least one class to disambiguate, e.g.:
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  Add `mosaic_accessor` to at least one class to disambiguate, e.g.:
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    classes:
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>      DnaSample:
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>        annotations:
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>          hippo_accessor: dna_samples_legacy
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>          mosaic_accessor: dna_samples_legacy
 </code></pre></div>
 <p>Case 2:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>SchemaRegistry load error: accessor/sub-namespace collision.
@@ -5194,12 +5194,12 @@
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  sub-namespace `tissue.protocol`.
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  `client.tissue.protocol` would be ambiguous.
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  Resolve by renaming the class, renaming the sub-namespace, or
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  adding `hippo_accessor`:
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  adding `mosaic_accessor`:
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    classes:
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>      Protocol:   # in namespace: tissue
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>        annotations:
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>          hippo_accessor: protocol_templates
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>          mosaic_accessor: protocol_templates
 </code></pre></div>
 <p>Case 3:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>SchemaRegistry load error: reserved namespace name.
@@ -5210,12 +5210,12 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>SchemaRegistry load error: accessor conflicts with SDK-reserved name.
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  Class `root.Query` (accessor `query`) conflicts with the SDK-reserved
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  attribute `query`.
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  Add `hippo_accessor` to the class with a non-reserved value:
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  Add `mosaic_accessor` to the class with a non-reserved value:
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
 <a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    classes:
 <a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>      Query:
 <a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>        annotations:
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>          hippo_accessor: search_queries
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>          mosaic_accessor: search_queries
 </code></pre></div>
 <p>Collision detection is part of schema validation — it runs before any subsystem sees the merged view.</p>
 <p><strong>Type checking and IDE support.</strong></p>
@@ -5228,7 +5228,7 @@
 </ul>
 <p><strong>Coexistence contract.</strong></p>
 <ul>
-<li>The generic <code>HippoClient</code> surface is unchanged by sec9. Every dynamic call continues to work.</li>
+<li>The generic <code>MosaicClient</code> surface is unchanged by sec9. Every dynamic call continues to work.</li>
 <li>New features land in both surfaces at the same time. A capability that exists only in the typed accessor is a defect, and vice versa.</li>
 <li>The typed accessors delegate to the same SDK internals; there is no duplicate code path.</li>
 </ul>
@@ -5343,7 +5343,7 @@
 </tr>
 <tr>
 <td>LinkML's <code>Annotation</code> metamodel</td>
-<td>Declaring <code>hippo_ext</code> vocabulary with typed values and <code>applies_to</code> constraints</td>
+<td>Declaring <code>mosaic_ext</code> vocabulary with typed values and <code>applies_to</code> constraints</td>
 <td>The previous convention of flat keys inside <code>annotations:</code> blocks</td>
 </tr>
 </tbody>
@@ -5351,10 +5351,10 @@
 <p><strong>Operating rule: adopt, do not reimplement.</strong></p>
 <p>Hippo uses LinkML's ecosystem as-is. Bugs, missing features, and quality gaps in LinkML are addressed by upgrading LinkML or contributing upstream — never by reimplementing the affected capability in Hippo. The alternative would be a slow drift into a parallel LinkML maintained by this project, which contradicts 9.1's motivation and negates the point of adopting LinkML in the first place.</p>
 <p><strong>Hippo-specific shims — strictly bounded.</strong></p>
-<p>Shims exist for exactly one reason: to apply the effects of <code>hippo_*</code> annotations that LinkML generators have no knowledge of. The shim layer is bounded by this scope; it is not a general-purpose place to absorb LinkML bugs or limitations.</p>
+<p>Shims exist for exactly one reason: to apply the effects of <code>mosaic_*</code> annotations that LinkML generators have no knowledge of. The shim layer is bounded by this scope; it is not a general-purpose place to absorb LinkML bugs or limitations.</p>
 <p>Shims permitted:</p>
 <ul>
-<li><strong>DDL shim.</strong> Post-pass over <code>gen-sqlddl</code> output that applies <code>hippo_*</code> annotation effects: <code>hippo_unique</code> → <code>UNIQUE</code> column constraints, <code>hippo_index</code> → <code>CREATE INDEX</code>, <code>hippo_index_partial</code> → partial indexes, <code>hippo_search</code> → FTS indexes, <code>hippo_append_only</code> → adapter-side write-guard registration. The base DDL is unchanged from LinkML's output.</li>
+<li><strong>DDL shim.</strong> Post-pass over <code>gen-sqlddl</code> output that applies <code>mosaic_*</code> annotation effects: <code>mosaic_unique</code> → <code>UNIQUE</code> column constraints, <code>mosaic_index</code> → <code>CREATE INDEX</code>, <code>mosaic_index_partial</code> → partial indexes, <code>mosaic_search</code> → FTS indexes, <code>mosaic_append_only</code> → adapter-side write-guard registration. The base DDL is unchanged from LinkML's output.</li>
 <li><strong>Validation result mapping.</strong> <code>linkml-validate</code> output is mapped into Hippo's <code>ValidationResult</code> envelope (9.9). No semantic translation; LinkML error messages are preserved verbatim.</li>
 <li><strong>Diff consumption.</strong> <code>linkml-diff</code> structured output is consumed by Hippo's migration planner, which decides which adapter operations (DDL alter, data migration, version bump) the diff implies.</li>
 </ul>
@@ -5370,7 +5370,7 @@
 <ul>
 <li><strong>CEL evaluation</strong> (<code>cel-python</code>-backed validators). Outside LinkML's scope by design; carries forward unchanged.</li>
 <li><strong>Storage adapters</strong> (<code>SQLiteAdapter</code>, <code>PostgresAdapter</code>, future <code>Neo4jAdapter</code>). LinkML does not ship adapters.</li>
-<li><strong><code>hippo_ext</code> vocabulary itself</strong>, as a schema artifact. LinkML provides the mechanism (annotation metamodel); Hippo provides the vocabulary.</li>
+<li><strong><code>mosaic_ext</code> vocabulary itself</strong>, as a schema artifact. LinkML provides the mechanism (annotation metamodel); Hippo provides the vocabulary.</li>
 <li><strong>Append-only enforcement, partial-index predicates, FTS adapter bindings.</strong> Adapter-layer behaviors that LinkML annotations declare but adapters enforce.</li>
 </ul>
 <p><strong>Version pinning — exact versions, deliberate upgrades.</strong></p>
@@ -5383,7 +5383,7 @@
 <li>If LinkML introduces a breaking change that requires Hippo source changes, the upgrade is scoped in an OpenSpec proposal before the pin moves.</li>
 </ul>
 <p><strong>Upstream contribution.</strong></p>
-<p><code>hippo_ext</code> annotations that prove general (not Hippo-specific) are candidate contributions to LinkML upstream. When a pattern is adopted upstream, <code>hippo_ext</code> phases out its local version in the next major bump with a migration note. Contributions happen opportunistically; they are not a prerequisite for any sec9 work.</p>
+<p><code>mosaic_ext</code> annotations that prove general (not Hippo-specific) are candidate contributions to LinkML upstream. When a pattern is adopted upstream, <code>mosaic_ext</code> phases out its local version in the next major bump with a migration note. Contributions happen opportunistically; they are not a prerequisite for any sec9 work.</p>
 <p><strong>What the integration is NOT.</strong></p>
 <ul>
 <li>Hippo does not become a LinkML tool. It uses LinkML as a library; LinkML does not dictate Hippo's architecture.</li>
@@ -5402,33 +5402,33 @@
 <ul>
 <li><code>67f798e</code> — <code>feat(hippo): add LinkML-backed SchemaRegistry seam</code></li>
 <li><code>3b1722d</code> — <code>refactor(hippo): swap DDL/migration/diff path to SchemaRegistry</code></li>
-<li><code>3726938</code> — <code>refactor(hippo): swap HippoClient/validator/manager to SchemaRegistry</code></li>
+<li><code>3726938</code> — <code>refactor(hippo): swap MosaicClient/validator/manager to SchemaRegistry</code></li>
 <li><code>f65fef4</code> — <code>refactor(hippo): delete SchemaParser, SchemaConfig, FieldDefinition</code></li>
 </ul>
 <p>After these, the user-schema loading pipeline runs on LinkML. User classes are authored directly in LinkML; SchemaRegistry wraps <code>SchemaView</code>; DDL generation and schema diff consume the merged view. The bespoke abstractions that shadowed LinkML are deleted.</p>
 <p>What remains outside the LinkML model:</p>
 <ul>
 <li>Hippo's own primitives (<code>Entity</code>, <code>ProvenanceRecord</code>, status/operation enums, <code>Validator</code>, <code>ReferenceLoader</code>) are not yet declared in a LinkML schema shipped with Hippo. They exist as Python constructs that a hand-written DDL path produces tables for.</li>
-<li>The <code>hippo_*</code> annotation vocabulary is used but not formally declared anywhere — it is a stringly-typed convention.</li>
-<li>No typed client surface exists; callers use the generic <code>HippoClient</code> exclusively.</li>
+<li>The <code>mosaic_*</code> annotation vocabulary is used but not formally declared anywhere — it is a stringly-typed convention.</li>
+<li>No typed client surface exists; callers use the generic <code>MosaicClient</code> exclusively.</li>
 <li>Temporal fields are partially computed from provenance but not uniformly formalized as read-time aggregations.</li>
 <li>Validation is tiered (LinkML → CEL → Python) by behavior but not formalized by contract.</li>
 </ul>
 <p><strong>Stage 3 — sec9 target state.</strong></p>
-<p>sec9 completes the direction. Hippo's primitives move into a shipped-with-Hippo LinkML schema (<code>hippo_core</code>). The annotation vocabulary moves into a separate shipped-with-Hippo LinkML schema (<code>hippo_ext</code>). <code>Process</code> joins <code>Entity</code> and <code>ProvenanceRecord</code> as a first-class class in <code>hippo_core</code>, formalizing the multi-entity activity grouping that reference loads, pipelines, and migrations need. Temporal fields become a uniform read-time computation. The validation tiering becomes an explicit contract. A typed Pydantic client surface becomes available alongside the dynamic <code>HippoClient</code>.</p>
+<p>sec9 completes the direction. Hippo's primitives move into a shipped-with-Hippo LinkML schema (<code>mosaic_core</code>). The annotation vocabulary moves into a separate shipped-with-Hippo LinkML schema (<code>mosaic_ext</code>). <code>Process</code> joins <code>Entity</code> and <code>ProvenanceRecord</code> as a first-class class in <code>mosaic_core</code>, formalizing the multi-entity activity grouping that reference loads, pipelines, and migrations need. Temporal fields become a uniform read-time computation. The validation tiering becomes an explicit contract. A typed Pydantic client surface becomes available alongside the dynamic <code>MosaicClient</code>.</p>
 <p>After sec9:</p>
 <ul>
-<li>Three LinkML schemas form the spine: <code>hippo_ext</code> (vocabulary), <code>hippo_core</code> (primitives), user schema (domain).</li>
+<li>Three LinkML schemas form the spine: <code>mosaic_ext</code> (vocabulary), <code>mosaic_core</code> (primitives), user schema (domain).</li>
 <li>The merged <code>SchemaView</code> is the only schema representation in memory; every subsystem reads from it.</li>
 <li><code>ProvenanceRecord</code> and <code>Process</code> are DDL-generated by the same pipeline as user entities.</li>
 <li>Identifiers are UUIDs everywhere; type resolution is adapter-specific; the SDK contract is uniform across adapters including the future Neo4j adapter.</li>
 <li>The typed client and the generic client are coequal surfaces over the same SDK.</li>
-<li>LinkML's ecosystem tools (<code>gen-sqlddl</code>, <code>gen-pydantic</code>, <code>linkml-validate</code>, <code>linkml-diff</code>) handle the bulk of the work; Hippo-specific code is limited to adapter logic, CEL evaluation, and the shims that apply <code>hippo_*</code> annotation effects.</li>
+<li>LinkML's ecosystem tools (<code>gen-sqlddl</code>, <code>gen-pydantic</code>, <code>linkml-validate</code>, <code>linkml-diff</code>) handle the bulk of the work; Hippo-specific code is limited to adapter logic, CEL evaluation, and the shims that apply <code>mosaic_*</code> annotation effects.</li>
 </ul>
 <p><strong>What sec9 does NOT require.</strong></p>
 <ul>
-<li>No data migration. Existing provenance records and entities remain readable. <code>hippo_core</code> is introduced additively; its tables are created at first migration; existing tables keep their shape.</li>
-<li>No API break. <code>HippoClient</code>'s existing surface is preserved; the typed accessors are additive.</li>
+<li>No data migration. Existing provenance records and entities remain readable. <code>mosaic_core</code> is introduced additively; its tables are created at first migration; existing tables keep their shape.</li>
+<li>No API break. <code>MosaicClient</code>'s existing surface is preserved; the typed accessors are additive.</li>
 <li>No storage-adapter rewrite. Adapters gain a registry table (relational) or labeling convention (Neo4j) but the core interface is unchanged.</li>
 <li>No cross-component changes. Cappella, Bridge, and Aperture are untouched; their integration with Hippo continues through the existing REST and SDK surfaces.</li>
 </ul>
@@ -5469,16 +5469,16 @@
 <tbody>
 <tr>
 <td><code>hippo-ext-vocabulary</code></td>
-<td>Create <code>hippo_ext.yaml</code> declaring the current <code>hippo_*</code> annotations as typed, <code>applies_to</code>-constrained LinkML annotations. Add <code>reference_hippo_ext.md</code>. Update <code>SchemaRegistry</code> to validate every <code>hippo_*</code> use against the declaration.</td>
+<td>Create <code>mosaic_ext.yaml</code> declaring the current <code>mosaic_*</code> annotations as typed, <code>applies_to</code>-constrained LinkML annotations. Add <code>reference_mosaic_ext.md</code>. Update <code>SchemaRegistry</code> to validate every <code>mosaic_*</code> use against the declaration.</td>
 <td>none</td>
-<td><code>hippo_ext.yaml</code>; reference doc; SchemaRegistry validation hook; tests covering declared/undeclared/mistyped annotations.</td>
-<td>Every existing <code>hippo_*</code> usage in the codebase validates against <code>hippo_ext</code>. Undeclared annotations surface as load-time errors.</td>
+<td><code>mosaic_ext.yaml</code>; reference doc; SchemaRegistry validation hook; tests covering declared/undeclared/mistyped annotations.</td>
+<td>Every existing <code>mosaic_*</code> usage in the codebase validates against <code>mosaic_ext</code>. Undeclared annotations surface as load-time errors.</td>
 </tr>
 <tr>
 <td><code>hippo-core-schema</code></td>
-<td>Create <code>hippo_core.yaml</code> with <code>Entity</code>, <code>Status</code>, <code>Operation</code> enums. Deployments' user schemas declare <code>imports: hippo_core</code> and use <code>is_a: Entity</code> on domain classes. <code>SchemaRegistry</code> merges the three layers. <code>Validator</code> and <code>ReferenceLoader</code> added as placeholder classes (slot-finalization deferred).</td>
+<td>Create <code>mosaic_core.yaml</code> with <code>Entity</code>, <code>Status</code>, <code>Operation</code> enums. Deployments' user schemas declare <code>imports: mosaic_core</code> and use <code>is_a: Entity</code> on domain classes. <code>SchemaRegistry</code> merges the three layers. <code>Validator</code> and <code>ReferenceLoader</code> added as placeholder classes (slot-finalization deferred).</td>
 <td><code>hippo-ext-vocabulary</code></td>
-<td><code>hippo_core.yaml</code>; updated user-schema import pattern; reference doc; migration of existing user schemas to <code>is_a: Entity</code>.</td>
+<td><code>mosaic_core.yaml</code>; updated user-schema import pattern; reference doc; migration of existing user schemas to <code>is_a: Entity</code>.</td>
 <td>All existing user schemas load against the merged view. No observable SDK behavior change.</td>
 </tr>
 <tr>
@@ -5490,9 +5490,9 @@
 </tr>
 <tr>
 <td><code>process-class</code></td>
-<td>Add <code>Process</code> to <code>hippo_core</code> (minimum slot set: <code>parent_process_id</code>, <code>operation_kind</code>, <code>started_at</code>, <code>ended_at</code>, <code>actor_id</code>). DDL generates the table. Callers can declare <code>is_a: Process</code> subclasses. No consumers yet — foundation for Wave 2.</td>
+<td>Add <code>Process</code> to <code>mosaic_core</code> (minimum slot set: <code>parent_process_id</code>, <code>operation_kind</code>, <code>started_at</code>, <code>ended_at</code>, <code>actor_id</code>). DDL generates the table. Callers can declare <code>is_a: Process</code> subclasses. No consumers yet — foundation for Wave 2.</td>
 <td><code>id-registry-and-uuid-strategy</code></td>
-<td><code>Process</code> class in <code>hippo_core</code>; DDL generation coverage; tests.</td>
+<td><code>Process</code> class in <code>mosaic_core</code>; DDL generation coverage; tests.</td>
 <td><code>Process</code> table exists; instances can be created; <code>is_a: Process</code> user-schema subclasses work.</td>
 </tr>
 </tbody>
@@ -5511,14 +5511,14 @@
 <tbody>
 <tr>
 <td><code>provenance-as-linkml-class</code></td>
-<td>Declares <code>hippo_append_only</code> in <code>hippo_ext</code> and <code>ProvenanceRecord</code> in <code>hippo_core</code> (PROV-O alignment, all sec9 §9.6 slots, class-level <code>hippo_append_only: true</code>). <strong>Declaration-only per Decision 9.6.A</strong> — introspection, typed-client support, and <code>hippo_append_only</code> vocabulary availability land here; the actual storage migration is a dedicated follow-up.</td>
+<td>Declares <code>mosaic_append_only</code> in <code>mosaic_ext</code> and <code>ProvenanceRecord</code> in <code>mosaic_core</code> (PROV-O alignment, all sec9 §9.6 slots, class-level <code>mosaic_append_only: true</code>). <strong>Declaration-only per Decision 9.6.A</strong> — introspection, typed-client support, and <code>mosaic_append_only</code> vocabulary availability land here; the actual storage migration is a dedicated follow-up.</td>
 <td><code>process-class</code></td>
-<td><code>ProvenanceRecord</code> class in <code>hippo_core</code>; <code>hippo_append_only</code> in <code>hippo_ext</code>; reference docs; tests for declaration + applies_to enforcement.</td>
-<td>LinkML declaration complete; <code>ProvenanceRecord</code> present via <code>imports: [hippo_core]</code>; <code>hippo_append_only</code> validates via the existing <code>SchemaRegistry</code> annotation-validation hook.</td>
+<td><code>ProvenanceRecord</code> class in <code>mosaic_core</code>; <code>mosaic_append_only</code> in <code>mosaic_ext</code>; reference docs; tests for declaration + applies_to enforcement.</td>
+<td>LinkML declaration complete; <code>ProvenanceRecord</code> present via <code>imports: [mosaic_core]</code>; <code>mosaic_append_only</code> validates via the existing <code>SchemaRegistry</code> annotation-validation hook.</td>
 </tr>
 <tr>
 <td><code>provenance-migration</code></td>
-<td>Migrates the legacy <code>provenance</code> table + <code>ProvenanceStore</code> onto the LinkML-declared <code>ProvenanceRecord</code> shape. Drops <code>previous_state_hash</code> / <code>state_snapshot</code> / <code>operation_id</code>; maps <code>operation_type</code> strings to the <code>Operation</code> enum; captures <code>schema_version</code>; adds <code>derived_from_id</code> / <code>process_id</code> / <code>context</code>. Adapter runtime write-guard for <code>hippo_append_only</code>.</td>
+<td>Migrates the legacy <code>provenance</code> table + <code>ProvenanceStore</code> onto the LinkML-declared <code>ProvenanceRecord</code> shape. Drops <code>previous_state_hash</code> / <code>state_snapshot</code> / <code>operation_id</code>; maps <code>operation_type</code> strings to the <code>Operation</code> enum; captures <code>schema_version</code>; adds <code>derived_from_id</code> / <code>process_id</code> / <code>context</code>. Adapter runtime write-guard for <code>mosaic_append_only</code>.</td>
 <td><code>provenance-as-linkml-class</code></td>
 <td><code>provenance_record</code> table DDL-generated; <code>ProvenanceStore</code> API rewrite; adapter write-guard; ~40 test updates; one-time data migration.</td>
 <td>Legacy <code>provenance</code> table gone; append-only enforced; no legacy operation strings remain; full suite green.</td>
@@ -5553,10 +5553,10 @@
 </tr>
 <tr>
 <td><code>typed-client</code></td>
-<td>Declares <code>hippo_accessor</code> in <code>hippo_ext</code> (minor bump) alongside its consumer. Generates Pydantic classes from merged schema at <code>SchemaRegistry</code> load time. Exposes class-specific accessors on <code>HippoClient</code> (<code>client.samples.create(...)</code>). Generic client unchanged.</td>
+<td>Declares <code>mosaic_accessor</code> in <code>mosaic_ext</code> (minor bump) alongside its consumer. Generates Pydantic classes from merged schema at <code>SchemaRegistry</code> load time. Exposes class-specific accessors on <code>MosaicClient</code> (<code>client.samples.create(...)</code>). Generic client unchanged.</td>
 <td><code>validation-tiering-clarification</code></td>
-<td>Generation code; typed accessors; <code>hippo_accessor</code> in <code>hippo_ext</code>; documentation; tests covering typed + generic parity and <code>hippo_accessor</code> override behavior.</td>
-<td>Every generic call has a typed equivalent; every typed call works. <code>hippo_accessor</code> is validated against <code>hippo_ext</code> and overrides the default accessor derivation.</td>
+<td>Generation code; typed accessors; <code>mosaic_accessor</code> in <code>mosaic_ext</code>; documentation; tests covering typed + generic parity and <code>mosaic_accessor</code> override behavior.</td>
+<td>Every generic call has a typed equivalent; every typed call works. <code>mosaic_accessor</code> is validated against <code>mosaic_ext</code> and overrides the default accessor derivation.</td>
 </tr>
 <tr>
 <td><code>reference-loader-shape</code></td>
@@ -5610,7 +5610,7 @@
 <td>Cross-component coordination is handled separately; sec9 is Hippo-internal. Bridge's actor-propagation contract is assumed unchanged.</td>
 </tr>
 <tr>
-<td>Import the full PROV-O ontology into <code>hippo_core</code></td>
+<td>Import the full PROV-O ontology into <code>mosaic_core</code></td>
 <td>Only selective URIs (<code>prov:Activity</code>, <code>prov:wasGeneratedBy</code>, etc.) are used for alignment. A full PROV-O import would bloat the schema and conflate Hippo's primitives with PROV-O's broader ontological commitments.</td>
 </tr>
 <tr>
@@ -5654,7 +5654,7 @@
 <td>OpenSpec change <code>generated-rest-surface</code> (9.12), optional and deferred</td>
 </tr>
 <tr>
-<td>Upstream contribution of <code>hippo_ext</code> annotations to LinkML</td>
+<td>Upstream contribution of <code>mosaic_ext</code> annotations to LinkML</td>
 <td>Aspirational (9.10); not scheduled</td>
 </tr>
 <tr>
@@ -5679,7 +5679,7 @@
 <p>The INDEX.md Open Questions table includes items that sec9 relates to but does not resolve:</p>
 <ul>
 <li><em>Entity type remapping / namespace migration path (OQ1)</em> — sec9's namespace semantics reconcile with LinkML but do not provide a migration path. Remains open.</li>
-<li><em><code>hippo_poll</code> efficiency at scale</em> — unchanged by sec9.</li>
+<li><em><code>mosaic_poll</code> efficiency at scale</em> — unchanged by sec9.</li>
 <li><em>GraphQL transport</em> — unchanged.</li>
 <li><em>Schema version check on writes (503 on mismatch)</em> — benefits from 9.6's <code>schema_version</code> tracking but is scheduled separately.</li>
 <li><em>Dynamic schema reload via polling</em> — benefits from the <code>SchemaRegistry</code> seam but is scheduled separately.</li>

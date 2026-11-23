@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1764,14 +1764,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4331,7 +4331,7 @@
 - <code>provenance{}</code> — versions, genome build, selection criteria</p>
 <p><strong>Adapter</strong> — A plugin that knows how to pull records from one external system. Cappella ships four generic adapters (<code>csv</code>, <code>json</code>, <code>xml</code>, <code>sql</code>) and supports custom plugins via the <code>cappella.adapters</code> entry point group.</p>
 <p><strong>SelectionStrategy</strong> — Logic for choosing one dataset when a sample has multiple candidates. Built-in: <code>most_recent</code>, <code>highest_quality</code>, <code>explicit</code>, <code>single_only</code>. Custom strategies are pluggable.</p>
-<p><strong>Trigger</strong> — A rule that fires an ingest or resolution operation. Types: <code>schedule</code> (cron), <code>manual</code> (API call), <code>internal_event</code> (chained from another action), <code>webhook</code> (external HTTP callback), <code>hippo_poll</code> (poll Hippo for new/updated entities).</p>
+<p><strong>Trigger</strong> — A rule that fires an ingest or resolution operation. Types: <code>schedule</code> (cron), <code>manual</code> (API call), <code>internal_event</code> (chained from another action), <code>webhook</code> (external HTTP callback), <code>mosaic_poll</code> (poll Hippo for new/updated entities).</p>
 
 
 

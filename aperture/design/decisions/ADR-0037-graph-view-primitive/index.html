@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1758,14 +1758,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../mosaic/design/reference_hippo_yaml/" class="md-nav__link">
+      <a href="../../../../mosaic/design/reference_mosaic_yaml/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference: hippo.yaml
+    Reference: mosaic.yaml
   
 
     
@@ -4160,6 +4160,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#ratification-note-2026-11-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ratification note (2026-11-10)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4179,9 +4190,9 @@
 
 <h1 id="adr-0037-graph-exploration-view-cytoscape-neighbors-fed-with-a-client-fallback">ADR-0037: Graph exploration view (Cytoscape; neighbors-fed with a client fallback)<a class="headerlink" href="#adr-0037-graph-exploration-view-cytoscape-neighbors-fed-with-a-client-fallback" title="Permanent link">&para;</a></h1>
 <ul>
-<li><strong>Status:</strong> Proposed</li>
-<li><strong>Date:</strong> 2026-08-19</li>
-<li><strong>Deciders:</strong> labadorf (pending), design session</li>
+<li><strong>Status:</strong> Accepted (as built — both tiers; server <code>neighbors</code> tier added by <a href="https://github.com/datahelix-platform/aperture/issues/95">aperture#95</a>, 2026-11-12)</li>
+<li><strong>Date:</strong> 2026-08-19 (ratified 2026-11-10, decision pass)</li>
+<li><strong>Deciders:</strong> labadorf, design session</li>
 <li><strong>Related:</strong> ADR-0035 (QuerySpec — a result set seeds the graph), ADR-0029
   (visible budgets/caps, honest degradation), ADR-0009/0010 (views are nouns — see the
   catalog note below), ADR-0002 (style/legend derived per class, no domain nouns);
@@ -4243,6 +4254,26 @@ describes. This ADR covers the built-in view and its data tiers.</p>
 <li>Node-level <code>asOf</code> once the server tier lands (time-traveling exploration).</li>
 <li>Code-split the cytoscape chunk.</li>
 </ul>
+<h2 id="ratification-note-2026-11-10">Ratification note (2026-11-10)<a class="headerlink" href="#ratification-note-2026-11-10" title="Permanent link">&para;</a></h2>
+<p>Ratified by labadorf in the 2026-11-10 decision pass, <strong>as built</strong>. Checked against the code:</p>
+<ul>
+<li><code>web/src/query/GraphView.tsx</code>: a Cytoscape view with a visible <code>NODE_BUDGET = 250</code> and a
+  "not shown" note when the budget is hit. Per-class colours come from the shared
+  <code>data/typeColor.ts</code> (ADR-0040), and the legend is derived from the type names.</li>
+<li>Entry point: <code>query/QueryBuilderView.tsx</code> "Explore as graph". It is a second surface, never
+  the default.</li>
+<li><strong>Both tiers are built.</strong> When introspection advertises a usable <code>neighbors(id, depth)</code>
+  root (Mosaic v0.13.0+, <code>_neighbors_resolver</code>), each expansion is one <code>neighbors</code> call with
+  <code>depth: 1</code> (<code>data/neighbors.ts</code>, capability <code>neighborsTraversal</code>); otherwise it is the
+  client-side one-hop fallback (detail reads plus first-page reverse lookups). Tier selection
+  and both expansions live in <code>query/graphExpansion.ts</code>; the legend names the tier in use, and
+  the node budget, server <code>notices</code> and unresolved-type disclosures surface in both
+  (<a href="https://github.com/datahelix-platform/aperture/issues/95">aperture#95</a>). Node-level <code>asOf</code>
+  is still not consumed (a later step).</li>
+</ul>
+<p>The catalog-promotion step in the Decision's catalog note is waiting on ADR-0010, which is
+now <strong>Deferred from MVP</strong> (see that ADR). Until it lands, the graph stays a built-in portal
+view.</p>
 
 
 
