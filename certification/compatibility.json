@@ -8,7 +8,8 @@
       "0.5.0",
       "0.6.0",
       "0.7.0",
-      "0.7.1"
+      "0.7.1",
+      "0.8.0"
     ],
     "hippo": [
       "0.10.6"
@@ -19,13 +20,14 @@
       "0.12.1",
       "0.13.0",
       "0.14.0",
-      "0.15.0"
+      "0.15.0",
+      "0.16.0"
     ]
   },
   "counts": {
     "failing": 0,
-    "passing": 13,
-    "total": 13
+    "passing": 14,
+    "total": 14
   },
   "entries": [
     {
@@ -313,6 +315,28 @@
       "result": "pass",
       "suite_sha": "02ed4ccdb29e242d01803945d39b4cbd9424ff33",
       "timestamp": "2026-11-10T16:39:38Z"
+    },
+    {
+      "ci_run": "https://github.com/datahelix-platform/datahelix/actions/runs/45229480041",
+      "components": [
+        {
+          "digest": "sha256:515b1e45b5f94f9d1a900e91b85cca228602b9645fbaee35bd2b3b5068be7712",
+          "name": "aperture",
+          "version": "0.8.0"
+        },
+        {
+          "digest": "sha256:6ae467fe8cfff80a9cd5f34328badd5eef6ec7b37bb85660f41b41c4d0120024",
+          "name": "mosaic",
+          "version": "0.16.0"
+        }
+      ],
+      "failing_check": null,
+      "fixture_version": "2.0.0",
+      "label": "aperture-0.8.0+mosaic-0.16.0",
+      "line": "frontier",
+      "result": "pass",
+      "suite_sha": "321fc3eae5ed4545e5ae2c5d4b1d83bbbf05d548",
+      "timestamp": "2026-11-23T17:37:36Z"
     }
   ],
   "generated_from": "certified/* git tags (source of truth)",
