@@ -27,8 +27,6 @@ echo "${PREV:-none}"        # empty → no previous platform release; the notes 
 Run this before you create the new release. Without `gh`, take the newest tag at or after
 `v0.7.0`: `git tag -l 'v*' --sort=-v:refname | awk -F'[v.]' '$2>0 || $3>=7' | head -1`.
 
-
-
 | Bump | When |
 |---|---|
 | major | A breaking deploy or config change for recipe consumers (env var removed or renamed, volume/port layout changed, operator action needed beyond restart-on-migrate). |
