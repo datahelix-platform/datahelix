@@ -65,16 +65,16 @@ All business logic lives in the **Core SDK**. The REST API is a thin wrapper —
 
 | Tier | How it works | Typical use |
 |---|---|---|
-| **Local / single-user** | `pip install hippo`, point at a SQLite file, query from Python or a notebook. No server required. | Individual researcher, exploratory analysis |
-| **Small team** | Run `hippo serve` on a shared host backed by SQLite or PostgreSQL. | Lab group, shared project |
+| **Local / single-user** | `pip install datahelix-mosaic`, point at a SQLite file, query from Python or a notebook. No server required. | Individual researcher, exploratory analysis |
+| **Small team** | Run `mosaic serve` on a shared host backed by SQLite or PostgreSQL. | Lab group, shared project |
 | **Enterprise / cloud** | Deploy with a managed PostgreSQL backend, container orchestration, and Bridge for authentication. | Production platform, multi-team environment |
 
 ## Getting Started
 
 ```bash
-pip install hippo
-hippo init my-project
-hippo serve
+pip install datahelix-mosaic
+mosaic init my-project
+mosaic serve
 ```
 
 See the **[Quick Start guide](docs/quickstart.md)** for a complete walkthrough — from schema definition through entity creation, querying, and provenance inspection.
@@ -110,6 +110,6 @@ See the **[Quick Start guide](docs/quickstart.md)** for a complete walkthrough �
 - [Auth Integration](design/sec8_auth_integration.md)
 - [Appendix A: Example Schema (Omics)](design/appendix_a_example_schema_omics.md)
 - [Appendix B: Implementation Guide](design/appendix_b_implementation_guide.md)
-- [Reference: hippo.yaml Config](design/reference_hippo_yaml.md)
+- [Reference: mosaic.yaml Config](design/reference_mosaic_yaml.md)
 - [Reference: validators.yaml](design/reference_validators_yaml.md)
 - [Reference: CEL Context](design/reference_cel_context.md)

@@ -13,19 +13,19 @@
     "evidence \u2014 the gate requires it."
   ],
   "line": "frontier",
-  "fixture_version": "1.2.0",
+  "fixture_version": "2.0.0",
   "components": {
     "mosaic": {
-      "version": "0.15.0",
-      "digest": "sha256:27ea806f7cb61bd0217b8b247996196cfb4b6241aa9a06800779484c776d87ed",
+      "version": "0.16.0",
+      "digest": "sha256:6ae467fe8cfff80a9cd5f34328badd5eef6ec7b37bb85660f41b41c4d0120024",
       "image": "ghcr.io/datahelix-platform/mosaic",
       "repo": "datahelix-platform/mosaic",
       "status": "published"
     },
     "aperture": {
-      "version": "0.7.1",
-      "digest": "sha256:dbe6d7b8b8657e27f79f04e9a7b987df7b32813a3bb5f43b21dcbd11a8c805f6",
-      "image": "ghcr.io/bu-neuromics/aperture",
+      "version": "0.8.0",
+      "digest": "sha256:515b1e45b5f94f9d1a900e91b85cca228602b9645fbaee35bd2b3b5068be7712",
+      "image": "ghcr.io/datahelix-platform/aperture",
       "repo": "datahelix-platform/aperture",
       "status": "published"
     }

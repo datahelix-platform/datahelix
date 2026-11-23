@@ -11,8 +11,8 @@
 # meaning) and the data is immutable — there is no schema-iteration loop and no
 # auth (see the solo recipe's banner; run on localhost / trusted network).
 
-ARG MOSAIC_IMAGE=ghcr.io/datahelix-platform/mosaic@sha256:27ea806f7cb61bd0217b8b247996196cfb4b6241aa9a06800779484c776d87ed
-ARG APERTURE_IMAGE=ghcr.io/bu-neuromics/aperture@sha256:dbe6d7b8b8657e27f79f04e9a7b987df7b32813a3bb5f43b21dcbd11a8c805f6
+ARG MOSAIC_IMAGE=ghcr.io/datahelix-platform/mosaic@sha256:6ae467fe8cfff80a9cd5f34328badd5eef6ec7b37bb85660f41b41c4d0120024
+ARG APERTURE_IMAGE=ghcr.io/datahelix-platform/aperture@sha256:515b1e45b5f94f9d1a900e91b85cca228602b9645fbaee35bd2b3b5068be7712
 
 # Data generator (pinned; carries the global-id-uniqueness fix,
 # datahelix-platform/linkml-data-gen#3) and the domain schema (pinned).

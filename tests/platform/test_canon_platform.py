@@ -13,7 +13,7 @@ in-process — no Hippo HTTP server, no real CWL execution.
 5. Dependency ordering — topological correctness via resolve() + mocked executor
 6. Cycle detection — 2-node, self-referential, 3-node cycles
 7. Sidecar parsing — load_sidecar() valid/invalid files
-8. Output ingestion — evaluate_hippo_fields() expression evaluation
+8. Output ingestion — evaluate_mosaic_fields() expression evaluation
 
 ### Pending
 - CwltoolAdapter subprocess contract (requires cwltool on PATH; covered by test_cwltool.py)
@@ -48,7 +48,7 @@ from canon.exceptions import (
 from canon.executors.base import CWLRunResult
 from canon.ingestion.sidecar import (
     SidecarOutput,
-    evaluate_hippo_fields,
+    evaluate_mosaic_fields,
     load_sidecar,
 )
 from canon.resolver.entity_ref import EntityRefResolver, parse_entity_ref
@@ -109,7 +109,7 @@ def _make_planner(
     registry = registry if registry is not None else RuleRegistry([])
     ref_resolver = MagicMock()
     ref_resolver.resolve.return_value = Entity(
-        id="ref-uuid", entity_type="Unknown", data={}, uri="hippo://ref/unknown"
+        id="ref-uuid", entity_type="Unknown", data={}, uri="dhlx://ref/unknown"
     )
     return RecursivePlanner(
         hippo_client=hippo,
@@ -136,7 +136,7 @@ def _make_cwl_and_sidecar(
         "  aligned_bam:\n"
         "    entity_type: AlignedReads\n"
         "    identity_fields: [sample]\n"
-        "    hippo_fields:\n"
+        "    mosaic_fields:\n"
         "      uri: '{outputs.bam.location}'\n"
     )
     return cwl
@@ -635,7 +635,7 @@ class TestSidecarParsing:
             "  aligned_bam:\n"
             "    entity_type: AlignedReads\n"
             "    identity_fields: [sample]\n"
-            "    hippo_fields:\n"
+            "    mosaic_fields:\n"
             "      uri: '{outputs.bam.location}'\n"
             "      sample_id: '{inputs.sample_id}'\n"
         )
@@ -644,8 +644,8 @@ class TestSidecarParsing:
         output = spec.outputs["aligned_bam"]
         assert output.entity_type == "AlignedReads"
         assert output.identity_fields == ["sample"]
-        assert output.hippo_fields["uri"] == "{outputs.bam.location}"
-        assert output.hippo_fields["sample_id"] == "{inputs.sample_id}"
+        assert output.mosaic_fields["uri"] == "{outputs.bam.location}"
+        assert output.mosaic_fields["sample_id"] == "{inputs.sample_id}"
 
     def test_missing_sidecar_raises_ingestion_error(self, tmp_path):
         with pytest.raises(CanonIngestionError, match="not found"):
@@ -669,7 +669,7 @@ class TestSidecarParsing:
             "outputs:\n"
             "  my_output:\n"
             "    identity_fields: [sample]\n"
-            "    hippo_fields:\n"
+            "    mosaic_fields:\n"
             "      uri: '{outputs.x.location}'\n"
         )
         with pytest.raises(CanonIngestionError, match="entity_type"):
@@ -683,23 +683,23 @@ class TestSidecarParsing:
 
 
 # ---------------------------------------------------------------------------
-# Category 8: Output ingestion — evaluate_hippo_fields
+# Category 8: Output ingestion — evaluate_mosaic_fields
 # ---------------------------------------------------------------------------
 
 
-class TestEvaluateHippoFields:
-    """evaluate_hippo_fields resolves {outputs.*}, {inputs.*}, {run_id} expressions."""
+class TestEvaluateMosaicFields:
+    """evaluate_mosaic_fields resolves {outputs.*}, {inputs.*}, {run_id} expressions."""
 
-    def _make_output(self, hippo_fields: dict) -> SidecarOutput:
+    def _make_output(self, mosaic_fields: dict) -> SidecarOutput:
         return SidecarOutput(
             entity_type="AlignedReads",
             identity_fields=["sample"],
-            hippo_fields=hippo_fields,
+            mosaic_fields=mosaic_fields,
         )
 
     def test_outputs_dot_path_expression(self):
         sidecar_output = self._make_output({"uri": "{outputs.bam.location}"})
-        result = evaluate_hippo_fields(
+        result = evaluate_mosaic_fields(
             sidecar_output,
             cwl_outputs={"bam": {"location": "file:///data/out.bam"}},
             cwl_inputs={},
@@ -709,7 +709,7 @@ class TestEvaluateHippoFields:
 
     def test_inputs_expression(self):
         sidecar_output = self._make_output({"sample_id": "{inputs.sample_id}"})
-        result = evaluate_hippo_fields(
+        result = evaluate_mosaic_fields(
             sidecar_output,
             cwl_outputs={},
             cwl_inputs={"sample_id": "S001"},
@@ -719,7 +719,7 @@ class TestEvaluateHippoFields:
 
     def test_run_id_expression(self):
         sidecar_output = self._make_output({"run_id": "{run_id}"})
-        result = evaluate_hippo_fields(
+        result = evaluate_mosaic_fields(
             sidecar_output,
             cwl_outputs={},
             cwl_inputs={},
@@ -732,7 +732,7 @@ class TestEvaluateHippoFields:
         sidecar_output = self._make_output(
             {"label": "sample={inputs.sample_id} run={run_id}"}
         )
-        result = evaluate_hippo_fields(
+        result = evaluate_mosaic_fields(
             sidecar_output,
             cwl_outputs={},
             cwl_inputs={"sample_id": "S001"},
@@ -742,7 +742,7 @@ class TestEvaluateHippoFields:
 
     def test_missing_outputs_key_resolves_to_none(self):
         sidecar_output = self._make_output({"uri": "{outputs.missing_key.location}"})
-        result = evaluate_hippo_fields(
+        result = evaluate_mosaic_fields(
             sidecar_output,
             cwl_outputs={},  # 'missing_key' not present
             cwl_inputs={},
@@ -753,7 +753,7 @@ class TestEvaluateHippoFields:
     def test_literal_value_passthrough(self):
         """Non-expression field values are passed through unchanged."""
         sidecar_output = self._make_output({"status": "completed"})
-        result = evaluate_hippo_fields(
+        result = evaluate_mosaic_fields(
             sidecar_output,
             cwl_outputs={},
             cwl_inputs={},
@@ -769,7 +769,7 @@ class TestEvaluateHippoFields:
                 "run_id": "{run_id}",
             }
         )
-        result = evaluate_hippo_fields(
+        result = evaluate_mosaic_fields(
             sidecar_output,
             cwl_outputs={"bam": {"location": "file:///out.bam"}},
             cwl_inputs={"sample_id": "S002"},
@@ -896,7 +896,7 @@ class TestFetchRules:
 
         ref_resolver = MagicMock()
         ref_resolver.resolve.return_value = Entity(
-            id="ref-uuid", entity_type="Unknown", data={}, uri="hippo://ref/unknown"
+            id="ref-uuid", entity_type="Unknown", data={}, uri="dhlx://ref/unknown"
         )
         planner = RecursivePlanner(
             hippo_client=hippo,

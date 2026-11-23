@@ -7,9 +7,9 @@ All Cappella behavior is controlled by `cappella.yaml`. Environment variables ca
 ### Full Configuration Example
 
 ```yaml
-hippo:
+mosaic:
   url: "http://localhost:8001"
-  token: "${HIPPO_TOKEN}"
+  token: "${MOSAIC_TOKEN}"
 
 canon:
   enabled: true
@@ -313,7 +313,7 @@ triggers:
 ```yaml
 triggers:
   - name: trigger_alignment_on_new_sample
-    type: hippo_poll
+    type: mosaic_poll
     poll:
       entity_type: Sample
       filter: "tissue == 'DLPFC' && status == 'received'"
@@ -339,7 +339,7 @@ triggers:
 - `manual` — fire via `cappella trigger run <name>` or `POST /triggers/{name}/run`
 - `internal_event` — fires when a named event is emitted by another trigger's `on_success`
 - `webhook` — fires when an external system sends an HTTP POST to the configured path
-- `hippo_poll` — fires per entity when Hippo entities matching the filter are created or updated
+- `mosaic_poll` — fires per entity when Hippo entities matching the filter are created or updated
 
 **Action types:**
 - `ingest` — run an adapter's fetch/transform/upsert pipeline

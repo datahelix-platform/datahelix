@@ -7,7 +7,7 @@ import pytest
 from pathlib import Path
 from unittest.mock import MagicMock
 
-from canon.ingestion.sidecar import load_sidecar, evaluate_hippo_fields, SidecarOutput
+from canon.ingestion.sidecar import load_sidecar, evaluate_mosaic_fields, SidecarOutput
 from canon.ingestion.pipeline import OutputIngestionPipeline
 from canon.ingestion.provenance import WorkflowRunBuilder
 from canon.types import Entity
@@ -29,7 +29,7 @@ def _make_sidecar(tmp_path, content=None):
             "    identity_fields:\n"
             "      - sample\n"
             "      - genome_build\n"
-            "    hippo_fields:\n"
+            "    mosaic_fields:\n"
             "      uri: '{outputs.bam.location}'\n"
             "      sample: '{inputs.sample}'\n"
         )
@@ -54,8 +54,8 @@ def test_load_sidecar_parses_correctly(tmp_path):
     assert output.entity_type == "AlignedReads"
     assert "sample" in output.identity_fields
     assert "genome_build" in output.identity_fields
-    assert output.hippo_fields["uri"] == "{outputs.bam.location}"
-    assert output.hippo_fields["sample"] == "{inputs.sample}"
+    assert output.mosaic_fields["uri"] == "{outputs.bam.location}"
+    assert output.mosaic_fields["sample"] == "{inputs.sample}"
 
 
 def test_load_sidecar_missing_file_raises(tmp_path):
@@ -65,40 +65,40 @@ def test_load_sidecar_missing_file_raises(tmp_path):
 
 
 # ---------------------------------------------------------------------------
-# evaluate_hippo_fields
+# evaluate_mosaic_fields
 # ---------------------------------------------------------------------------
 
-def test_evaluate_hippo_fields_outputs_bam_location():
+def test_evaluate_mosaic_fields_outputs_bam_location():
     sidecar_output = SidecarOutput(
         entity_type="AlignedReads",
         identity_fields=["sample"],
-        hippo_fields={"uri": "{outputs.bam.location}"},
+        mosaic_fields={"uri": "{outputs.bam.location}"},
     )
     cwl_outputs = {"bam": {"location": "/data/S001.bam", "class": "File"}}
-    result = evaluate_hippo_fields(sidecar_output, cwl_outputs, {}, "run-123")
+    result = evaluate_mosaic_fields(sidecar_output, cwl_outputs, {}, "run-123")
     assert result["uri"] == "/data/S001.bam"
 
 
-def test_evaluate_hippo_fields_inputs_genome_build():
+def test_evaluate_mosaic_fields_inputs_genome_build():
     sidecar_output = SidecarOutput(
         entity_type="AlignedReads",
         identity_fields=["sample"],
-        hippo_fields={"sample": "{inputs.sample}", "genome": "{inputs.genome_build}"},
+        mosaic_fields={"sample": "{inputs.sample}", "genome": "{inputs.genome_build}"},
     )
-    result = evaluate_hippo_fields(
+    result = evaluate_mosaic_fields(
         sidecar_output, {}, {"sample": "S001", "genome_build": "GRCh38"}, "run-abc"
     )
     assert result["sample"] == "S001"
     assert result["genome"] == "GRCh38"
 
 
-def test_evaluate_hippo_fields_run_id():
+def test_evaluate_mosaic_fields_run_id():
     sidecar_output = SidecarOutput(
         entity_type="AlignedReads",
         identity_fields=[],
-        hippo_fields={"run": "{run_id}"},
+        mosaic_fields={"run": "{run_id}"},
     )
-    result = evaluate_hippo_fields(sidecar_output, {}, {}, "my-run-id")
+    result = evaluate_mosaic_fields(sidecar_output, {}, {}, "my-run-id")
     assert result["run"] == "my-run-id"
 
 
@@ -122,7 +122,7 @@ def test_ingestion_pipeline_ingest_calls_hippo(tmp_path):
         "  aligned_bam:\n"
         "    entity_type: AlignedReads\n"
         "    identity_fields: [sample]\n"
-        "    hippo_fields:\n"
+        "    mosaic_fields:\n"
         "      sample: '{inputs.sample}'\n"
     )
     sidecar_file = _make_sidecar(tmp_path, content=sidecar_content)
@@ -157,7 +157,7 @@ def test_ingestion_pipeline_returns_entity(tmp_path):
         "  out:\n"
         "    entity_type: AlignedReads\n"
         "    identity_fields: []\n"
-        "    hippo_fields:\n"
+        "    mosaic_fields:\n"
         "      note: 'done'\n"
     )
     sidecar_file = _make_sidecar(tmp_path, content=sidecar_content)
@@ -244,7 +244,7 @@ def test_pipeline_calls_storage_put_when_uri_field_present(tmp_path):
         "  out:\n"
         "    entity_type: AlignedReads\n"
         "    identity_fields: []\n"
-        "    hippo_fields:\n"
+        "    mosaic_fields:\n"
         f"      uri: '{src}'\n"
     )
     sidecar_file = tmp_path / "test.canon.yaml"
@@ -280,7 +280,7 @@ def test_pipeline_propagates_canon_storage_error(tmp_path):
         "  out:\n"
         "    entity_type: AlignedReads\n"
         "    identity_fields: []\n"
-        "    hippo_fields:\n"
+        "    mosaic_fields:\n"
         f"      uri: '{src}'\n"
     )
     sidecar_file = tmp_path / "test2.canon.yaml"

@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from cappella.exceptions import ConfigError
 
@@ -47,13 +47,24 @@ class ActionConfig(BaseModel):
 
 class TriggerConfig(BaseModel):
     name: str
-    type: str  # "schedule" | "manual" | "internal_event" | "webhook" | "hippo_poll"
+    type: str  # "schedule" | "manual" | "internal_event" | "webhook" | "mosaic_poll"
     action: ActionConfig
     schedule: str | None = None
     event: str | None = None
     on_success: str | None = None
     webhook: dict[str, Any] | None = None  # raw dict, converted to triggers.WebhookConfig
-    hippo_poll: dict[str, Any] | None = None  # raw dict, converted to triggers.HippoPollConfig
+    mosaic_poll: dict[str, Any] | None = None  # raw dict, converted to triggers.HippoPollConfig
+
+    @model_validator(mode="before")
+    @classmethod
+    def _reject_hippo_poll(cls, data: Any) -> Any:
+        # Platform ADR-0007: stale config fails loudly instead of being ignored.
+        if isinstance(data, dict) and (data.get("type") == "hippo_poll" or "hippo_poll" in data):
+            raise ValueError(
+                "trigger type 'hippo_poll' was renamed to 'mosaic_poll' (platform ADR-0007); "
+                "rename both the type and the 'hippo_poll:' block to 'mosaic_poll'"
+            )
+        return data
 
     def to_trigger_config(self) -> "TriggerConfig":
         """Convert to a triggers.models.TriggerConfig with typed sub-configs."""
@@ -65,7 +76,7 @@ class TriggerConfig(BaseModel):
         )
 
         webhook = WebhookConfig(**self.webhook) if self.webhook else None
-        hippo_poll = HippoPollConfig(**self.hippo_poll) if self.hippo_poll else None
+        mosaic_poll = HippoPollConfig(**self.mosaic_poll) if self.mosaic_poll else None
 
         return TTriggerConfig(
             name=self.name,
@@ -80,7 +91,7 @@ class TriggerConfig(BaseModel):
             event=self.event,
             on_success=self.on_success,
             webhook=webhook,
-            hippo_poll=hippo_poll,
+            mosaic_poll=mosaic_poll,
         )
 
 
@@ -91,13 +102,23 @@ class LoggingConfig(BaseModel):
 
 
 class CappellaConfig(BaseModel):
-    hippo: MosaicConfig = Field(default_factory=MosaicConfig)
+    mosaic: MosaicConfig = Field(default_factory=MosaicConfig)
     canon: CanonConfig = Field(default_factory=CanonConfig)
     server: ServerConfig = Field(default_factory=ServerConfig)
     resolution: ResolutionConfig = Field(default_factory=ResolutionConfig)
     adapters: dict[str, AdapterConfig] = Field(default_factory=dict)
     triggers: list[TriggerConfig] = Field(default_factory=list)
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _reject_hippo_section(cls, data: Any) -> Any:
+        # Platform ADR-0007: stale config fails loudly instead of being ignored.
+        if isinstance(data, dict) and "hippo" in data:
+            raise ValueError(
+                "the 'hippo:' config section was renamed to 'mosaic:' (platform ADR-0007)"
+            )
+        return data
 
 
 def _substitute_env_vars(text: str) -> str:

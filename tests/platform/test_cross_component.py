@@ -53,7 +53,7 @@ from cappella.triggers.models import WebhookConfig, TriggerProvenance
 def _make_planner(hippo_shim, rules, executor, tmp_path) -> RecursivePlanner:
     ref_resolver = MagicMock()
     ref_resolver.resolve.return_value = Entity(
-        id="ref-uuid", entity_type="Unknown", data={}, uri="hippo://ref/unknown"
+        id="ref-uuid", entity_type="Unknown", data={}, uri="dhlx://ref/unknown"
     )
     return RecursivePlanner(
         hippo_client=hippo_shim,
@@ -182,7 +182,7 @@ class TestCSVIngestToCanonResolution:
         planner = _make_planner(hippo_shim, [rule], mock_executor, tmp_path)
         uri = planner.resolve("AlignedDatafile", {"sample_id": "s001"})
 
-        assert isinstance(uri, str) and uri.startswith("hippo://")
+        assert isinstance(uri, str) and uri.startswith("dhlx://")
         assert mock_executor.run.call_count == 1
 
         # AlignedDatafile written back to Hippo

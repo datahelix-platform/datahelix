@@ -17,11 +17,11 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_USER: hippo
-      POSTGRES_PASSWORD: hippo
-      POSTGRES_DB: hippo
+      POSTGRES_USER: mosaic
+      POSTGRES_PASSWORD: mosaic
+      POSTGRES_DB: mosaic
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U hippo"]
+      test: ["CMD-SHELL", "pg_isready -U mosaic"]
       interval: 3s
       timeout: 3s
       retries: 20
@@ -34,7 +34,7 @@ services:
     command: ["serve", "--host", "0.0.0.0", "--port", "8001", "--graphql",
               "--config", "/app/mosaic.yaml"]
     environment:
-      MOSAIC_DATABASE_URL: postgresql://hippo:hippo@postgres:5432/hippo
+      MOSAIC_DATABASE_URL: postgresql://mosaic:mosaic@postgres:5432/mosaic
     volumes:
       - ../compose/mosaic.certify.yaml:/app/mosaic.yaml:ro
       - ../fixtures/bootstrap/schema:/app/schemas:ro
@@ -58,11 +58,9 @@ services:
 
   aperture:
     # The SPA. VITE_* endpoint vars are build-time; the pinned image must be
-    # built with VITE_HIPPO_GRAPHQL_URL pointing at the mosaic service, OR
+    # built with VITE_GRAPHQL_URL pointing at the mosaic service, OR
     # served by an entrypoint that injects runtime config. The certification
     # workflow builds/pins the image accordingly (aperture#16 + a Dockerfile).
-    # (VITE_HIPPO_GRAPHQL_URL is Aperture's own build-time contract name —
-    # renaming it is Aperture's call, out of scope here.)
     image: ${APERTURE_IMAGE:?set APERTURE_IMAGE=<image>@<digest>}
     environment:
       # Injected at container start by the image's runtime-config entrypoint
@@ -73,7 +71,7 @@ services:
       # Playwright browser on the runner host, and this mosaic serves neither
       # CORS (opt-in since 0.14.0 via --cors-origin; deliberately not set here,
       # so the proxy stays the one path under test) nor anonymous GraphQL.
-      VITE_HIPPO_GRAPHQL_URL: /graphql
+      VITE_GRAPHQL_URL: /graphql
       # The atomic-workflow golden path drives this staged set (runtime-
       # injected; config-as-data, Aperture ADR-0002/0004).
       VITE_WORKFLOWS: "[{\"id\": \"catalog-entry\", \"version\": \"1\", \"label\": \"Catalog entry\", \"description\": \"Stage a linked Author, Book, and Review; commit atomically.\", \"steps\": [{\"id\": \"author\", \"label\": \"Author\", \"entityType\": \"Author\"}, {\"id\": \"book\", \"label\": \"Book\", \"entityType\": \"Book\", \"bindings\": [{\"field\": \"author\", \"fromStep\": \"author\"}]}, {\"id\": \"review\", \"label\": \"Review\", \"entityType\": \"Review\", \"bindings\": [{\"field\": \"book\", \"fromStep\": \"book\"}]}]}]"

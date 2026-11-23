@@ -197,13 +197,13 @@ esac
 # ── 3. Aperture runtime config (ADR-0034) ──────────────────────────────────
 # Same vocabulary as the Aperture image's own 40-aperture-config.sh, with the
 # same-origin seam as the default endpoint.
-: "${VITE_HIPPO_GRAPHQL_URL:=/graphql}"
-export VITE_HIPPO_GRAPHQL_URL
+: "${VITE_GRAPHQL_URL:=/graphql}"
+export VITE_GRAPHQL_URL
 OUT=/srv/aperture/config.js
 {
   printf 'window.__APERTURE_CONFIG__ = {'
   sep=''
-  for key in VITE_HIPPO_GRAPHQL_URL VITE_HIPPO_CONTROL_PLANE_URL VITE_WORKFLOWS VITE_NAV \
+  for key in VITE_GRAPHQL_URL VITE_CONTROL_PLANE_URL VITE_WORKFLOWS VITE_NAV \
              VITE_AUTH_MODE VITE_AUTH_IDENTITY_URL VITE_AUTH_LOGIN_URL VITE_AUTH_LOGOUT_URL \
              VITE_AUTH_IDENTITY_CLAIM VITE_AUTH_DISPLAY_CLAIM; do
     value=$(printenv "$key" 2>/dev/null || true)
@@ -215,7 +215,7 @@ OUT=/srv/aperture/config.js
   done
   printf '\n};\n'
 } > "$OUT"
-echo "solo: aperture runtime config written (endpoint: $VITE_HIPPO_GRAPHQL_URL)"
+echo "solo: aperture runtime config written (endpoint: $VITE_GRAPHQL_URL)"
 
 # ── 4. Serve ────────────────────────────────────────────────────────────────
 exec supervisord -n -c /etc/supervisor/supervisord.conf

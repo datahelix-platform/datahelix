@@ -1,10 +1,10 @@
-# DataHelix certification — seed data bundle (fixture v1.2.0)
+# DataHelix certification — seed data bundle (fixture v2.0.0)
 #
-# Tree-root bundle format (hippo ingest --file): top-level keys are pluralized
+# Tree-root bundle format (mosaic ingest --file): top-level keys are pluralized
 # class-name accessors; values are lists of instance dicts; identity is by `id`
 # (re-ingesting an existing id updates it in place, so seeding is idempotent).
 #
-#   hippo ingest --file seed.yaml \
+#   mosaic ingest --file seed.yaml \
 #     --validate-schema schema/   # validates against portal_schema + control plane
 #
 # Reference slots (`author`, `book`) carry the referenced instance's `id`.

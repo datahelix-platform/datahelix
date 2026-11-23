@@ -35,7 +35,7 @@ class WebhookConfig(BaseModel):
 
 
 class HippoPollConfig(BaseModel):
-    """Configuration for hippo_poll trigger type."""
+    """Configuration for mosaic_poll trigger type."""
 
     entity_type: str  # Hippo entity type to poll
     interval: str  # Cron expression for polling interval
@@ -45,13 +45,13 @@ class HippoPollConfig(BaseModel):
 
 class TriggerConfig(BaseModel):
     name: str
-    type: str  # "schedule" | "manual" | "internal_event" | "webhook" | "hippo_poll"
+    type: str  # "schedule" | "manual" | "internal_event" | "webhook" | "mosaic_poll"
     action: ActionConfig
     schedule: str | None = None  # cron expression for schedule triggers
     event: str | None = None  # event name for internal_event triggers
     on_success: str | None = None  # name of trigger to fire on success
     webhook: WebhookConfig | None = None  # config for webhook triggers
-    hippo_poll: HippoPollConfig | None = None  # config for hippo_poll triggers
+    mosaic_poll: HippoPollConfig | None = None  # config for mosaic_poll triggers
 
 
 class TriggerProvenance(BaseModel):

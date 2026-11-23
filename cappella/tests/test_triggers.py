@@ -1,4 +1,4 @@
-"""Tests for webhook and hippo_poll trigger types."""
+"""Tests for webhook and mosaic_poll trigger types."""
 import hashlib
 import hmac
 import json
@@ -56,9 +56,9 @@ def _hippo_poll_trigger(
 ) -> TriggerConfig:
     return TriggerConfig(
         name=name,
-        type="hippo_poll",
+        type="mosaic_poll",
         action=ActionConfig(type="ingest", adapter="hippo"),
-        hippo_poll=HippoPollConfig(
+        mosaic_poll=HippoPollConfig(
             entity_type=entity_type,
             interval=interval,
         ),
@@ -66,7 +66,7 @@ def _hippo_poll_trigger(
 
 
 class MockHippoClient:
-    """Minimal mock for hippo_poll testing."""
+    """Minimal mock for mosaic_poll testing."""
 
     def __init__(self, entities: list[dict] | None = None) -> None:
         self._entities = entities or []
@@ -285,7 +285,7 @@ class TestHippoPollHandler:
         )
         triggers = {trigger.name: trigger}
         handler = HippoPollHandler(triggers, TriggerExecutor(triggers))
-        with pytest.raises(TriggerError, match="not a hippo_poll trigger"):
+        with pytest.raises(TriggerError, match="not a mosaic_poll trigger"):
             handler.poll("manual-trigger")
 
 

@@ -47,7 +47,7 @@ services:
   # ── Mosaic: pinned image (default baseline) ────────────────────────────────
   mosaic:
     profiles: [mosaic-image]
-    image: ghcr.io/datahelix-platform/mosaic:${MOSAIC_VERSION:-0.15.0}
+    image: ghcr.io/datahelix-platform/mosaic:${MOSAIC_VERSION:-0.16.0}
     # The image's `mosaic` user is uid 999 with HOME=/project, but /project is a
     # bind mount owned by the host user — so it cannot write the SQLite file,
     # and PyStow (a transitive dep) fails at import trying to create its home.
@@ -107,7 +107,7 @@ services:
   # submodule rather than the image.
   mosaic-dev:
     profiles: [mosaic-source]
-    image: ghcr.io/datahelix-platform/mosaic:${MOSAIC_VERSION:-0.15.0}
+    image: ghcr.io/datahelix-platform/mosaic:${MOSAIC_VERSION:-0.16.0}
     user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
     command:
       ["serve", "--graphql", "--mcp", "--host", "0.0.0.0", "--port", "8001",
@@ -127,10 +127,10 @@ services:
   # The image injects its runtime config at start from VITE_* env (ADR-0034).
   aperture:
     profiles: [aperture-image]
-    image: ghcr.io/bu-neuromics/aperture:${APERTURE_VERSION:-0.7.1}
+    image: ghcr.io/datahelix-platform/aperture:${APERTURE_VERSION:-0.8.0}
     environment:
-      VITE_HIPPO_GRAPHQL_URL: ${VITE_HIPPO_GRAPHQL_URL:-/graphql}
-      VITE_HIPPO_CONTROL_PLANE_URL: ${VITE_HIPPO_CONTROL_PLANE_URL:-}
+      VITE_GRAPHQL_URL: ${VITE_GRAPHQL_URL:-/graphql}
+      VITE_CONTROL_PLANE_URL: ${VITE_CONTROL_PLANE_URL:-}
       VITE_WORKFLOWS: ${VITE_WORKFLOWS:-}
       VITE_NAV: ${VITE_NAV:-}
     restart: unless-stopped
@@ -162,7 +162,7 @@ services:
     environment:
       # Relative endpoint: the browser resolves it against the gateway origin,
       # so dev exercises the production same-origin arrangement.
-      VITE_HIPPO_GRAPHQL_URL: ${VITE_HIPPO_GRAPHQL_URL:-/graphql}
+      VITE_GRAPHQL_URL: ${VITE_GRAPHQL_URL:-/graphql}
       IDE_PORT: ${IDE_PORT:-8080}
     volumes:
       - "${APERTURE_WEB:-../../../aperture/web}:/app"
@@ -198,7 +198,7 @@ services:
   # Mosaic -- this is the only service in the stack that talks to a model.
   reel:
     profiles: [reel-image]
-    image: ghcr.io/bu-neuromics/reel:${REEL_VERSION:-0.1.0}
+    image: ghcr.io/datahelix-platform/reel:${REEL_VERSION:-0.3.0}
     environment:
       MOSAIC_MCP_URL: ${MOSAIC_MCP_URL:-http://mosaic:8001/mcp}
       AWS_REGION: ${AWS_REGION:-us-east-1}
@@ -224,7 +224,7 @@ services:
   # edit; `make restart-planner` is the deliberate way to pick up changes.
   reel-dev:
     profiles: [reel-source]
-    image: ghcr.io/bu-neuromics/reel:${REEL_VERSION:-0.1.0}
+    image: ghcr.io/datahelix-platform/reel:${REEL_VERSION:-0.3.0}
     environment:
       PYTHONPATH: /src
       # `mosaic-dev`, not `mosaic`: the source profile is a different service

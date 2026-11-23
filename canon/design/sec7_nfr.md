@@ -179,8 +179,8 @@ Canon is designed to be extended without modifying the core package.
 |---|---|---|
 | New CWL executor backend | `canon.executor_adapters` entry point | `canon-executor-toil` |
 | Community workflow packages | `canon.workflow_packages` entry point | `canon-workflows-rnaseq` |
-| Domain entity types | `hippo.reference_loaders` entry point | bundled in workflow packages |
-| Custom Canon entity types | `hippo.reference_loaders` entry point | lab-specific entity extensions |
+| Domain entity types | `mosaic.reference_loaders` entry point | bundled in workflow packages |
+| Custom Canon entity types | `mosaic.reference_loaders` entry point | lab-specific entity extensions |
 
 All extension points use standard Python entry points — no Canon-specific plugin API
 or registration step beyond `pip install`.

@@ -32,7 +32,7 @@ management, or environment configuration — those are the executor's job.
 | Execution | Fully delegated to executor adapters (Nextflow, Snakemake, Cromwell, LocalProcess) |
 | Storage | Stateless — Hippo is the sole persistent store. Canon has ephemeral local run state only (`~/.canon/runs.db`, rebuildable from Hippo) |
 | Hippo dependency | Required — Canon cannot function without a Hippo instance |
-| Relationship to Cappella | Peers that communicate through Hippo. Canon writes WorkflowRun + output entities; Cappella can trigger on them via `hippo_poll`. No direct coupling. |
+| Relationship to Cappella | Peers that communicate through Hippo. Canon writes WorkflowRun + output entities; Cappella can trigger on them via `mosaic_poll`. No direct coupling. |
 | Name | **Canon** — fits music theme, means "rule", canonical form (melody derived from itself) maps to files derived from files |
 
 ### The semantic dependency graph

@@ -52,4 +52,4 @@ Aperture / Composer  ← user interface, aggregate analysis
 
 **SelectionStrategy** — Logic for choosing one dataset when a sample has multiple candidates. Built-in: `most_recent`, `highest_quality`, `explicit`, `single_only`. Custom strategies are pluggable.
 
-**Trigger** — A rule that fires an ingest or resolution operation. Types: `schedule` (cron), `manual` (API call), `internal_event` (chained from another action), `webhook` (external HTTP callback), `hippo_poll` (poll Hippo for new/updated entities).
+**Trigger** — A rule that fires an ingest or resolution operation. Types: `schedule` (cron), `manual` (API call), `internal_event` (chained from another action), `webhook` (external HTTP callback), `mosaic_poll` (poll Hippo for new/updated entities).

@@ -136,7 +136,11 @@ until Mosaic is listening, then grounds and serves. That's expected: `restart: u
 resolves the race. The chat panel appears once Mosaic is up. Turns sent before the planner has
 grounded come back as error turns.
 
-## Known issues (Reel 0.1.0)
+## Known issues (observed on Reel 0.1.0)
+
+Reel 0.2.0 targets the first two: it infers a missing `status` when the turn is unambiguous and
+logs each failed turn and 502 with its cause (reel#17). Neither has been re-measured on this
+recipe yet.
 
 - **Dropped `status` field.** Sonnet 5 sometimes returns a correct turn but leaves out the
   required `status` field. Reel rejects it, and the panel shows an error turn. It happened on 3

@@ -182,7 +182,7 @@ These are the behaviors Cappella depends on from Canon's `resolve()` API. Any ch
 
 | Field | Type | Guarantee |
 |-------|------|-----------|
-| `uri` | `str` | Non-empty. Mosaic entity URI in the form `hippo://<EntityType>/<uuid>` |
+| `uri` | `str` | Non-empty. Mosaic entity URI in the form `dhlx://<EntityType>/<uuid>` |
 | `decision` | `Literal["REUSE", "BUILD"]` | Always present. `REUSE` means an existing entity was found; `BUILD` means Canon executed a workflow and created a new entity. |
 | `entity_id` | `str` | UUID of the resolved entity in Mosaic. Must be retrievable via `MosaicClient.get()` immediately after `resolve()` returns. |
 | `entity_type` | `str` | Matches the requested `entity_type` argument. |
@@ -202,12 +202,12 @@ Cappella never catches `Exception` broadly. Only the three documented typed exce
 
 **URI structure guarantee:**
 
-Canon-produced URIs follow the pattern `hippo://<EntityType>/<uuid>`. Cappella extracts the UUID component for Mosaic queries. The UUID is always a valid UUID4 string.
+Canon-produced URIs follow the pattern `dhlx://<EntityType>/<uuid>`. Cappella extracts the UUID component for Mosaic queries. The UUID is always a valid UUID4 string.
 
 ```python
 # Cappella's expected URI parsing
 import re
-CANON_URI_RE = re.compile(r"^hippo://(\w+)/([0-9a-f-]{36})$")
+CANON_URI_RE = re.compile(r"^dhlx://(\w+)/([0-9a-f-]{36})$")
 
 def parse_canon_uri(uri: str) -> tuple[str, str]:
     """Returns (entity_type, uuid). Raises ValueError if uri does not match."""
@@ -217,7 +217,7 @@ def parse_canon_uri(uri: str) -> tuple[str, str]:
     return m.group(1), m.group(2)
 ```
 
-Any change to the URI format (e.g. from `hippo://` to a different scheme) is a **breaking change** for Cappella.
+Any change to the URI format (e.g. from `dhlx://` to a different scheme) is a **breaking change** for Cappella.
 
 **Idempotency guarantee:**
 
