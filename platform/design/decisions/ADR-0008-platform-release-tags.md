@@ -81,21 +81,31 @@ hand, each with a GitHub release.**
    now. The steps are short and releases are rare. If automation is added later, it must enforce
    the same preconditions.
 
-**First tag:** `v0.1.0`, cut on `main` after datahelix#140 (the `solo` Mosaic bind-host fix) merges,
+**First tag:** `v0.7.0`, cut on `main` after datahelix#140 (the `solo` Mosaic bind-host fix) merges,
 so the first consumer's pinned ref includes it.
+
+**Pre-split Hippo tags.** `v0.1.0` to `v0.6.0` already exist on this repo. They are Hippo's
+release tags from when it lived in-tree (2026-03 to 2026-05, before the split into
+`datahelix-platform/mosaic`). They are not platform releases, have no GitHub release, and are
+immutable like any other `v*` tag, so they are never re-cut or deleted. The platform series
+therefore starts at `v0.7.0` (chosen by the platform owner, 2026-11-23), which keeps one
+monotonic `v*` order. Anything that looks up the previous platform release must skip them:
+`RELEASING.md` uses the latest tag that has a GitHub release, which is empty before `v0.7.0`, so
+`v0.7.0`'s notes start from scratch.
 
 ## Consequences
 
 - Consumers pin `vX.Y.Z` and read the release notes to decide whether an upgrade needs action.
-  The ptsdbb-infrastructure deployment moves from a SHA to `v0.1.0`.
+  The ptsdbb-infrastructure deployment moves from a SHA to `v0.7.0`.
 - `certified/*` tags keep their ADR-0001 meaning (ledger facts about component pairs) and are not
   a deploy ref. The two tag families coexist; release notes link the one that applies.
 - A release needs a commit where the recipe pins agree with the lock. Until datahelix#139 makes
   bump PRs update the pins, someone has to check this by hand before cutting.
-- **Immutability is a convention until the repo enforces it.** Nothing in GitHub currently stops
-  someone deleting or moving a `v*` tag. Follow-up, a repository settings change for the platform
-  owner to decide: a tag ruleset on `refs/tags/v*` that blocks deletion and non-fast-forward
-  updates, or GitHub's immutable releases. Until then, rule 4 rests on `RELEASING.md` and review.
+- **GitHub enforces immutability.** Repository ruleset 27943686, "Immutable release tags
+  (ADR-0008)", is active on `refs/tags/v*` (approved by the platform owner, 2026-11-23). It blocks
+  deletion, update and non-fast-forward of a `v*` tag; creating a new tag is unaffected.
+  Repository admins can bypass it, so the rule still binds admins by convention: a bypass is never
+  a way to re-cut a release.
 - No bundle image is published. Consumers still build from the tag; the tag pins the inputs (the
   Dockerfile's digest-pinned component images), so the build is reproducible.
 

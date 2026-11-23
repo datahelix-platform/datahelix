@@ -8,10 +8,24 @@ page is the procedure.
 `certified/*` tags are **not** releases. They are ADR-0001 ledger facts about a component pair.
 Never pin a deployment to one.
 
+`v0.1.0` to `v0.6.0` on this repo are **not platform releases** either. They are Hippo's tags
+from before the split into `datahelix-platform/mosaic`. They have no GitHub release and can't be
+moved or deleted (the `v*` ruleset). The platform series starts at `v0.7.0`.
+
 ## Choose the version
 
-Judge the change from a recipe consumer's point of view, comparing against the previous `v*` tag
-(`git describe --tags --match 'v*' --abbrev=0`):
+Judge the change from a recipe consumer's point of view, comparing against the previous
+platform release. Find it among tags that have a GitHub release, which skips the pre-split Hippo
+tags (plain `git describe --match 'v*'` would return Hippo's `v0.6.0`):
+
+```bash
+PREV=$(gh release list --repo datahelix-platform/datahelix --exclude-drafts --limit 1 \
+  --json tagName --jq '.[0].tagName // empty')
+echo "${PREV:-none}"        # empty → no previous platform release; the notes start from scratch
+```
+
+Run this before you create the new release. Without `gh`, take the newest tag at or after
+`v0.7.0`: `git tag -l 'v*' --sort=-v:refname | awk -F'[v.]' '$2>0 || $3>=7' | head -1`.
 
 | Bump | When |
 |---|---|
@@ -69,7 +83,7 @@ cause. When you're done, `cd -` and `git worktree remove ../dh-release`.
 ## Cut
 
 ```bash
-VERSION=v0.1.0
+VERSION=v0.7.0
 gh release create "$VERSION" --repo datahelix-platform/datahelix \
   --target "$SHA" --title "DataHelix $VERSION" --notes-file notes.md
 ```
@@ -90,5 +104,6 @@ checked it.
 A published `vX.Y.Z` is immutable (ADR-0008, after ADR-0001 rule 4). Don't delete, move or
 re-create it, even minutes after publishing. If it is wrong, cut the next patch.
 
-GitHub doesn't enforce this yet. A tag ruleset on `refs/tags/v*` or immutable releases is a
-pending follow-up for the repo owner (ADR-0008 Consequences), so for now this rule rests on you.
+GitHub enforces this: repository ruleset 27943686, "Immutable release tags (ADR-0008)", blocks
+deletion, update and non-fast-forward of any `refs/tags/v*` tag. Repository admins can bypass it.
+If you are an admin, don't: a bypass is not a way to fix a release. Cut the next patch instead.
