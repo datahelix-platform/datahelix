@@ -112,7 +112,10 @@ in `oidc` mode instead.
 ### Two things this cannot close for you
 
 - **Mosaic's REST port (8001) is outside the auth boundary** — it is unproxied by construction.
-  If you enable auth, keep that port closed or route it through the proxy.
+  With auth on, Mosaic therefore binds `127.0.0.1` inside the container, so publishing 8001
+  reaches nothing. `MOSAIC_BIND_HOST=0.0.0.0` overrides that; the entrypoint allows it but logs a
+  loud warning, because anyone who can reach 8001 then bypasses sign-in. Keep that port closed or
+  route it through the proxy.
 - **The proxy must be the only path to Mosaic.** nginx overrides `X-DataHelix-Actor` on every
   proxied request, which is what makes it trustworthy; anything reaching Mosaic directly bypasses
   that.
@@ -169,9 +172,10 @@ Escape hatch: `scp` the YAML into `project/schemas/` and `make migrate`.
 
 ```
 :8080 nginx ── /            → Aperture SPA   (from the certified aperture image)
-          ├── /graphql      → mosaic serve --graphql (localhost:8001)  [+ bearer]
+          ├── /graphql      → mosaic serve --graphql (127.0.0.1:8001)  [+ bearer]
           └── /health /docs /redoc /openapi.json → mosaic serve
 supervisord: nginx + mosaic ─ entrypoint: [pull] → migrate → serve
+:8001 mosaic (bind: 0.0.0.0 if AUTH_MODE=none, else 127.0.0.1; MOSAIC_BIND_HOST overrides)
 volume: ./project → /project   (workdir; mosaic.yaml auto-discovered)
 ```
 
@@ -215,7 +219,11 @@ follow-on (proposal §4.4).
   LinkML Modeler yourself against `project/schemas/`.
 - Only `/graphql`, `/health`, `/docs`, `/redoc`, `/openapi.json` are proxied;
   Mosaic's full REST surface needs the optional `8001` port mapping
-  (commented in `docker-compose.yml`).
+  (commented in `docker-compose.yml`). Mosaic's bind address follows
+  `AUTH_MODE`: `none` binds `0.0.0.0`, so the mapping works; `htpasswd` and
+  `oidc` bind `127.0.0.1`, so it does not (8001 is outside the auth
+  boundary). Set `MOSAIC_BIND_HOST` to override either default; a
+  non-loopback value with auth on logs a warning at startup.
 - Container processes run as root (bind-mount ownership simplicity); harden
   in `team`.
 - Migrations are additive-only; breaking changes are a manual

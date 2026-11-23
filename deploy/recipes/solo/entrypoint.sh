@@ -194,6 +194,36 @@ case "$AUTH_MODE" in
     ;;
 esac
 
+# ── 3b. Mosaic bind host ────────────────────────────────────────────────────
+# nginx always proxies to 127.0.0.1:8001, which works with either bind. The
+# question is only whether Mosaic's raw port (8001, unproxied) is reachable
+# from outside the container when it is published:
+#   AUTH_MODE=none          → 0.0.0.0   (no auth boundary to bypass)
+#   AUTH_MODE=htpasswd|oidc → 127.0.0.1 (8001 would bypass the proxy and the
+#                                        X-DataHelix-Actor override)
+# MOSAIC_BIND_HOST overrides either default. Exported for supervisord.conf.
+if [ -n "${MOSAIC_BIND_HOST:-}" ]; then
+  case "$MOSAIC_BIND_HOST" in
+    127.0.0.1|localhost|::1) loopback=yes ;;
+    *) loopback=no ;;
+  esac
+  if [ "$AUTH_MODE" != none ] && [ "$loopback" = no ]; then
+    echo "solo: WARNING ──────────────────────────────────────────────────────" >&2
+    echo "solo: WARNING   MOSAIC_BIND_HOST=$MOSAIC_BIND_HOST with AUTH_MODE=$AUTH_MODE." >&2
+    echo "solo: WARNING   Mosaic's port 8001 is OUTSIDE the auth boundary: anyone" >&2
+    echo "solo: WARNING   who can reach it bypasses sign-in and can forge the" >&2
+    echo "solo: WARNING   X-DataHelix-Actor header. Do not publish 8001 unless" >&2
+    echo "solo: WARNING   something else restricts who can reach it." >&2
+    echo "solo: WARNING ──────────────────────────────────────────────────────" >&2
+  fi
+elif [ "$AUTH_MODE" = none ]; then
+  MOSAIC_BIND_HOST=0.0.0.0
+else
+  MOSAIC_BIND_HOST=127.0.0.1
+fi
+export MOSAIC_BIND_HOST
+echo "solo: mosaic listening on $MOSAIC_BIND_HOST:8001 (nginx proxies via 127.0.0.1)"
+
 # ── 3. Aperture runtime config (ADR-0034) ──────────────────────────────────
 # Same vocabulary as the Aperture image's own 40-aperture-config.sh, with the
 # same-origin seam as the default endpoint.

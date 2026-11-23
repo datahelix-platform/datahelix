@@ -55,7 +55,17 @@ jobs:
         run: make init
 
       - name: Build and start the bundle
-        run: docker compose up -d --build
+        # Publish Mosaic's raw port too (the commented "8001:8001" line in
+        # docker-compose.yml) so the bind-host smoke below can reach it. An
+        # override file is picked up by every later `docker compose` call.
+        run: |
+          cat > docker-compose.override.yml <<'EOF'
+          services:
+            solo:
+              ports:
+                - "8001:8001"
+          EOF
+          docker compose up -d --build
 
       - name: Wait for health (nginx -> mosaic seam)
         run: |
@@ -64,6 +74,16 @@ jobs:
           done'
           echo
           docker compose logs solo | grep "solo:"
+
+      - name: "Smoke: AUTH_MODE=none binds Mosaic on 0.0.0.0 (published 8001 answers)"
+        # Mosaic's bind host follows AUTH_MODE (entrypoint.sh): none → 0.0.0.0,
+        # so a published 8001 must answer from outside the container. Before
+        # this was derived, supervisord hard-coded 127.0.0.1 and it could not.
+        run: |
+          docker compose logs solo | grep -q "mosaic listening on 0.0.0.0:8001"
+          curl -sf http://localhost:8001/health
+          echo
+          echo "8001 reachable from the host with AUTH_MODE=none"
 
       - name: "Smoke: SPA shell and runtime config"
         run: |
