@@ -47,17 +47,26 @@ hand, each with a GitHub release.**
      recipe pins).
    - **Patch:** fixes that need no consumer action.
 
-   Pre-1.0 (`0.y.z`) follows the usual semver convention: a breaking change bumps the minor.
-   1.0 is tied to the platform 1.0 roadmap (datahelix#35), not to this ADR.
+   **Pre-1.0 (`0.y.z`)** there is no major bump. Breaking changes *and* new recipes, features
+   or component bumps all bump the **minor** (`0.y` → `0.y+1`). Fixes bump the **patch**.
+   Release notes call out breaking changes explicitly, because the version number alone does
+   not distinguish them before 1.0. 1.0 is tied to the platform 1.0 roadmap (datahelix#35), not
+   to this ADR.
 
 3. **Cut preconditions.** A commit may be tagged only when all of these hold on that exact commit:
-   - **Certification passed:** the certify workflow is green on the commit, and the locked pair
-     has a passing ledger entry (`make gate` passes in each gated recipe).
+   - **The locked pair is certified:** `make gate` passes at the commit in each gated recipe.
+     That is the ADR-0001 ledger check: the lock's versions and digests have a passing
+     `certified/*` entry. In addition, the certify workflow's `push` run on the **commit that
+     last changed `certification/composition.lock.json`** (at or before the tagged commit) is
+     green. The tagged commit itself usually has no certify run, because `certify.yml` runs on
+     `main` only when certification inputs change. The `certified/*` tag for the pair points at
+     that lock commit.
    - **`make check-pins` passes for every recipe that has it** (`demo`, `demo-reel`, `solo`;
      `ide` is exempt from the gate by ADR-0004 and has no target).
-   - **Recipe pins match `certification/composition.lock.json`.** This includes the `ide`
-     compose defaults, which `check-pins` does not cover. This is the check that would have
-     caught the datahelix#139 drift.
+   - **Every pin matches `certification/composition.lock.json`.** This includes the pins
+     `check-pins` does not cover: the `ide` compose defaults and the `mosaic` and `aperture`
+     submodule pointers, each of which must sit exactly on the lock version's tag. This is the
+     check that would have caught the datahelix#139 drift.
 
 4. **Tags are immutable.** A `vX.Y.Z` tag is never moved, deleted and re-created, or re-cut onto
    another commit. A bad release is fixed by cutting the next patch. This is ADR-0001 rule 4
@@ -83,6 +92,10 @@ so the first consumer's pinned ref includes it.
   a deploy ref. The two tag families coexist; release notes link the one that applies.
 - A release needs a commit where the recipe pins agree with the lock. Until datahelix#139 makes
   bump PRs update the pins, someone has to check this by hand before cutting.
+- **Immutability is a convention until the repo enforces it.** Nothing in GitHub currently stops
+  someone deleting or moving a `v*` tag. Follow-up, a repository settings change for the platform
+  owner to decide: a tag ruleset on `refs/tags/v*` that blocks deletion and non-fast-forward
+  updates, or GitHub's immutable releases. Until then, rule 4 rests on `RELEASING.md` and review.
 - No bundle image is published. Consumers still build from the tag; the tag pins the inputs (the
   Dockerfile's digest-pinned component images), so the build is reproducible.
 
