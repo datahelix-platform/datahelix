@@ -4493,6 +4493,23 @@ ratified; read <code>hippo_*</code> in it as <code>mosaic_*</code>.
 <li><em>Accessor collisions:</em> <strong>accepted for now.</strong> A colliding family accessor is not generated
      and the build warns; before 1.0 the warning becomes a build error (tracked in
      <a href="https://github.com/datahelix-platform/mosaic/issues/280">#280</a>, under the 1.0 API freeze, #104).</li>
+<li><strong>Amended 2026-11-23 (labadorf, <a href="https://github.com/datahelix-platform/mosaic/issues/289">#289</a>):
+  lifecycle writes through a kind are closure-checked.</strong> Decision 6 says only that writes are
+  unchanged for families, and nothing covers a lifecycle write addressed to a kind that is given
+  another kind's id. Before this, <code>setBloodAvailability(id: &lt;Brain id&gt;)</code> reported success and
+  changed nothing, and <code>supersedeBlood(id: &lt;Brain id&gt;)</code> superseded the Brain. The rule now
+  follows D3. <strong>Availability (single and bulk), supersede and delete</strong> addressed to class <code>K</code>
+  accept an id in <code>concrete_class_closure(K)</code>, which is <code>K</code>'s own rows plus its concrete
+  subclasses' rows: <code>setProcessAvailability(id: &lt;BankBrain id&gt;)</code> acts on the <code>BankBrain</code> row,
+  in its own class. A parent's, sibling's or unrelated class's id is refused before anything
+  changes, with <code>EntityKindMismatchError</code>. That error is a subclass of <code>EntityNotFoundError</code>, so
+  GraphQL reports <code>NOT_FOUND</code>, and the message names both classes. The check is in the SDK
+  (<code>set_availability_bulk</code>, <code>supersede_entity(..., entity_type=K)</code>, <code>delete</code>), so every
+  transport gets it. <strong><code>supersede</code>'s <code>replacement_id</code> only has to exist, and may be of any
+  kind</strong>, so a misclassified record can be superseded by a corrected record of another kind.
+  <strong>Update and replace keep their exact-type rule</strong> (<code>EntityTypeConflictError</code>, GraphQL
+  <code>ENTITY_TYPE_CONFLICT</code>): a subclass row cannot be updated through its parent's
+  <code>update…</code>, because the payload has only the parent's slots.</li>
 </ul>
 
 
