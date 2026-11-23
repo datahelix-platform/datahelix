@@ -10,6 +10,7 @@
 #      same-origin /graphql seam)
 #   3a. configure authentication when AUTH_MODE != none (platform ADR-0006):
 #      select the gated nginx config and generate the oauth2-proxy args
+#   3a′. resolve Mosaic's bind host from AUTH_MODE (or MOSAIC_BIND_HOST)
 #   4. exec supervisord (nginx + mosaic serve [+ oauth2-proxy])
 #
 # "Restart the container" therefore means: pull (if configured) + migrate +
@@ -193,6 +194,51 @@ case "$AUTH_MODE" in
     exit 1
     ;;
 esac
+
+# ── 3a′. Mosaic bind host ───────────────────────────────────────────────────
+# nginx always proxies to 127.0.0.1:8001. The question is only whether
+# Mosaic's raw port (8001, unproxied) is reachable from outside the container
+# when it is published:
+#   AUTH_MODE=none          → 0.0.0.0   (no auth boundary to bypass)
+#   AUTH_MODE=htpasswd|oidc → 127.0.0.1 (8001 would bypass the proxy and the
+#                                        X-DataHelix-Actor override)
+# MOSAIC_BIND_HOST overrides either default. Whatever it is set to MUST still
+# answer on 127.0.0.1, or nginx cannot reach Mosaic: 0.0.0.0, :: (dual-stack),
+# 127.0.0.1 or localhost are fine; ::1 is IPv6-only and is rejected.
+# Exported for supervisord.conf, which splits command= like a shell, so the
+# value is restricted to host characters (no spaces, no %).
+if [ -n "${MOSAIC_BIND_HOST:-}" ]; then
+  case "$MOSAIC_BIND_HOST" in
+    *[!0-9A-Za-z.:-]*)
+      echo "solo: ABORT — invalid MOSAIC_BIND_HOST='$MOSAIC_BIND_HOST' (expected a host or IP)" >&2
+      exit 1
+      ;;
+    ::1)
+      echo "solo: ABORT — MOSAIC_BIND_HOST=::1 binds IPv6 only, but nginx proxies to" >&2
+      echo "solo: 127.0.0.1:8001, so every route would 502. Use 127.0.0.1 (loopback)" >&2
+      echo "solo: or 0.0.0.0 / :: (all interfaces) instead." >&2
+      exit 1
+      ;;
+    127.*|localhost) loopback=yes ;;
+    *) loopback=no ;;
+  esac
+  if [ "$AUTH_MODE" != none ] && [ "$loopback" = no ]; then
+    echo "solo: WARNING ──────────────────────────────────────────────────────" >&2
+    echo "solo: WARNING   MOSAIC_BIND_HOST=$MOSAIC_BIND_HOST with AUTH_MODE=$AUTH_MODE." >&2
+    echo "solo: WARNING   Mosaic's port 8001 is OUTSIDE the auth boundary: anyone" >&2
+    echo "solo: WARNING   who can reach it bypasses sign-in and can forge the" >&2
+    echo "solo: WARNING   X-DataHelix-Actor header. Do not publish 8001 unless" >&2
+    echo "solo: WARNING   something else restricts who can reach it." >&2
+    echo "solo: WARNING ──────────────────────────────────────────────────────" >&2
+  fi
+elif [ "$AUTH_MODE" = none ]; then
+  MOSAIC_BIND_HOST=0.0.0.0
+else
+  MOSAIC_BIND_HOST=127.0.0.1
+fi
+export MOSAIC_BIND_HOST
+# This records the choice, not the bind: Mosaic starts later under supervisord.
+echo "solo: binding Mosaic to $MOSAIC_BIND_HOST:8001 (nginx proxies via 127.0.0.1)"
 
 # ── 3. Aperture runtime config (ADR-0034) ──────────────────────────────────
 # Same vocabulary as the Aperture image's own 40-aperture-config.sh, with the

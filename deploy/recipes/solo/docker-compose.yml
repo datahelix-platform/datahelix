@@ -15,7 +15,10 @@ services:
     image: datahelix-solo:local
     ports:
       - "${SOLO_PORT:-8080}:8080"
-      # Raw Mosaic REST/OpenAPI access (unproxied routes) — uncomment if needed:
+      # Raw Mosaic REST/OpenAPI access (unproxied routes) — uncomment if needed.
+      # Works as-is with AUTH_MODE=none (Mosaic binds 0.0.0.0). With auth on,
+      # Mosaic binds 127.0.0.1 and this mapping answers nothing: 8001 is
+      # OUTSIDE the auth boundary. See MOSAIC_BIND_HOST below.
       # - "8001:8001"
     volumes:
       - "${PROJECT_DIR:-./project}:/project"
@@ -53,6 +56,15 @@ services:
       # VA TLS inspection intercepts outbound TLS; discovery and token calls
       # need the interception CA trusted.
       AUTH_PROVIDER_CA_FILE: ${AUTH_PROVIDER_CA_FILE:-}
+
+      # Mosaic's bind address inside the container. Empty = derived from
+      # AUTH_MODE: none → 0.0.0.0 (a published 8001 is reachable), htpasswd or
+      # oidc → 127.0.0.1 (8001 stays internal; nginx proxies to it either way).
+      # Setting 0.0.0.0 with auth on is allowed but logs a loud warning: port
+      # 8001 bypasses sign-in and the X-DataHelix-Actor override. Any value
+      # must still answer on 127.0.0.1 (nginx proxies there): 0.0.0.0, ::,
+      # 127.0.0.1 or localhost. ::1 is IPv6-only and is refused at startup.
+      MOSAIC_BIND_HOST: ${MOSAIC_BIND_HOST:-}
 
       # Mode R (remote schema iteration): set SCHEMA_GIT_REMOTE to a repo you
       # push schemas to; the entrypoint pulls them on every (re)start.

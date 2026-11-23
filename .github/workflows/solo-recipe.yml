@@ -55,7 +55,17 @@ jobs:
         run: make init
 
       - name: Build and start the bundle
-        run: docker compose up -d --build
+        # Publish Mosaic's raw port too (the commented "8001:8001" line in
+        # docker-compose.yml) so the bind-host smoke below can reach it. An
+        # override file is picked up by every later `docker compose` call.
+        run: |
+          cat > docker-compose.override.yml <<'EOF'
+          services:
+            solo:
+              ports:
+                - "8001:8001"
+          EOF
+          docker compose up -d --build
 
       - name: Wait for health (nginx -> mosaic seam)
         run: |
@@ -64,6 +74,18 @@ jobs:
           done'
           echo
           docker compose logs solo | grep "solo:"
+
+      - name: "Smoke: AUTH_MODE=none binds Mosaic on 0.0.0.0 (published 8001 answers)"
+        # Mosaic's bind host follows AUTH_MODE (entrypoint.sh): none → 0.0.0.0,
+        # so a published 8001 must answer from outside the container. Before
+        # this was derived, supervisord hard-coded 127.0.0.1 and it could not.
+        # The log line only records the entrypoint's choice (it is printed
+        # before Mosaic starts); the curl is what proves the bind.
+        run: |
+          docker compose logs solo | grep -q "binding Mosaic to 0.0.0.0:8001"
+          curl -sf http://localhost:8001/health
+          echo
+          echo "8001 reachable from the host with AUTH_MODE=none"
 
       - name: "Smoke: SPA shell and runtime config"
         run: |
@@ -178,6 +200,40 @@ jobs:
           assert 'Widget' in names and 'Gadget' in names, names
           print('second boot ok: Widget + Gadget still present after migrate')
           "
+
+      - name: "Smoke: auth on keeps Mosaic on 127.0.0.1; ::1 is refused"
+        # With AUTH_MODE=htpasswd, 8001 is outside the auth boundary, so the
+        # default bind is loopback: the published 8001 must NOT answer, while
+        # nginx (which proxies to 127.0.0.1:8001) still does. A regression to
+        # 0.0.0.0 with auth on would fail here. /health is auth-exempt in
+        # nginx-auth.conf, so no session is needed.
+        run: |
+          docker compose down
+          mkdir -p .ci-auth
+          docker run --rm httpd:2.4-alpine htpasswd -nbB ci ci-password > .ci-auth/users.htpasswd
+          export AUTH_DIR="$(pwd)/.ci-auth" AUTH_MODE=htpasswd AUTH_COOKIE_SECURE=false
+          AUTH_COOKIE_SECRET="$(openssl rand -base64 32 | tr -- '+/' '-_')"
+          export AUTH_COOKIE_SECRET
+          docker compose up -d
+          timeout 180 sh -c 'until curl -sf http://localhost:8080/health; do
+            sleep 3
+          done'
+          echo
+          docker compose logs solo | grep -q "binding Mosaic to 127.0.0.1:8001"
+          if curl -sf --max-time 5 http://localhost:8001/health; then
+            echo "8001 answered with AUTH_MODE=htpasswd — Mosaic is not on loopback" >&2
+            exit 1
+          fi
+          echo "auth on: 8001 closed from the host, :8080/health answers via nginx"
+
+          # ::1 would bind IPv6-only while nginx proxies to 127.0.0.1, so the
+          # entrypoint must refuse it rather than boot a bundle that 502s.
+          if out=$(docker compose run --rm --no-deps -T -e MOSAIC_BIND_HOST=::1 solo 2>&1); then
+            echo "MOSAIC_BIND_HOST=::1 was accepted" >&2; exit 1
+          fi
+          echo "$out" | grep -q "MOSAIC_BIND_HOST=::1 binds IPv6 only"
+          echo "::1 refused at startup"
+          docker compose down
 
       - name: Clean up the regression fixture
         if: always()
