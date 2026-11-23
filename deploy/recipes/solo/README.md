@@ -223,7 +223,10 @@ follow-on (proposal §4.4).
   `AUTH_MODE`: `none` binds `0.0.0.0`, so the mapping works; `htpasswd` and
   `oidc` bind `127.0.0.1`, so it does not (8001 is outside the auth
   boundary). Set `MOSAIC_BIND_HOST` to override either default; a
-  non-loopback value with auth on logs a warning at startup.
+  non-loopback value with auth on logs a warning at startup. An override must
+  still answer on `127.0.0.1`, because nginx proxies there: use `0.0.0.0`,
+  `::`, `127.0.0.1` or `localhost`. `::1` is IPv6-only and the entrypoint
+  refuses it, as it does any value that isn't a plain host or IP.
 - Container processes run as root (bind-mount ownership simplicity); harden
   in `team`.
 - Migrations are additive-only; breaking changes are a manual
