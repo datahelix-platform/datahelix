@@ -11,7 +11,7 @@
 # meaning) and the data is immutable — there is no schema-iteration loop and no
 # auth (see the solo recipe's banner; run on localhost / trusted network).
 
-ARG MOSAIC_IMAGE=ghcr.io/datahelix-platform/mosaic@sha256:6ae467fe8cfff80a9cd5f34328badd5eef6ec7b37bb85660f41b41c4d0120024
+ARG MOSAIC_IMAGE=ghcr.io/datahelix-platform/mosaic@sha256:6e81db4bfd0619d822fa0fcd55cc7d1850d2198e5c35a205349375de36d2c2bc
 ARG APERTURE_IMAGE=ghcr.io/datahelix-platform/aperture@sha256:515b1e45b5f94f9d1a900e91b85cca228602b9645fbaee35bd2b3b5068be7712
 
 # Data generator (pinned; carries the global-id-uniqueness fix,
