@@ -16,8 +16,8 @@
   "fixture_version": "2.0.0",
   "components": {
     "mosaic": {
-      "version": "0.16.0",
-      "digest": "sha256:6ae467fe8cfff80a9cd5f34328badd5eef6ec7b37bb85660f41b41c4d0120024",
+      "version": "0.16.1",
+      "digest": "sha256:6e81db4bfd0619d822fa0fcd55cc7d1850d2198e5c35a205349375de36d2c2bc",
       "image": "ghcr.io/datahelix-platform/mosaic",
       "repo": "datahelix-platform/mosaic",
       "status": "published"
