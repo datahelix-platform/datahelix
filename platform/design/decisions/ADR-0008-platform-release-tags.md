@@ -3,6 +3,7 @@
 - **Status:** Accepted
 - **Date:** 2026-11-23 (proposed and ratified)
 - **Deciders:** labadorf (ratified 2026-11-23)
+- **Tracking issue:** [datahelix#142](https://github.com/datahelix-platform/datahelix/issues/142)
 - **Related:** [ADR-0001](./ADR-0001-certified-frontier-composition.md) (certified-frontier ledger, `certified/*` tags, rule 4 immutability); [ADR-0006](./ADR-0006-authenticating-proxy-in-recipes.md) (the `solo` recipe the first consumer deploys); datahelix#139 (lock-only bumps leave recipe pins behind); datahelix#140 (first fix that has to land before the first tag); datahelix#35 (1.0 roadmap); ptsdbb-infrastructure#17 (the first consumer pinning a datahelix ref); [`RELEASING.md`](../../../RELEASING.md) (the cut steps)
 
 ## Context
