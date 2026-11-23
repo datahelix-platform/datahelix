@@ -92,10 +92,11 @@ so the first consumer's pinned ref includes it.
   a deploy ref. The two tag families coexist; release notes link the one that applies.
 - A release needs a commit where the recipe pins agree with the lock. Until datahelix#139 makes
   bump PRs update the pins, someone has to check this by hand before cutting.
-- **Immutability is a convention until the repo enforces it.** Nothing in GitHub currently stops
-  someone deleting or moving a `v*` tag. Follow-up, a repository settings change for the platform
-  owner to decide: a tag ruleset on `refs/tags/v*` that blocks deletion and non-fast-forward
-  updates, or GitHub's immutable releases. Until then, rule 4 rests on `RELEASING.md` and review.
+- **GitHub enforces immutability.** Repository ruleset 27943686, "Immutable release tags
+  (ADR-0008)", is active on `refs/tags/v*` (approved by the platform owner, 2026-11-23). It blocks
+  deletion, update and non-fast-forward of a `v*` tag; creating a new tag is unaffected.
+  Repository admins can bypass it, so the rule still binds admins by convention: a bypass is never
+  a way to re-cut a release.
 - No bundle image is published. Consumers still build from the tag; the tag pins the inputs (the
   Dockerfile's digest-pinned component images), so the build is reproducible.
 

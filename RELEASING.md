@@ -90,5 +90,6 @@ checked it.
 A published `vX.Y.Z` is immutable (ADR-0008, after ADR-0001 rule 4). Don't delete, move or
 re-create it, even minutes after publishing. If it is wrong, cut the next patch.
 
-GitHub doesn't enforce this yet. A tag ruleset on `refs/tags/v*` or immutable releases is a
-pending follow-up for the repo owner (ADR-0008 Consequences), so for now this rule rests on you.
+GitHub enforces this: repository ruleset 27943686, "Immutable release tags (ADR-0008)", blocks
+deletion, update and non-fast-forward of any `refs/tags/v*` tag. Repository admins can bypass it.
+If you are an admin, don't: a bypass is not a way to fix a release. Cut the next patch instead.
