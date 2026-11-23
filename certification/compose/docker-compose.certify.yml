@@ -61,8 +61,6 @@ services:
     # built with VITE_GRAPHQL_URL pointing at the mosaic service, OR
     # served by an entrypoint that injects runtime config. The certification
     # workflow builds/pins the image accordingly (aperture#16 + a Dockerfile).
-    # (VITE_GRAPHQL_URL is Aperture's own build-time contract name —
-    # renaming it is Aperture's call, out of scope here.)
     image: ${APERTURE_IMAGE:?set APERTURE_IMAGE=<image>@<digest>}
     environment:
       # Injected at container start by the image's runtime-config entrypoint

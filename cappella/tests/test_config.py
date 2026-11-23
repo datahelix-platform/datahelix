@@ -175,3 +175,38 @@ class TestCappellaConfig:
         assert t.name == "daily_ingest"
         assert t.schedule == "0 6 * * *"
         assert t.action.type == "ingest"
+
+
+class TestStaleHippoConfig:
+    """Platform ADR-0007: pre-rename config names fail loudly and name the replacement."""
+
+    def test_hippo_section_rejected(self, tmp_path):
+        p = _write(tmp_path, "hippo:\n  url: http://h:8001\n")
+        with pytest.raises(ConfigError, match="'hippo:'.*renamed to 'mosaic:'"):
+            load_config(p)
+
+    def test_hippo_poll_trigger_rejected(self, tmp_path):
+        p = _write(
+            tmp_path,
+            "triggers:\n"
+            "  - name: t\n"
+            "    type: hippo_poll\n"
+            "    action: {type: ingest}\n"
+            "    hippo_poll: {entity_type: Sample}\n",
+        )
+        with pytest.raises(ConfigError, match="'hippo_poll'.*renamed to 'mosaic_poll'"):
+            load_config(p)
+
+    def test_mosaic_names_accepted(self, tmp_path):
+        p = _write(
+            tmp_path,
+            "mosaic:\n  url: http://m:8001\n"
+            "triggers:\n"
+            "  - name: t\n"
+            "    type: mosaic_poll\n"
+            "    action: {type: ingest}\n"
+            "    mosaic_poll: {entity_type: Sample}\n",
+        )
+        cfg = load_config(p)
+        assert cfg.mosaic.url == "http://m:8001"
+        assert cfg.triggers[0].type == "mosaic_poll"

@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from cappella.exceptions import ConfigError
 
@@ -55,6 +55,17 @@ class TriggerConfig(BaseModel):
     webhook: dict[str, Any] | None = None  # raw dict, converted to triggers.WebhookConfig
     mosaic_poll: dict[str, Any] | None = None  # raw dict, converted to triggers.HippoPollConfig
 
+    @model_validator(mode="before")
+    @classmethod
+    def _reject_hippo_poll(cls, data: Any) -> Any:
+        # Platform ADR-0007: stale config fails loudly instead of being ignored.
+        if isinstance(data, dict) and (data.get("type") == "hippo_poll" or "hippo_poll" in data):
+            raise ValueError(
+                "trigger type 'hippo_poll' was renamed to 'mosaic_poll' (platform ADR-0007); "
+                "rename both the type and the 'hippo_poll:' block to 'mosaic_poll'"
+            )
+        return data
+
     def to_trigger_config(self) -> "TriggerConfig":
         """Convert to a triggers.models.TriggerConfig with typed sub-configs."""
         from cappella.triggers.models import (
@@ -98,6 +109,16 @@ class CappellaConfig(BaseModel):
     adapters: dict[str, AdapterConfig] = Field(default_factory=dict)
     triggers: list[TriggerConfig] = Field(default_factory=list)
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _reject_hippo_section(cls, data: Any) -> Any:
+        # Platform ADR-0007: stale config fails loudly instead of being ignored.
+        if isinstance(data, dict) and "hippo" in data:
+            raise ValueError(
+                "the 'hippo:' config section was renamed to 'mosaic:' (platform ADR-0007)"
+            )
+        return data
 
 
 def _substitute_env_vars(text: str) -> str:
