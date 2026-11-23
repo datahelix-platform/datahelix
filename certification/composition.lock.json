@@ -23,9 +23,9 @@
       "status": "published"
     },
     "aperture": {
-      "version": "0.7.1",
-      "digest": "sha256:dbe6d7b8b8657e27f79f04e9a7b987df7b32813a3bb5f43b21dcbd11a8c805f6",
-      "image": "ghcr.io/bu-neuromics/aperture",
+      "version": "0.8.0",
+      "digest": "sha256:515b1e45b5f94f9d1a900e91b85cca228602b9645fbaee35bd2b3b5068be7712",
+      "image": "ghcr.io/datahelix-platform/aperture",
       "repo": "datahelix-platform/aperture",
       "status": "published"
     }
