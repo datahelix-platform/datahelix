@@ -4403,6 +4403,20 @@ one pin at a time. <strong>Dependabot</strong> has no custom-file manager and ca
 <p><strong>Two obligations this note adds.</strong> The bump PR must be opened with a token other than
 <code>GITHUB_TOKEN</code>, or <code>certify.yml</code> never runs on it; and patch auto-merge needs <em>Allow auto-merge</em>
 enabled on the repository, which it is not today. Both are maintainer acts recorded in #121.</p>
+<h2 id="implementation-note-2026-11-24-the-bump-pr-carries-the-delta-everywhere-it-is-pinned-auto-merge-needs-a-required-check">Implementation note (2026-11-24) — the bump PR carries the delta everywhere it is pinned; auto-merge needs a required check<a class="headerlink" href="#implementation-note-2026-11-24-the-bump-pr-carries-the-delta-everywhere-it-is-pinned-auto-merge-needs-a-required-check" title="Permanent link">&para;</a></h2>
+<p>Two gaps surfaced by #137 (mosaic 0.16.0 → 0.16.1). Tracking: <a href="https://github.com/datahelix-platform/datahelix/issues/139">#139</a>.</p>
+<p><strong>The bump PR now moves every pin, not only the lock.</strong> <code>bump_lock.py</code> still moves exactly one
+lock entry; <code>certification/scripts/sync_pins.py</code> then copies that entry into the gated recipes'
+<code>MOSAIC_IMAGE</code> / <code>APERTURE_IMAGE</code> Dockerfile ARGs and the <code>ide</code> compose <code>*_VERSION</code> defaults, and
+the workflow moves the component's submodule to the release tag. This is still one release = one
+delta: one component's version change, applied everywhere it is pinned. The recipe workflows and
+their <code>check-pins</code> now run on the bump PR, and no hand-made follow-up PR (#138) is needed.</p>
+<p><strong>"Patch auto-merges on green" holds only if green is required.</strong> <code>gh pr merge --auto</code> waits for
+<em>required</em> status checks only; with none on <code>main</code>, #137 merged six seconds after opening, before
+certification reported. Until <code>main</code> requires certification (branch protection or a ruleset — a
+maintainer act, see #139 option A, including the path-filter question for <code>certify.yml</code>), the bump
+workflow detects that the base branch has no required status checks and labels a patch bump
+<code>needs-review</code> instead of enabling auto-merge.</p>
 
 
 

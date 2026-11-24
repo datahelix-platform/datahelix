@@ -4254,20 +4254,29 @@ hand, each with a GitHub release.</strong></p>
    the same preconditions.</p>
 </li>
 </ol>
-<p><strong>First tag:</strong> <code>v0.1.0</code>, cut on <code>main</code> after datahelix#140 (the <code>solo</code> Mosaic bind-host fix) merges,
+<p><strong>First tag:</strong> <code>v0.7.0</code>, cut on <code>main</code> after datahelix#140 (the <code>solo</code> Mosaic bind-host fix) merges,
 so the first consumer's pinned ref includes it.</p>
+<p><strong>Pre-split Hippo tags.</strong> <code>v0.1.0</code> to <code>v0.6.0</code> already exist on this repo. They are Hippo's
+release tags from when it lived in-tree (2026-03 to 2026-05, before the split into
+<code>datahelix-platform/mosaic</code>). They are not platform releases, have no GitHub release, and are
+immutable like any other <code>v*</code> tag, so they are never re-cut or deleted. The platform series
+therefore starts at <code>v0.7.0</code> (chosen by the platform owner, 2026-11-23), which keeps one
+monotonic <code>v*</code> order. Anything that looks up the previous platform release must skip them:
+<code>RELEASING.md</code> uses the latest tag that has a GitHub release, which is empty before <code>v0.7.0</code>, so
+<code>v0.7.0</code>'s notes start from scratch.</p>
 <h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Consumers pin <code>vX.Y.Z</code> and read the release notes to decide whether an upgrade needs action.
-  The ptsdbb-infrastructure deployment moves from a SHA to <code>v0.1.0</code>.</li>
+  The ptsdbb-infrastructure deployment moves from a SHA to <code>v0.7.0</code>.</li>
 <li><code>certified/*</code> tags keep their ADR-0001 meaning (ledger facts about component pairs) and are not
   a deploy ref. The two tag families coexist; release notes link the one that applies.</li>
 <li>A release needs a commit where the recipe pins agree with the lock. Until datahelix#139 makes
   bump PRs update the pins, someone has to check this by hand before cutting.</li>
-<li><strong>Immutability is a convention until the repo enforces it.</strong> Nothing in GitHub currently stops
-  someone deleting or moving a <code>v*</code> tag. Follow-up, a repository settings change for the platform
-  owner to decide: a tag ruleset on <code>refs/tags/v*</code> that blocks deletion and non-fast-forward
-  updates, or GitHub's immutable releases. Until then, rule 4 rests on <code>RELEASING.md</code> and review.</li>
+<li><strong>GitHub enforces immutability.</strong> Repository ruleset 27943686, "Immutable release tags
+  (ADR-0008)", is active on <code>refs/tags/v*</code> (approved by the platform owner, 2026-11-23). It blocks
+  deletion, update and non-fast-forward of a <code>v*</code> tag; creating a new tag is unaffected.
+  Repository admins can bypass it, so the rule still binds admins by convention: a bypass is never
+  a way to re-cut a release.</li>
 <li>No bundle image is published. Consumers still build from the tag; the tag pins the inputs (the
   Dockerfile's digest-pinned component images), so the build is reproducible.</li>
 </ul>
