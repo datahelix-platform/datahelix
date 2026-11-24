@@ -53,10 +53,10 @@ before Aperture sees it, and nothing runs without a click.
 
 | | `brainbank` *(default)* | `small` |
 |---|---|---|
-| Schema | [`brainbank-hippo-schema`](https://github.com/VA-NCPTSDBB-Bioinformatics/brainbank-hippo-schema) @ `05c58aa`, 86 entity types (same as `demo`) | [`mosaic-demo-small`](https://github.com/BU-Neuromics/mosaic-demo-small) @ `7399694`, 15 entity types |
+| Schema | [`brainbank-hippo-schema`](https://github.com/VA-NCPTSDBB-Bioinformatics/brainbank-hippo-schema) @ `a2b054c`, 86 entity types (same as `demo`) | [`mosaic-demo-small`](https://github.com/BU-Neuromics/mosaic-demo-small) @ `7399694`, 15 entity types |
 | Built by | `demo`'s own `build-dataset.sh` (reused, not copied) | that repo's own `generate.py` (`build-small.sh` mirrors its Makefile) |
 | Scale | `DEMO_COUNTS` (as `demo`) | fixed, about 8,800 records; `DEMO_COUNTS` does not apply |
-| Planner grounding | about 71k prompt tokens per turn | much smaller |
+| Planner grounding | about 86k prompt tokens per turn | much smaller |
 | Matches `demo` screenshots | yes | no |
 
 ```bash
