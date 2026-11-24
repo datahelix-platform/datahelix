@@ -195,3 +195,21 @@ one pin at a time. **Dependabot** has no custom-file manager and cannot read the
 **Two obligations this note adds.** The bump PR must be opened with a token other than
 `GITHUB_TOKEN`, or `certify.yml` never runs on it; and patch auto-merge needs *Allow auto-merge*
 enabled on the repository, which it is not today. Both are maintainer acts recorded in #121.
+
+## Implementation note (2026-11-24) — the bump PR carries the delta everywhere it is pinned; auto-merge needs a required check
+
+Two gaps surfaced by #137 (mosaic 0.16.0 → 0.16.1). Tracking: [#139](https://github.com/datahelix-platform/datahelix/issues/139).
+
+**The bump PR now moves every pin, not only the lock.** `bump_lock.py` still moves exactly one
+lock entry; `certification/scripts/sync_pins.py` then copies that entry into the gated recipes'
+`MOSAIC_IMAGE` / `APERTURE_IMAGE` Dockerfile ARGs and the `ide` compose `*_VERSION` defaults, and
+the workflow moves the component's submodule to the release tag. This is still one release = one
+delta: one component's version change, applied everywhere it is pinned. The recipe workflows and
+their `check-pins` now run on the bump PR, and no hand-made follow-up PR (#138) is needed.
+
+**"Patch auto-merges on green" holds only if green is required.** `gh pr merge --auto` waits for
+*required* status checks only; with none on `main`, #137 merged six seconds after opening, before
+certification reported. Until `main` requires certification (branch protection or a ruleset — a
+maintainer act, see #139 option A, including the path-filter question for `certify.yml`), the bump
+workflow detects that the base branch has no required status checks and labels a patch bump
+`needs-review` instead of enabling auto-merge.

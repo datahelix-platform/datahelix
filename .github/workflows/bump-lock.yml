@@ -5,10 +5,25 @@ name: Bump lock
 # published image-digest.json here as a `component-release` event; this
 # workflow moves exactly ONE pin in certification/composition.lock.json and
 # opens ONE pull request for it, so a red certification attributes to a single
-# version delta. Patch deltas auto-merge on green certification; minor/major
-# deltas wait for review. The same thing can be run by hand with
+# version delta. Patch deltas auto-merge on green certification (see
+# below for what that requires); minor/major deltas wait for review. The same thing can be run by hand with
 # workflow_dispatch (a backfill, or a release that dispatched before this
 # workflow existed).
+#
+# The PR carries the release everywhere it is pinned (issue #139), not only the
+# lock: certification/scripts/sync_pins.py rewrites the gated recipes'
+# MOSAIC_IMAGE/APERTURE_IMAGE ARGs and the ide compose version defaults, and the
+# component's submodule pointer moves to the release tag. So the recipe
+# workflows and their `check-pins` run on the bump PR, and nothing is left for a
+# hand-made follow-up (the #137/#138 drift).
+#
+# "Auto-merge on green" only holds if green is REQUIRED: `gh pr merge --auto`
+# waits for required status checks and nothing else, so on an unprotected
+# branch it merges the moment the PR is mergeable (#137 merged in 6 s, before
+# certification ran). The workflow therefore enables auto-merge only when the
+# base branch has at least one required status check (branch protection or a
+# ruleset); otherwise a patch bump is labelled needs-review and waits for a
+# human, like a minor/major one.
 #
 # Two things this workflow depends on that are not in code:
 #   - BUMP_BOT_TOKEN, a fine-grained PAT with Contents RW + Pull requests RW on
@@ -82,6 +97,31 @@ jobs:
           fi
           git --no-pager diff --stat
 
+      - name: Carry the pin into the recipes
+        id: recipes
+        if: steps.pin.outputs.changed == 'true'
+        run: python3 certification/scripts/sync_pins.py "$COMPONENT"
+
+      - name: Move the submodule to the release tag
+        id: submodule
+        if: steps.pin.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          # Only components that are submodules of this repo (mosaic, aperture, reel).
+          path="$(git config -f .gitmodules --get "submodule.${COMPONENT}.path" || true)"
+          if [ -z "$path" ]; then
+            echo "::notice::${COMPONENT} is not a submodule here; no pointer to move."
+            exit 0
+          fi
+          if git submodule update --init --depth 1 -- "$path" \
+             && git -C "$path" fetch --depth 1 origin "refs/tags/v${VERSION}:refs/tags/v${VERSION}" \
+             && git -C "$path" checkout --detach "v${VERSION}"; then
+            echo "path=$path" >> "$GITHUB_OUTPUT"
+            echo "submodule ${path} -> v${VERSION} ($(git -C "$path" rev-parse HEAD))"
+          else
+            echo "::warning::Could not move the ${path} submodule to v${VERSION}; bump it by hand in this PR."
+          fi
+
       - name: Already at this release
         if: steps.pin.outputs.changed != 'true'
         run: echo "::notice::composition.lock.json already pins $COMPONENT $VERSION at $DIGEST; nothing to do."
@@ -94,6 +134,8 @@ jobs:
           PREVIOUS: ${{ steps.pin.outputs.previous }}
           PINNED_IMAGE: ${{ steps.pin.outputs.image }}
           BASE: ${{ github.ref_name }}
+          RECIPE_FILES: ${{ steps.recipes.outputs.files }}
+          SUBMODULE: ${{ steps.submodule.outputs.path }}
         run: |
           set -euo pipefail
           branch="bump/${COMPONENT}-${VERSION}"
@@ -109,6 +151,9 @@ jobs:
           git config user.email "datahelix-bump@users.noreply.github.com"
           git checkout -b "$branch"
           git add certification/composition.lock.json
+          # shellcheck disable=SC2086  # space-separated repo-relative paths
+          if [ -n "$RECIPE_FILES" ]; then git add -- $RECIPE_FILES; fi
+          if [ -n "$SUBMODULE" ]; then git add -- "$SUBMODULE"; fi
           git commit -m "$title" \
             -m "One release, one delta (platform ADR-0001): ${PREVIOUS} -> ${VERSION} (${DELTA}), digest ${DIGEST}."
           git push -u origin "$branch"
@@ -122,17 +167,31 @@ jobs:
           | Image | ${PINNED_IMAGE} |
           | Digest | ${DIGEST} |
 
-          One release = one delta (platform ADR-0001): a red certification on this PR names exactly this version change and is a cross-team pager, not backlog. Certification runs here because the PR was opened with the bump workflow's own token, not GITHUB_TOKEN. Patch deltas auto-merge on green; minor and major deltas wait for review.
+          One release = one delta (platform ADR-0001): a red certification on this PR names exactly this version change and is a cross-team pager, not backlog. The same delta is applied everywhere the component is pinned — the lock, the recipe image pins and the submodule — so the recipe checks run here too (#139). Certification runs here because the PR was opened with the bump workflow's own token, not GITHUB_TOKEN. Patch deltas auto-merge on green only when the base branch requires status checks; otherwise every bump waits for review.
 
           Opened by the Bump lock workflow from a component-release dispatch (#121).
           EOF
           gh pr create --base "$BASE" --head "$branch" --title "$title" --body-file body.md
 
+          # --auto only waits for REQUIRED checks (#139). Count the base
+          # branch's required status checks across branch protection and
+          # rulesets; with none, auto-merge would merge before certification.
+          required=0
+          bp="$(gh api "repos/${GITHUB_REPOSITORY}/branches/${BASE}/protection/required_status_checks" \
+                --jq '((.contexts // []) + [(.checks // [])[].context]) | unique | length' 2>/dev/null || echo 0)"
+          rs="$(gh api "repos/${GITHUB_REPOSITORY}/rules/branches/${BASE}" \
+                --jq '[.[] | select(.type == "required_status_checks") | .parameters.required_status_checks[]] | length' 2>/dev/null || echo 0)"
+          required=$(( ${bp:-0} + ${rs:-0} ))
+
+          auto=false
+          if [ "$DELTA" = patch ] && [ "$required" -gt 0 ]; then auto=true; fi
           labels="certified-frontier"
-          if [ "$DELTA" = patch ]; then labels="$labels,auto-merge:patch"; else labels="$labels,needs-review"; fi
+          if [ "$auto" = true ]; then labels="$labels,auto-merge:patch"; else labels="$labels,needs-review"; fi
           gh pr edit "$branch" --add-label "$labels" \
             || echo "::warning::Could not apply labels ($labels). Create them, or add Issues: write to BUMP_BOT_TOKEN."
-          if [ "$DELTA" = patch ]; then
+          if [ "$auto" = true ]; then
             gh pr merge "$branch" --auto --squash \
               || echo "::warning::Could not enable auto-merge; merge by hand once certification is green."
+          elif [ "$DELTA" = patch ]; then
+            echo "::warning::${BASE} has no required status checks, so auto-merge would not wait for certification (#139). Left for review; merge by hand once certification and the recipe checks are green."
           fi
